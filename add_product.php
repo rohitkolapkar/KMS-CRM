@@ -29,32 +29,6 @@ while($row=mysqli_fetch_array($run))
 }
 
 ?>
-
-<?php
-error_reporting(E_ERROR | E_PARSE);
-include("database/db_conection.php");
-$edit=$_GET['edt'];
-$query="select * from company_details where company_id='$edit'";
-$run=mysqli_query($dbcon,$query);
-while($row=mysqli_fetch_array($run))
-{
-	$cid1=$row[0];
-	$cname1=$row[1];
-	$ccont1=$row[2];
-}
-
-if(isset($_POST['update1'])){
-	$edit1=$_GET['edit_form'];
-	$cname2=$_POST['compname'];
-	$ccont2=$_POST['cont'];	
-	$query2="update company_details set company_name='$cname2',company_contact='$ccont2' where company_id='$edit1'";
-	if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('add_company.php?Updated Successfully !!','_self')</script>";
-	}
-}
-
-?>
-
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -308,45 +282,127 @@ if(isset($_POST['update1'])){
       <div class="main-panel">
         <div class="content-wrapper">
 		
-		<div class="row">
+			          <div class="row">
            
 	
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Update Company Details</h4>
-                  <form class="form-sample" action="edit_company.php?edit_form=<?php echo $cid1; ?>" method="post">
-                   
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Name</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="compname" value="<?php echo $cname1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Contact</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="cont" value="<?php echo $ccont1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-					  <input type="submit" value="Update" name="update1">
-                    </div>
+                  <h2 class="card-title">Add Product Model</h2>
+                  <form class="form-sample" action="add_product.php" method="post">
                     
-                   
-					
+                    <div class="row">
+                      
+                       <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Category Name</label>
+                          <div class="col-sm-9">
+						  
+                             <?php
+							//Include the database configuration file
+							include 'database/db_conection.php';
 
+							//Fetch all the company data
+							$query = $dbcon->query("SELECT category_name FROM category_details");
+
+							//Count total number of rows
+							$rowCount = $query->num_rows;
+							?>
+                            <select class="form-control" id="company"  name="categoryname">
+                            <!--  <option  value="">Select Model Name</option> -->
+								<?php
+									if($rowCount > 0){
+									while($row = $query->fetch_assoc()){ 
+									echo '<option value="'.$row['category_name'].'">'.$row['category_name'].'</option>';
+									}
+									}else{
+									echo '<option value="">Category not available</option>';
+									}
+								?>
+							
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+					  <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Product Model</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="model_name"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+					<input type="submit" value="Submit" name="submit">
                   </form>
                 </div>
               </div>
             </div>
-
-		  </div>
 			
+			<div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Product Model Details</h4>
+                  
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                            Serial No.
+                          </th>
+                          <th>
+                            Product Name
+                          </th>
+                          <th>
+                            Category ID
+                          </th>
+                          <th>
+                            
+                          </th>
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+					  <?php
+							$query="select * from model_details";
+									
+							$run=mysqli_query($dbcon,$query);
+							$count=1;
+							while($row=mysqli_fetch_array($run))
+							{
+							$mid=$row[0];
+							$mname=$row[1];
+							$catid=$row[2];
+							
+					  ?>
+                        <tr>
+                          <td>
+                            <?php echo $count; $count++; ?>
+                          </td>
+                          <td>
+                            <?php echo $mname; ?>
+                          </td>
+                          <td>
+                             <?php echo $catid; ?>
+                          </td>
+                          <td>
+                            <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_product.php?edt=<?php echo $mid; ?>'">
+                          <i class="mdi mdi-cloud-download"></i>Edit</button>
+						   <button type="button" class="btn btn-danger btn-fw" onclick="myFunction()">
+                          <i class="mdi mdi-alert-outline"></i>Delete</button>
+                          </td>
+                        </tr>
+                        <?php } ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+			
+          </div>
 		
         </div>
         <!-- content-wrapper ends -->
@@ -381,6 +437,45 @@ if(isset($_POST['update1'])){
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
+  <script>
+  function myFunction() {
+    if(confirm('Are you sure you want to delete the category ?'))
+	{
+	window.location.href='delete_product.php?delt=<?php echo $mid; ?>';
+	}
+	else{
+		
+	}
+	}
+  </script>
 </body>
 
 </html>
+<?php
+include 'database/db_conection.php';
+//Adding Product Details, Code
+if(isset($_POST['submit']))
+{
+$categoryname=$_POST['categoryname'];
+$modelname=$_POST['model_name'];
+
+if($categoryname==''){
+echo "<script>alert('Please Select Company Name !!')</script>";
+exit();
+}
+if($modelname==''){
+echo "<script>alert('Please Enter Product Category !!')</script>";
+exit();
+}
+
+$query1="select * from category_details where category_name='$categoryname'";
+$run1=mysqli_query($dbcon,$query1);
+$row1=mysqli_fetch_array($run1);
+$pid=$row1[0];
+
+$query2="insert into model_details(model_name,category_id) values('$modelname','$pid')";
+if(mysqli_query($dbcon,$query2)){
+		echo "<script>window.open('add_product.php?Inserted Successfully','_self')</script>";
+	}
+}
+?>

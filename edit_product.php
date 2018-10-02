@@ -31,25 +31,44 @@ while($row=mysqli_fetch_array($run))
 ?>
 
 <?php
+
+//getting database values nd printing it in fields
 error_reporting(E_ERROR | E_PARSE);
 include("database/db_conection.php");
 $edit=$_GET['edt'];
-$query="select * from company_details where company_id='$edit'";
+$query="select * from model_details where model_id='$edit'";
 $run=mysqli_query($dbcon,$query);
 while($row=mysqli_fetch_array($run))
 {
 	$cid1=$row[0];
 	$cname1=$row[1];
-	$ccont1=$row[2];
+	//$ccont1=$row[2];
 }
 
-if(isset($_POST['update1'])){
-	$edit1=$_GET['edit_form'];
-	$cname2=$_POST['compname'];
-	$ccont2=$_POST['cont'];	
-	$query2="update company_details set company_name='$cname2',company_contact='$ccont2' where company_id='$edit1'";
-	if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('add_company.php?Updated Successfully !!','_self')</script>";
+//Update code start
+if(isset($_POST['submit']))
+{
+$categoryname=$_POST['categoryname'];
+$model_name=$_POST['model_name'];
+$edit1=$_GET['edit_form'];
+
+if($categoryname==''){
+echo "<script>alert('Please Select Category Name !!')</script>";
+exit();
+}
+if($model_name==''){
+echo "<script>alert('Please Enter Product Model !!')</script>";
+exit();
+}
+
+$query1="select * from category_details where category_name='$categoryname'";
+$run1=mysqli_query($dbcon,$query1);
+$row1=mysqli_fetch_array($run1);
+$catid=$row1[0];
+
+$query2="update model_details set model_name='$model_name',category_id='$catid' where model_id='$edit1'";
+if(mysqli_query($dbcon,$query2)){
+		echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
 	}
 }
 
@@ -314,32 +333,52 @@ if(isset($_POST['update1'])){
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Update Company Details</h4>
-                  <form class="form-sample" action="edit_company.php?edit_form=<?php echo $cid1; ?>" method="post">
-                   
+                  <h2 class="card-title">Edit Product Category</h2>
+                  <form class="form-sample" action="edit_product.php?edit_form=<?php echo $cid1; ?>" method="post">
+                    
                     <div class="row">
-                      <div class="col-md-6">
+                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Company Name</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="compname" value="<?php echo $cname1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Contact</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="cont" value="<?php echo $ccont1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-					  <input type="submit" value="Update" name="update1">
-                    </div>
-                    
-                   
-					
+						  
+                             <?php
+							//Include the database configuration file
+							include 'database/db_conection.php';
 
+							//Fetch all the company data
+							$query = $dbcon->query("SELECT category_name FROM category_details");
+
+							//Count total number of rows
+							$rowCount = $query->num_rows;
+							?>
+                            <select class="form-control" id="company"  name="categoryname">
+                            <!--  <option  value="">Select Category Name</option> -->
+								<?php
+									if($rowCount > 0){
+									while($row = $query->fetch_assoc()){ 
+									echo '<option value="'.$row['category_name'].'">'.$row['category_name'].'</option>';
+									}
+									}else{
+									echo '<option value="">Category not available</option>';
+									}
+								?>
+							
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+					  <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Product Category</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="model_name" value="<?php echo $cname1; ?>"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+					<input type="submit" value="Submit" name="submit">
                   </form>
                 </div>
               </div>

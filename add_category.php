@@ -339,6 +339,69 @@ while($row=mysqli_fetch_array($run))
                 </div>
               </div>
             </div>
+			
+			<div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Category Details</h4>
+                  
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                            Serial No.
+                          </th>
+                          <th>
+                            Category Name
+                          </th>
+                          <th>
+                            Company ID
+                          </th>
+                          <th>
+                            
+                          </th>
+                         
+                        </tr>
+                      </thead>
+                      <tbody>
+					  <?php
+							$query="select * from category_details";
+									
+							$run=mysqli_query($dbcon,$query);
+							$count=1;
+							while($row=mysqli_fetch_array($run))
+							{
+							$cid=$row[0];
+							$cname=$row[1];
+							$compid=$row[2];
+							
+					  ?>
+                        <tr>
+                          <td>
+                            <?php echo $count; $count++; ?>
+                          </td>
+                          <td>
+                            <?php echo $cname; ?>
+                          </td>
+                          <td>
+                             <?php echo $compid; ?>
+                          </td>
+                          <td>
+                            <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_category.php?edt=<?php echo $cid; ?>'">
+                          <i class="mdi mdi-cloud-download"></i>Edit</button>
+						   <button type="button" class="btn btn-danger btn-fw" onclick="myFunction()">
+                          <i class="mdi mdi-alert-outline"></i>Delete</button>
+                          </td>
+                        </tr>
+                        <?php } ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+			
           </div>
 		
         </div>
@@ -374,23 +437,47 @@ while($row=mysqli_fetch_array($run))
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
+  
+    <script>
+  function myFunction() {
+    if(confirm('Are you sure you want to delete the category ?'))
+	{
+	window.location.href='delete_category.php?delt=<?php echo $cid; ?>';
+	}
+	else{
+		
+	}
+	}
+  </script>
+  
 </body>
 
 </html>
 <?php
 include 'database/db_conection.php';
-
+//Adding Category Details, Code
 if(isset($_POST['submit']))
 {
 $companyname=$_POST['companyname'];
 $product_category=$_POST['product_category'];
-echo $companyname;
+
+if($companyname==''){
+echo "<script>alert('Please Select Company Name !!')</script>";
+exit();
+}
+if($product_category==''){
+echo "<script>alert('Please Enter Product Category !!')</script>";
+exit();
+}
+
 $query1="select * from company_details where company_name='$companyname'";
 $run1=mysqli_query($dbcon,$query1);
 $row1=mysqli_fetch_array($run1);
 $cid=$row1[0];
-echo $cid;
+
 $query2="insert into category_details(category_name,company_id) values('$product_category','$cid')";
-mysqli_query($dbcon,$query2);
+if(mysqli_query($dbcon,$query2)){
+		echo "<script>window.open('add_category.php?Inserted Successfully','_self')</script>";
+	}
 }
 ?>

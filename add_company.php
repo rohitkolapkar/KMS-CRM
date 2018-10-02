@@ -367,7 +367,7 @@ while($row=mysqli_fetch_array($run))
                           <td>
                             <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_company.php?edt=<?php echo $cid; ?>'">
                           <i class="mdi mdi-cloud-download"></i>Edit</button>
-						   <button type="button" class="btn btn-danger btn-fw" onclick="window.location.href='delete_company.php?delt=<?php echo $cid; ?>'">
+						   <button type="button" class="btn btn-danger btn-fw" onclick="myFunction()">
                           <i class="mdi mdi-alert-outline"></i>Delete</button>
                           </td>
                         </tr>
@@ -413,6 +413,19 @@ while($row=mysqli_fetch_array($run))
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
+  
+  <script>
+  function myFunction() {
+    if(confirm('Are you sure you want to delete the company ?'))
+	{
+	window.location.href='delete_company.php?delt=<?php echo $cid; ?>';
+	}
+	else{
+		
+	}
+	}
+  </script>
+  
 </body>
 
 </html>
@@ -436,8 +449,9 @@ exit();
 
 
 $query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
-mysqli_query($dbcon,$query);
-
+if(mysqli_query($dbcon,$query)){
+		echo "<script>window.open('add_company.php?Inserted Successfully','_self')</script>";
+	}
 
 }
 ?>

@@ -31,25 +31,44 @@ while($row=mysqli_fetch_array($run))
 ?>
 
 <?php
+
+//getting database values nd printing it in fields
 error_reporting(E_ERROR | E_PARSE);
 include("database/db_conection.php");
 $edit=$_GET['edt'];
-$query="select * from company_details where company_id='$edit'";
+$query="select * from category_details where category_id='$edit'";
 $run=mysqli_query($dbcon,$query);
 while($row=mysqli_fetch_array($run))
 {
 	$cid1=$row[0];
 	$cname1=$row[1];
-	$ccont1=$row[2];
+	//$ccont1=$row[2];
 }
 
-if(isset($_POST['update1'])){
-	$edit1=$_GET['edit_form'];
-	$cname2=$_POST['compname'];
-	$ccont2=$_POST['cont'];	
-	$query2="update company_details set company_name='$cname2',company_contact='$ccont2' where company_id='$edit1'";
-	if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('add_company.php?Updated Successfully !!','_self')</script>";
+//Update code start
+if(isset($_POST['submit']))
+{
+$companyname=$_POST['companyname'];
+$product_category=$_POST['product_category'];
+$edit1=$_GET['edit_form'];
+
+if($companyname==''){
+echo "<script>alert('Please Select Company Name !!')</script>";
+exit();
+}
+if($product_category==''){
+echo "<script>alert('Please Enter Product Category !!')</script>";
+exit();
+}
+//echo $companyname;
+$query1="select * from company_details where company_name='$companyname'";
+$run1=mysqli_query($dbcon,$query1);
+$row1=mysqli_fetch_array($run1);
+$compid=$row1[0];
+//echo $cid;
+$query2="update category_details set category_name='$product_category',company_id='$compid' where category_id='$edit1'";
+if(mysqli_query($dbcon,$query2)){
+		echo "<script>window.open('add_category.php?Updated Successfully','_self')</script>";
 	}
 }
 
@@ -314,32 +333,52 @@ if(isset($_POST['update1'])){
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Update Company Details</h4>
-                  <form class="form-sample" action="edit_company.php?edit_form=<?php echo $cid1; ?>" method="post">
-                   
+                  <h2 class="card-title">Edit Product Category</h2>
+                  <form class="form-sample" action="edit_category.php?edit_form=<?php echo $cid1; ?>" method="post">
+                    
                     <div class="row">
-                      <div class="col-md-6">
+                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Company Name</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="compname" value="<?php echo $cname1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Contact</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="cont" value="<?php echo $ccont1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-					  <input type="submit" value="Update" name="update1">
-                    </div>
-                    
-                   
-					
+						  
+                             <?php
+							//Include the database configuration file
+							include 'database/db_conection.php';
 
+							//Fetch all the company data
+							$query = $dbcon->query("SELECT company_name FROM company_details");
+
+							//Count total number of rows
+							$rowCount = $query->num_rows;
+							?>
+                            <select class="form-control" id="company"  name="companyname">
+                            <!--  <option  value="">Select Company Name</option> -->
+								<?php
+									if($rowCount > 0){
+									while($row = $query->fetch_assoc()){ 
+									echo '<option value="'.$row['company_name'].'">'.$row['company_name'].'</option>';
+									}
+									}else{
+									echo '<option value="">Company not available</option>';
+									}
+								?>
+							
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+					  <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Product Category</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="product_category" value="<?php echo $cname1; ?>"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+					<input type="submit" value="Submit" name="submit">
                   </form>
                 </div>
               </div>
