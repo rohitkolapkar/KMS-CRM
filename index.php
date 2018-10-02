@@ -37,7 +37,7 @@ if(isset($_POST['login']))
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
- <title>Kalika Multi Services</title>
+ <title>KMS | Login</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/iconfonts/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
@@ -60,7 +60,7 @@ if(isset($_POST['login']))
             <div class="auto-form-wrapper">
               <form action="index.php" method="post">
                 <div class="form-group">
-                   <span><h3 style="text-align: center;">KALIKA MULTISERVICES</h3></span>
+                   <span><h3 style="text-align: center;">KALIKA MULTI SERVICES</h3></span>
 				    <span><h5 style="text-align: center">Login</h5></span>
                 </div>
                 <div class="form-group">
