@@ -43,6 +43,105 @@ if($security_key=="" || $security_ans=="")
 	//echo "<script>alert('Please update your security settings \n Manage Account>Security Question!')</script>";
 }
 
+$qry1 = "SELECT security_key,security_ans FROM user where user_id='$session_id'";
+$run=mysqli_query($dbcon,$qry1);
+while($row=mysqli_fetch_array($run))
+{
+  $security_key=$row[0];
+  $security_ans=$row[1];
+}
+if($security_key=="" || $security_ans=="")
+{
+   echo "<script>
+        alert('Security Questions are not saved.\n go to Manage Account>Security Question!')
+     </script>";
+  //echo "<script>alert('Please update your security settings \n Manage Account>Security Question!')</script>";
+}
+
+$emp_qry = "SELECT * FROM employee where employee_id='$session_id'";
+$run=mysqli_query($dbcon,$emp_qry);
+while($row=mysqli_fetch_array($run))
+{
+  $emp_id=$row[0];
+  $emp_name=$row[1];
+  $emp_mob=$row[2];
+  $emp_email=$row[3];
+  $emp_add=$row[4];
+  $emp_city_id=$row[5];
+  $emp_dob=$row[6];
+  $emp_gender=$row[7];
+  $emp_pid=$row[8];
+  $emp_photo=$row[9];
+}
+//to update profile details
+if(isset($_POST['save_profile'])){
+  $emp_id= $_POST['empid'];
+  $emp_name=$_POST['name'];
+  $emp_mob=$_POST['mobile'];
+  $emp_email=$_POST['email'];
+  $emp_add=$_POST['address'];
+  $emp_country=$_POST['country'];
+  $emp_state=$_POST['state'];
+  $emp_city=$_POST['city'];
+  $emp_dob=$_POST['dob'];
+  $emp_gender=$_POST['gender'];
+
+  $query2="UPDATE `employee` SET
+          `employee_name`='$emp_name',
+          `mobile_no`='$emp_mob',
+          `email_id`='$emp_email',
+          `address`='$emp_add',
+          `city_id`='$emp_city',
+          `dob`='$emp_dob',
+          `gender`='$emp_gender'
+          WHERE `employee_id` = '$emp_id'";
+  if(mysqli_query($dbcon,$query2)){
+    echo "<script>alert('Record Has Been Updated!')</script>";
+    echo "<script>window.open('my_account.php','_self')</script>";
+  }
+}
+//end update profile
+
+if(isset($_POST['save_security']))
+{
+  $sec_key = $_POST['sec_key'];
+  $sec_ans = $_POST['sec_ans'];
+  $sec_qry= "UPDATE `user` SET `security_key`='$sec_key',`security_ans`='$sec_ans' WHERE `employee_id` = '$session_id'";
+  if(mysqli_query($dbcon,$sec_qry)){
+    echo "<script>alert('Security details has been updated!')</script>";
+  }
+}
+
+if($security_key=="" || $security_ans=="")
+{
+   echo "<script>
+        alert('Security Questions are not saved.\n go to Manage Account>Security Question!')
+     </script>";
+  //echo "<script>alert('Please update your security settings \n Manage Account>Security Question!')</script>";
+}
+
+
+$country_qry ="select `country_name` from country where country_id=
+              (select country_id from states where state_id=(select state_id from cities where city_id='$emp_city_id'))";
+  $run=mysqli_query($dbcon,$country_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+     $emp_country=$row[0];
+  }
+  $state_qry ="select `state_name` from states where state_id=(select state_id from cities where city_id='$emp_city_id')";
+  $run=mysqli_query($dbcon,$state_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+     $emp_state=$row[0];
+  }
+  $city_qry ="select `city_name` from cities where city_id='$emp_city_id'";
+  $run=mysqli_query($dbcon,$city_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+     $emp_city=$row[0];
+  }
+//echo $emp_city.",".$emp_state.",".$emp_country;
+
 ?>
 <head>
   <!-- Required meta tags -->
@@ -56,6 +155,7 @@ if($security_key=="" || $security_ans=="")
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
   
   <!-- endinject -->
+  
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
@@ -85,6 +185,34 @@ if($security_key=="" || $security_ans=="")
     color: black;
 }
 </style>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script>
+function getCity(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_city.php",
+  data:'state_id='+val,
+  success: function(data){
+    $("#city-list").html(data);
+  }
+  });
+}
+
+function getState(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_state.php",
+  data:'country_id='+val,
+  success: function(data){
+    $("#state-list").html(data);
+  }
+  });
+}
+function selectCountry(val) {
+$("#search-box").val(val);
+$("#suggesstion-box").hide();
+}
+</script>
 </head>
 
 <body>
@@ -102,13 +230,14 @@ if($security_key=="" || $security_ans=="")
       <div class="navbar-menu-wrapper d-flex align-items-center">
         <ul class="navbar-nav navbar-nav-left header-links d-none d-md-flex">
           <li class="nav-item">
-			<a href="#profile" class="nav-link">
-			<i class="mdi mdi-bookmark-plus-outline"></i>Profile</a>
-          </li>
-          <li class="nav-item">
             <a href="#security" class="nav-link">
               <i class="mdi mdi-elevation-rise"></i>Security</a>
           </li>
+		  <li class="nav-item">
+			<a href="#profile" class="nav-link">
+			<i class="mdi mdi-bookmark-plus-outline"></i>Profile</a>
+          </li>
+          
         </ul>
         <ul class="navbar-nav navbar-nav-right">
           
@@ -315,124 +444,7 @@ if($security_key=="" || $security_ans=="")
       <div class="main-panel">
         <div class="content-wrapper" id="profile">
 		<div class="row">
-			<div class="col-12 grid-margin" >
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Employee Details</h4>
-                  <form class="form-sample">
-                   <div class="row">   
-					</div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Name</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="name" required/>
-                          </div>
-                        </div>
-                      </div>
-					  <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile Name</label>
-                          <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" required/>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Email</label>
-                          <div class="col-sm-9">
-                            <input type="email" class="form-control" name="email" required/>
-                          </div>
-                        </div>
-                      </div> 
-					  <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="address"/>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Country</label>
-                          <div class="col-sm-9">
-                            <select class="form-control" name="country">
-                              <option>India</option>
-                              <option>America</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-					  <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">State</label>
-                          <div class="col-sm-9">
-                            <select class="form-control" name="state">
-                              <option>Maharashtra</option>
-                              <option>Kerala</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-					  <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">City</label>
-                          <div class="col-sm-9">
-                            <select class="form-control" name="city">
-                              <option>Auranagabad</option>
-                              <option>Mumbai</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date of Birth</label>
-                          <div class="col-sm-9">
-                            <input class="form-control" type="date" placeholder="dd/mm/yyyy" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row">                    
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Gender</label>
-                          <div class="col-sm-4">
-                            <div class="form-radio">
-                              <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="gender" id="membershipRadios1" value="male" checked> Male
-                              </label>
-                            </div>
-                          </div>
-                          <div class="col-sm-5">
-                            <div class="form-radio">
-                              <label class="form-check-label">
-                                <input type="radio" class="form-check-input" name="gender" id="membershipRadios2" value="female"> Female
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-					
-					<div class="row">
-					<div class="col-md-6">
-					</div>
-					<div class="col-md-6" align="right">
-                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="save_profile">Save</button>
-                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
-					</div>
-                  </form>
-                </div>
-              </div>
-            </div>
-		</div>
+		
 			<div class="col-md-6 grid-margin stretch-card" id="security">
                   <div class="card">
                     <div class="card-body">
@@ -468,7 +480,7 @@ if($security_key=="" || $security_ans=="")
                     <div class="card-body">
 
                       <h4 class="card-title">Security Question</h4>
-                      <form class="forms-sample">
+                      <form class="forms-sample" method="POST" action="my_account.php">
 						<div class="form-group row">
 							<label for="exampleInputSecurity" class="col-sm-3 col-form-label">Security</label>
 							<div class="col-sm-9">
@@ -492,6 +504,139 @@ if($security_key=="" || $security_ans=="")
                     </div>
                   </div>
             </div>
+			<div class="col-12 grid-margin" >
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">My Details</h4>
+                  <form class="form-sample" method="POST" action="my_account.php" >
+                   <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Employee Id</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="empid" value="<?php echo $emp_id; ?>" readonly/>
+                          </div>
+                        </div>
+                      </div>
+					         </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Name</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="name" value="<?php echo $emp_name; ?>" required />
+                          </div>
+                        </div>
+                      </div>
+					  <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Mobile Name</label>
+                          <div class="col-sm-9">
+                            <input type="number" class="form-control" name="mobile" value="<?php echo $emp_mob; ?>" required/>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Email</label>
+                          <div class="col-sm-9">
+                            <input type="email" class="form-control" name="email" value="<?php echo $emp_email; ?>" required/>
+                          </div>
+                        </div>
+                      </div> 
+					  <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Address</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" value="<?php echo $emp_add; ?>" name="address"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row country">
+                          <label class="col-sm-3 col-form-label">Country</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="country" id="country-list" onChange="getState(this.value);">
+                              <option selected="selected" ><?php echo $emp_country; ?></option>
+                              <?php
+                              $qry= "select * from country";
+                              $run=mysqli_query($dbcon,$qry);
+                              while($row=mysqli_fetch_array($run))
+                              {
+                              ?>
+                              <option value="<?php echo $row['country_id']; ?>"><?php echo $row['country_name']; ?></option><?php
+                              }
+                              ?>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+					  <div class="col-md-6">
+                        <div class="form-group row state">
+                          <label class="col-sm-3 col-form-label">State</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="state" id="state-list" onChange="getCity(this.value);">
+                              <option selected="selected"><?php echo $emp_state; ?></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+					  <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Select City</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="city" id="city-list">
+                              <option selected="selected"><?php echo $emp_city; ?></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date of Birth</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="dob" value="<?php echo $emp_dob; ?>" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">                  
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Gender</label>
+                          <div class="col-sm-4">
+                            <div class="form-radio">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="gender" id="membershipRadios1" value="male" <?php if($emp_gender=="male"){echo "checked";} ?>> Male
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-sm-5">
+                            <div class="form-radio">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="gender" id="membershipRadios2" value="female" <?php if($emp_gender=="female"){echo "checked";} ?>> Female
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+					
+					<div class="row">
+					<div class="col-md-6">
+					</div>
+					<div class="col-md-6" align="right">
+                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="save_profile">Save</button>
+                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
+					</div>
+                  </form>
+                </div>
+              </div>
+            </div>
+		</div>
+			
 		</div>
 		
         </div>

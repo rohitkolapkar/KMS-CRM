@@ -12,23 +12,22 @@ include("database/db_conection.php");
 if(isset($_POST['login']))
 {
     $uname=$_POST['uname'];
-    //$pass=md5($_POST['pass']);
-    $pass=$_POST['pass'];
-	$qry="select * from `user` WHERE user_id='$uname' AND password='$pass'";
-    
-	//echo ($qry);
-    $run=mysqli_query($dbcon,$qry);
+    $pass=md5($_POST['pass']);
 
-    if($run)
-    {
-        echo "<script>window.open('main.php','_self')</script>";
-        $_SESSION['username']=$uname;//here session is used and value of $user_email store in $_SESSION.
-    }
-    else
-    {
-        echo "<script>alert('username or password is incorrect!')</script>";
-        //echo ($uname+", "+$pass);
-    }
+    $sql = "SELECT * FROM `user` WHERE `employee_id` = '$uname' and `password` = '$pass'";
+      $result = mysqli_query($dbcon,$sql);
+      $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+      $active = $row['active'];      
+      $count = mysqli_num_rows($result);      
+      // If result matched $myusername and $mypassword, table row must be 1 row   
+      if($count == 1) {
+         //session_register("myusername");
+         $_SESSION['username'] = $uname;
+         echo "<script>window.open('main.php','_self')</script>";
+         //header("location: welcome.php");
+      }else {
+          echo "<script>alert('username or password is incorrect!')</script>";
+      }
 }
 ?>
 <html lang="en">
@@ -37,7 +36,7 @@ if(isset($_POST['login']))
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
- <title>KMS | Login</title>
+ <title>Kalika Multiservices</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/iconfonts/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
@@ -60,7 +59,7 @@ if(isset($_POST['login']))
             <div class="auto-form-wrapper">
               <form action="index.php" method="post">
                 <div class="form-group">
-                   <span><h3 style="text-align: center;">KALIKA MULTI SERVICES</h3></span>
+                   <span><h3 style="text-align: center;">KALIKA MULTISERVICES</h3></span>
 				    <span><h5 style="text-align: center">Login</h5></span>
                 </div>
                 <div class="form-group">
