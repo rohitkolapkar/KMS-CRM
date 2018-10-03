@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -72,6 +72,14 @@ if(mysqli_query($dbcon,$query2)){
 	}
 }
 
+/*$comp_id = $_GET['edt'];
+$company_qry = "select company_name from company_details where company_id ='$comp_id'";
+$run = mysqli_query($dbcon,$company_qry);
+while ($row = mysqli_fetch_array($run)) {
+  $company_name =$row[0];
+}
+echo $company_name;
+echo $comp_id;*/
 ?>
 
 <head>
@@ -84,7 +92,7 @@ if(mysqli_query($dbcon,$query2)){
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -241,7 +249,7 @@ if(mysqli_query($dbcon,$query2)){
             </div>
           </li>";
 		  }?>
-		  
+
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
@@ -299,7 +307,7 @@ if(mysqli_query($dbcon,$query2)){
 		  ";
 			}
 		  ?>
-		  
+
 		  <?php
 		  if($role=="admin")
 		  {
@@ -326,22 +334,22 @@ if(mysqli_query($dbcon,$query2)){
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-		
+
 		<div class="row">
-           
-	
+
+
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
                   <h2 class="card-title">Edit Product Category</h2>
                   <form class="form-sample" action="edit_category.php?edit_form=<?php echo $cid1; ?>" method="post">
-                    
+
                     <div class="row">
                        <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Company Name</label>
                           <div class="col-sm-9">
-						  
+
                              <?php
 							//Include the database configuration file
 							include 'database/db_conection.php';
@@ -353,17 +361,17 @@ if(mysqli_query($dbcon,$query2)){
 							$rowCount = $query->num_rows;
 							?>
                             <select class="form-control" id="company"  name="companyname">
-                            <!--  <option  value="">Select Company Name</option> -->
+                            <!--<option  value=""><?php echo $company_name;?></option>-->
 								<?php
 									if($rowCount > 0){
-									while($row = $query->fetch_assoc()){ 
+									while($row = $query->fetch_assoc()){
 									echo '<option value="'.$row['company_name'].'">'.$row['company_name'].'</option>';
 									}
 									}else{
 									echo '<option value="">Company not available</option>';
 									}
 								?>
-							
+
                             </select>
                           </div>
                         </div>
@@ -385,8 +393,8 @@ if(mysqli_query($dbcon,$query2)){
             </div>
 
 		  </div>
-			
-		
+
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->

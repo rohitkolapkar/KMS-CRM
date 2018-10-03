@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -39,7 +39,7 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -196,7 +196,7 @@ while($row=mysqli_fetch_array($run))
             </div>
           </li>";
 		  }?>
-		  
+
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
@@ -254,7 +254,7 @@ while($row=mysqli_fetch_array($run))
 		  ";
 			}
 		  ?>
-		  
+
 		  <?php
 		  if($role=="admin")
 		  {
@@ -281,23 +281,23 @@ while($row=mysqli_fetch_array($run))
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-		
+
 			          <div class="row">
-           
-	
+
+
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
                   <h2 class="card-title">Add Product Category</h2>
                   <form class="form-sample" action="add_category.php" method="post">
-                    
+
                     <div class="row">
-                      
+
                        <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Company Name</label>
                           <div class="col-sm-9">
-						  
+
                              <?php
 							//Include the database configuration file
 							include 'database/db_conection.php';
@@ -312,14 +312,14 @@ while($row=mysqli_fetch_array($run))
                             <!--  <option  value="">Select Company Name</option> -->
 								<?php
 									if($rowCount > 0){
-									while($row = $query->fetch_assoc()){ 
+									while($row = $query->fetch_assoc()){
 									echo '<option value="'.$row['company_name'].'">'.$row['company_name'].'</option>';
 									}
 									}else{
 									echo '<option value="">Company not available</option>';
 									}
 								?>
-							
+
                             </select>
                           </div>
                         </div>
@@ -339,12 +339,12 @@ while($row=mysqli_fetch_array($run))
                 </div>
               </div>
             </div>
-			
+
 			<div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Category Details</h4>
-                  
+
                   <div class="table-responsive">
                     <table class="table table-bordered">
                       <thead>
@@ -356,18 +356,28 @@ while($row=mysqli_fetch_array($run))
                             Category Name
                           </th>
                           <th>
-                            Company ID
+                            Company Name
                           </th>
                           <th>
-                            
+
                           </th>
-                         
+
                         </tr>
                       </thead>
                       <tbody>
 					  <?php
-							$query="select * from category_details";
-									
+
+              $query="SELECT
+              		category_details.category_id,category_details.category_name, company_details.company_name
+              	   FROM
+              		category_details
+              	   INNER JOIN
+              		company_details
+              	   ON
+              		category_details.company_id=company_details.company_id"
+              		;
+
+
 							$run=mysqli_query($dbcon,$query);
 							$count=1;
 							while($row=mysqli_fetch_array($run))
@@ -375,7 +385,7 @@ while($row=mysqli_fetch_array($run))
 							$cid=$row[0];
 							$cname=$row[1];
 							$compid=$row[2];
-							
+
 					  ?>
                         <tr>
                           <td>
@@ -401,9 +411,9 @@ while($row=mysqli_fetch_array($run))
                 </div>
               </div>
             </div>
-			
+
           </div>
-		
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
@@ -437,7 +447,7 @@ while($row=mysqli_fetch_array($run))
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-  
+
     <script>
   function myFunction() {
     if(confirm('Are you sure you want to delete the category ?'))
@@ -445,11 +455,11 @@ while($row=mysqli_fetch_array($run))
 	window.location.href='delete_category.php?delt=<?php echo $cid; ?>';
 	}
 	else{
-		
+
 	}
 	}
   </script>
-  
+
 </body>
 
 </html>
