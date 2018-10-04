@@ -334,7 +334,7 @@ while($row=mysqli_fetch_array($run))
                       </div>
                     </div>
 
-					<input type="submit" value="Submit" name="submit">
+					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
                   </form>
                 </div>
               </div>

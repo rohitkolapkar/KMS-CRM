@@ -333,7 +333,7 @@ if(mysqli_query($dbcon,$query)){
                     </div>
                     
                    
-					<input type="submit" value="Submit" name="submit">
+					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
 
                   </form>
                 </div>
