@@ -343,31 +343,31 @@ while($row=mysqli_fetch_array($run))
                         $color_count=0;
                         ?>
                         <tr class="<?php echo $tbl_color[$color_count]; $color_count++;?>">
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $count;?>
                             
                           </td>
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_id;?>
                           </td>
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_name;?>
                           </td>
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_mob;?>
                           </td>
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_email;?>
                           </td>
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_dob;?>
                           </td>
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_add?>
                           </td>
-                          <td>
+                          <td style="padding-top: 0px; padding-bottom: 0px; padding-left: 5px;padding-right: 5px;">
                             <a href="edit_emp.php" class="btn btn-icons btn-rounded btn-warning">
-                              <i class="fa fa-pencil"></i></a>
+                              <i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
                             <a href="delete_emp.php" class="btn btn-icons btn-rounded btn-danger">
                             <i class="fa fa-trash-o"></i></a>
                           </td>
