@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -39,7 +39,7 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -196,7 +196,7 @@ while($row=mysqli_fetch_array($run))
             </div>
           </li>";
 		  }?>
-		  
+
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
@@ -254,7 +254,7 @@ while($row=mysqli_fetch_array($run))
 		  ";
 			}
 		  ?>
-		  
+
 		  <?php
 		  if($role=="admin")
 		  {
@@ -281,14 +281,14 @@ while($row=mysqli_fetch_array($run))
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-		
+
 			<div class="row">
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Adding New Company</h4>
                   <form class="form-sample" action='add_company.php' method='post'>
-                   
+
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -307,21 +307,21 @@ while($row=mysqli_fetch_array($run))
                         </div>
                       </div>
                     </div>
-                    
-                   
+
+
 					<input type="submit" value="Submit" name="submit">
 
                   </form>
                 </div>
               </div>
             </div>
-			
-			
+
+
 			 <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Company Details</h4>
-                  
+
                   <div class="table-responsive">
                     <table class="table table-bordered">
                       <thead>
@@ -336,9 +336,9 @@ while($row=mysqli_fetch_array($run))
                             Contact Number
                           </th>
                           <th>
-                            
+
                           </th>
-                         
+
                         </tr>
                       </thead>
                       <tbody>
@@ -379,7 +379,7 @@ while($row=mysqli_fetch_array($run))
               </div>
             </div>
 		  </div>
-		
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
@@ -413,7 +413,7 @@ while($row=mysqli_fetch_array($run))
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-  
+
   <script>
   function myFunction() {
     if(confirm('Are you sure you want to delete the company ?'))
@@ -421,11 +421,11 @@ while($row=mysqli_fetch_array($run))
 	window.location.href='delete_company.php?delt=<?php echo $cid; ?>';
 	}
 	else{
-		
+
 	}
 	}
   </script>
-  
+
 </body>
 
 </html>

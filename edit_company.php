@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -46,7 +46,7 @@ while($row=mysqli_fetch_array($run))
 if(isset($_POST['update1'])){
 	$edit1=$_GET['edit_form'];
 	$cname2=$_POST['compname'];
-	$ccont2=$_POST['cont'];	
+	$ccont2=$_POST['cont'];
 	$query2="update company_details set company_name='$cname2',company_contact='$ccont2' where company_id='$edit1'";
 	if(mysqli_query($dbcon,$query2)){
 		echo "<script>window.open('add_company.php?Updated Successfully !!','_self')</script>";
@@ -65,7 +65,7 @@ if(isset($_POST['update1'])){
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -222,7 +222,7 @@ if(isset($_POST['update1'])){
             </div>
           </li>";
 		  }?>
-		  
+
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
@@ -280,7 +280,7 @@ if(isset($_POST['update1'])){
 		  ";
 			}
 		  ?>
-		  
+
 		  <?php
 		  if($role=="admin")
 		  {
@@ -307,16 +307,16 @@ if(isset($_POST['update1'])){
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-		
+
 		<div class="row">
-           
-	
+
+
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Update Company Details</h4>
                   <form class="form-sample" action="edit_company.php?edit_form=<?php echo $cid1; ?>" method="post">
-                   
+
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -336,9 +336,9 @@ if(isset($_POST['update1'])){
                       </div>
 					  <input type="submit" value="Update" name="update1">
                     </div>
-                    
-                   
-					
+
+
+
 
                   </form>
                 </div>
@@ -346,8 +346,8 @@ if(isset($_POST['update1'])){
             </div>
 
 		  </div>
-			
-		
+
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
