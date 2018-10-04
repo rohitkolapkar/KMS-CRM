@@ -27,7 +27,31 @@ while($row=mysqli_fetch_array($run))
 	$role=$row[0];
 	$name=$row[1];
 }
+?>
 
+<?php
+//Insert Code for company details
+include("database/db_conection.php");
+if(isset($_POST['submit']))
+{
+$companyname=$_POST['compname'];
+$companycontact=$_POST['compcont'];
+
+if($companyname==''){
+echo "<script>alert('Please Enter Company Name !!')</script>";
+exit();
+}
+if($companycontact==''){
+echo "<script>alert('Please Enter Contact Number !!')</script>";
+exit();
+}
+$query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
+if(mysqli_query($dbcon,$query)){
+		echo "<script>window.open('add_company.php?Inserted Successfully','_self')</script>";
+	}
+
+}
+//Insert code end's
 ?>
 <head>
   <!-- Required meta tags -->
@@ -431,27 +455,3 @@ while($row3=mysqli_fetch_array($run3))
 </html>
 
 
-<?php
-include("database/db_conection.php");
-if(isset($_POST['submit']))
-{
-$companyname=$_POST['compname'];
-$companycontact=$_POST['compcont'];
-
-if($companyname==''){
-echo "<script>alert('Please Enter Company Name !!')</script>";
-exit();
-}
-if($companycontact==''){
-echo "<script>alert('Please Enter Contact Number !!')</script>";
-exit();
-}
-
-
-$query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
-if(mysqli_query($dbcon,$query)){
-		echo "<script>window.open('add_company.php?Inserted Successfully','_self')</script>";
-	}
-
-}
-?>
