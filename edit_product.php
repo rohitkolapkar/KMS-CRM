@@ -36,39 +36,44 @@ while($row=mysqli_fetch_array($run))
 error_reporting(E_ERROR | E_PARSE);
 include("database/db_conection.php");
 $edit=$_GET['edt'];
-$query="select * from model_details where model_id='$edit'";
-$run=mysqli_query($dbcon,$query);
-while($row=mysqli_fetch_array($run))
-{
-	$cid1=$row[0];
-	$cname1=$row[1];
-	//$ccont1=$row[2];
-}
-
+$company_qry ="select `company_name` from company_details where company_id=
+              (select company_id from category_details where category_id=(select category_id from model_details where model_id='$edit'))";
+  $company_qry_run=mysqli_query($dbcon,$company_qry);
+  while($company_qry_row=mysqli_fetch_array($company_qry_run))
+  {
+     $compName=$company_qry_row[0];
+  }
+  $category_qry ="select category_name from category_details where category_id=(select category_id from model_details where model_id='$edit')";
+    $category_qry_run=mysqli_query($dbcon,$category_qry);
+    while($category_qry_row=mysqli_fetch_array($category_qry_run))
+    {
+       $catName=$category_qry_row[0];
+    }
+    $model_qry ="select model_name from model_details where model_id='$edit'";
+      $model_qry_run=mysqli_query($dbcon,$model_qry);
+      while($model_qry_row=mysqli_fetch_array($model_qry_run))
+      {
+         $modName=$model_qry_row[0];
+      }
 //Update code start
 if(isset($_POST['submit']))
 {
-$categoryname=$_POST['categoryname'];
-$model_name=$_POST['model_name'];
-$edit1=$_GET['edit_form'];
+$catid=$_POST['categoryid'];
+$model=$_POST['model_name'];
+echo $catid;
 
-if($categoryname==''){
+if($catid==''){
 echo "<script>alert('Please Select Category Name !!')</script>";
 exit();
 }
-if($model_name==''){
+if($model==''){
 echo "<script>alert('Please Enter Product Model !!')</script>";
 exit();
 }
 
-$query1="select * from category_details where category_name='$categoryname'";
-$run1=mysqli_query($dbcon,$query1);
-$row1=mysqli_fetch_array($run1);
-$catid=$row1[0];
-
-$query2="update model_details set model_name='$model_name',category_id='$catid' where model_id='$edit1'";
-if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
+$updateQuery="update model_details set model_name='$model',category_id='$catid' where model_id='$edit'";
+if(mysqli_query($dbcon,$updateQuery)){
+		//echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
 	}
 }
 
@@ -92,6 +97,24 @@ if(mysqli_query($dbcon,$query2)){
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<!--Ajax functions for fetching category data according to company_id-->
+<script>
+function getCategory(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_state.php",
+  data:'company_id='+val,
+  success: function(data){
+    $("#category-list").html(data);
+  }
+  });
+}
+</script>
+
+
 </head>
 
 <body>
@@ -334,79 +357,51 @@ if(mysqli_query($dbcon,$query2)){
               <div class="card">
                 <div class="card-body">
                   <h2 class="card-title">Edit Product Details</h2>
-                  <form class="form-sample" action="edit_product.php?edit_form=<?php echo $cid1; ?>" method="post">
-                    <!--select company-->
+                  <form class="form-sample" action="edit_product.php?edit_form=<?php echo $edit; ?>" method="post">
+
                     <div class="row">
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Name</label>
-                          <div class="col-sm-9">
-
-                             <?php
-							//Include the database configuration file
-							include 'database/db_conection.php';
-
-							//Fetch all the company data
-							$query = $dbcon->query("SELECT company_id,company_name FROM company_details");
-
-							//Count total number of rows
-							$rowCount = $query->num_rows;
-							?>
-                            <select class="form-control" id="company"  name="categoryname">
-                            <!--  <option  value="">Select Category Name</option> -->
-								<?php
-									if($rowCount > 0){
-									while($row = $query->fetch_assoc()){
-									echo '<option value="'.$row['company_id'].'">'.$row['company_name'].'</option>';
-									}
-									}else{
-									echo '<option value="">Category not available</option>';
-									}
-								?>
-
-                            </select>
-                          </div>
+                    <!--select company-->
+                    <div class="col-md-6">
+                      <div class="form-group row country">
+                        <label class="col-sm-3 col-form-label">Company</label>
+                        <div class="col-sm-9">
+                          <select class="form-control" name="companyname" id="company" onChange="getCategory(this.value);">
+                            <option selected="selected" ><?php echo $compName; ?></option>
+                            <?php
+                            $qry= "select * from company_details";
+                            $run=mysqli_query($dbcon,$qry);
+                            while($row=mysqli_fetch_array($run))
+                            {
+                            ?>
+                            <option value="<?php echo $row['company_id']; ?>"><?php echo $row['company_name']; ?></option><?php
+                            }
+                            ?>
+                          </select>
                         </div>
                       </div>
+                    </div>
 
-                      <!--select category-->
+                  <!--select category-->
 
-                      <div class="col-md-6">
-                       <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Category</label>
-                         <div class="col-sm-9">
+                  <div class="col-md-6">
+                   <div class="form-group row">
+                     <label class="col-sm-3 col-form-label">Category Name</label>
+                     <div class="col-sm-9">
 
-                            <?php
-             //Fetch all the company data
-             $query = $dbcon->query("SELECT category_name FROM category_details");
-
-             //Count total number of rows
-             $rowCount = $query->num_rows;
-             ?>
-                           <select class="form-control" id="company"  name="categoryname">
-                           <!--  <option  value="">Select Category Name</option> -->
-               <?php
-                 if($rowCount > 0){
-                 while($row = $query->fetch_assoc()){
-                 echo '<option value="'.$row['category_name'].'">'.$row['category_name'].'</option>';
-                 }
-                 }else{
-                 echo '<option value="">Category not available</option>';
-                 }
-               ?>
-
-                           </select>
-                         </div>
-                       </div>
+                       <select class="form-control" id="category-list"  name="categoryid">
+                       <option selected="selected" ><?php echo $catName; ?></option>
+                       </select>
                      </div>
+                   </div>
+                 </div>
 
-
+                 <!--Edit model field-->
 
 					  <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Model</label>
+                          <label class="col-sm-3 col-form-label">Product Model</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="model_name" value="<?php echo $cname1; ?>"/>
+                            <input type="text" class="form-control" name="model_name" value="<?php echo $modName; ?>"/>
                           </div>
                         </div>
                       </div>
