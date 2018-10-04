@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <?php
 include("database/db_conection.php");
 
@@ -8,27 +7,46 @@ session_start();
 if(!$_SESSION['username'])
     header("Location: index.php");//redirect to login page to secure the welcome page without login access.
 else
-	$session_id = $_SESSION['username'];
+  $session_id = $_SESSION['username'];
 
 $qry= "SELECT 
-		user.user_role, employee.employee_name
-	   FROM 
-		user
-	   INNER JOIN 
-		employee 
-	   ON
-		user.employee_id=employee.employee_id
-		WHERE 
-		user.employee_id='$session_id'";
+    user.user_role, employee.employee_name
+     FROM 
+    user
+     INNER JOIN 
+    employee 
+     ON
+    user.employee_id=employee.employee_id
+    WHERE 
+    user.employee_id='$session_id'";
  
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
-	$role=$row[0];
-	$name=$row[1];
+  $role=$row[0];
+  $name=$row[1];
+}
+if($role!="admin")
+{
+  echo "<script>window.open('main.php','_self')</script>";
 }
 
+$emp_qry= "SELECT * FROM `employee`"; 
+$run=mysqli_query($dbcon,$emp_qry);
+while($row=mysqli_fetch_array($run))
+{
+  $emp_id=$row[0];
+  $emp_name=$row[1];
+  $emp_mob=$row[2];
+  $emp_email=$row[3];
+  $emp_dob=$row[6];
+  $emp_add=$row[4];
+}
+
+
 ?>
+<html lang="en">
+
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
@@ -269,8 +287,102 @@ while($row=mysqli_fetch_array($run))
       <div class="main-panel">
         <div class="content-wrapper">
 		
-			
-		
+			     <div class="col-lg-12 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Employees</h4>
+                  <?php
+                    $emp_qry= "SELECT * FROM `employee`"; 
+                    $run=mysqli_query($dbcon,$emp_qry);
+                    $count=1;
+                  ?>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>
+                            Sr.No.
+                          </th>
+                          <th>
+                            ID
+                          </th>
+                          <th>
+                            Name
+                          </th>
+                          <th>
+                            Mobile No.
+                          </th>
+                          <th>
+                            Email
+                          </th>
+                          <th>
+                            DOB
+                          </th>
+                          <th>
+                            Address
+                          </th>
+                          <th>
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $tbl_color = array("table-danger", "table-success", "table-primary","table-primary","table-warning");
+                          $color_count = 0;
+                          while($row=mysqli_fetch_array($run))
+                          {
+                            //$count++;
+                      $emp_id=$row[0];
+                      $emp_name=$row[1];
+                      $emp_mob=$row[2];
+                      $emp_email=$row[3];
+                      $emp_dob=$row[6];
+                      $emp_add=$row[4];
+                      if($color_count>4)
+                        $color_count=0;
+                        ?>
+                        <tr class="<?php echo $tbl_color[$color_count]; $color_count++;?>">
+                          <td>
+                            <?php echo $count;?>
+                            
+                          </td>
+                          <td>
+                            <?php echo $emp_id;?>
+                          </td>
+                          <td>
+                            <?php echo $emp_name;?>
+                          </td>
+                          <td>
+                            <?php echo $emp_mob;?>
+                          </td>
+                          <td>
+                            <?php echo $emp_email;?>
+                          </td>
+                          <td>
+                            <?php echo $emp_dob;?>
+                          </td>
+                          <td>
+                            <?php echo $emp_add?>
+                          </td>
+                          <td>
+                            <a href="edit_emp.php" class="btn btn-icons btn-rounded btn-warning">
+                              <i class="fa fa-pencil"></i></a>
+                            <a href="delete_emp.php" class="btn btn-icons btn-rounded btn-danger">
+                            <i class="fa fa-trash-o"></i></a>
+                          </td>
+                        </tr>
+                        <?php 
+                          $count++;
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+		  
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
