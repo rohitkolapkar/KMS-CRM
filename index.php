@@ -17,9 +17,9 @@ if(isset($_POST['login']))
     $sql = "SELECT * FROM `user` WHERE `employee_id` = '$uname' and `password` = '$pass'";
       $result = mysqli_query($dbcon,$sql);
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-      $active = $row['active'];      
-      $count = mysqli_num_rows($result);      
-      // If result matched $myusername and $mypassword, table row must be 1 row   
+      $active = $row['active'];
+      $count = mysqli_num_rows($result);
+      // If result matched $myusername and $mypassword, table row must be 1 row
       if($count == 1) {
          //session_register("myusername");
          $_SESSION['username'] = $uname;
@@ -59,7 +59,7 @@ if(isset($_POST['login']))
             <div class="auto-form-wrapper">
               <form action="index.php" method="post">
                 <div class="form-group">
-                   <span><h3 style="text-align: center;">KALIKA MULTISERVICES</h3></span>
+                   <span><h3 style="text-align: center;">KALIKA MULTI SERVICES</h3></span>
 				    <span><h5 style="text-align: center">Login</h5></span>
                 </div>
                 <div class="form-group">
@@ -128,4 +128,3 @@ if(isset($_POST['login']))
 </body>
 
 </html>
-
