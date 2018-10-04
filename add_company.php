@@ -331,15 +331,9 @@ if(mysqli_query($dbcon,$query)){
                         </div>
                       </div>
                     </div>
-<<<<<<< HEAD
                     
                    
 					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
-=======
-
-
-					<input type="submit" value="Submit" name="submit">
->>>>>>> bdce83b8c7f32927f6ad53adc7d71166a73fc237
 
                   </form>
                 </div>
