@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -63,7 +63,7 @@ if(mysqli_query($dbcon,$query)){
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -220,7 +220,7 @@ if(mysqli_query($dbcon,$query)){
             </div>
           </li>";
 		  }?>
-		  
+
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
@@ -278,7 +278,7 @@ if(mysqli_query($dbcon,$query)){
 		  ";
 			}
 		  ?>
-		  
+
 		  <?php
 		  if($role=="admin")
 		  {
@@ -305,14 +305,14 @@ if(mysqli_query($dbcon,$query)){
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-		
+
 			<div class="row">
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Adding New Company</h4>
                   <form class="form-sample" action='add_company.php' method='post'>
-                   
+
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
@@ -331,21 +331,27 @@ if(mysqli_query($dbcon,$query)){
                         </div>
                       </div>
                     </div>
+<<<<<<< HEAD
                     
                    
 					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
+=======
+
+
+					<input type="submit" value="Submit" name="submit">
+>>>>>>> bdce83b8c7f32927f6ad53adc7d71166a73fc237
 
                   </form>
                 </div>
               </div>
             </div>
-			
-			
+
+
 			 <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Company Details</h4>
-                  
+
                   <div class="table-responsive">
                     <table class="table table-bordered">
                       <thead>
@@ -360,9 +366,9 @@ if(mysqli_query($dbcon,$query)){
                             Contact Number
                           </th>
                           <th>
-                            
+
                           </th>
-                         
+
                         </tr>
                       </thead>
                       <tbody>
@@ -403,7 +409,7 @@ while($row3=mysqli_fetch_array($run3))
               </div>
             </div>
 		  </div>
-		
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
@@ -445,7 +451,7 @@ while($row3=mysqli_fetch_array($run3))
 	window.location.href='delete_company.php?delt=<?php echo $cid; ?>';
 	}
 	else{
-		
+
 	}
 	}
   </script>
@@ -453,5 +459,3 @@ while($row3=mysqli_fetch_array($run3))
 </body>
 
 </html>
-
-
