@@ -437,11 +437,7 @@ while($row3=mysqli_fetch_array($run3))
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-<<<<<<< HEAD
-
-=======
   <!--
->>>>>>> f2e6cd7e3df3bbcbe67b45321fc734441ce77f9b
   <script>
   function myFunction() {
     if(confirm('Are you sure you want to delete the company ?'))
@@ -453,40 +449,7 @@ while($row3=mysqli_fetch_array($run3))
 	}
 	}
   </script>
-<<<<<<< HEAD
-
-=======
   -->
->>>>>>> f2e6cd7e3df3bbcbe67b45321fc734441ce77f9b
 </body>
 
 </html>
-
-
-<<<<<<< HEAD
-<?php
-include("database/db_conection.php");
-if(isset($_POST['submit']))
-{
-$companyname=$_POST['compname'];
-$companycontact=$_POST['compcont'];
-
-if($companyname==''){
-echo "<script>alert('Please Enter Company Name !!')</script>";
-exit();
-}
-if($companycontact==''){
-echo "<script>alert('Please Enter Contact Number !!')</script>";
-exit();
-}
-
-
-$query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
-if(mysqli_query($dbcon,$query)){
-		echo "<script>window.open('add_company.php?Inserted Successfully','_self')</script>";
-	}
-
-}
-?>
-=======
->>>>>>> f2e6cd7e3df3bbcbe67b45321fc734441ce77f9b
