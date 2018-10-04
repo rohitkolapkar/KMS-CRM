@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -186,14 +186,14 @@ $country_qry ="select `country_name` from country where country_id=
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <!-- endinject -->
-  
+
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
-  
+
   <style>
 .alert {
     padding: 20px;
@@ -287,10 +287,10 @@ function checkPass(){
 			<a href="#profile" class="nav-link">
 			<i class="mdi mdi-bookmark-plus-outline"></i>Profile</a>
           </li>
-          
+
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          
+
           <li class="nav-item dropdown d-none d-xl-inline-block">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <span class="profile-text">Hello, <?php echo $name;?>!</span>
@@ -409,7 +409,7 @@ function checkPass(){
             </div>
           </li>";
 		  }?>
-		  
+
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
@@ -466,7 +466,7 @@ function checkPass(){
           </li>
 		  ";
 			}
-		  ?>	  
+		  ?>
 		  <?php
 		  if($role=="admin")
 		  {
@@ -494,12 +494,12 @@ function checkPass(){
       <div class="main-panel">
         <div class="content-wrapper" id="profile">
 		<div class="row">
-		
+
 			<div class="col-md-6 grid-margin stretch-card" id="security">
                   <div class="card">
                     <div class="card-body">
                       <h4 class="card-title">Change Password</h4>
-                      
+
                       <form class="forms-sample" method="POST" action="my_account.php">
                         <div class="form-group row">
                           <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Old</label>
@@ -521,7 +521,7 @@ function checkPass(){
                           </div>
                         </div>
                         <button type="submit" class="btn btn-success btn-rounded btn-md "name="save_password">Save</button>
-                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
+                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a>
                       </form>
                     </div>
                   </div>
@@ -551,7 +551,7 @@ function checkPass(){
                           </div>
                         </div>
                         <button type="submit" class="btn btn-success btn-rounded btn-md "name="save_security">Save</button>
-                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
+                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a>
                       </form>
                     </div>
                   </div>
@@ -595,7 +595,7 @@ function checkPass(){
                             <input type="email" class="form-control" name="email" value="<?php echo $emp_email; ?>" required/>
                           </div>
                         </div>
-                      </div> 
+                      </div>
 					  <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Address</label>
@@ -654,7 +654,7 @@ function checkPass(){
                         </div>
                       </div>
                     </div>
-                    <div class="row">                  
+                    <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Gender</label>
@@ -675,22 +675,22 @@ function checkPass(){
                         </div>
                       </div>
                     </div>
-					
+
 					<div class="row">
 					<div class="col-md-6">
 					</div>
 					<div class="col-md-6" align="right">
                         <button type="submit" class="btn btn-success btn-rounded btn-md "name="save_profile">Save</button>
-                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
+                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a>
 					</div>
                   </form>
                 </div>
               </div>
             </div>
 		</div>
-			
+
 		</div>
-		
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->

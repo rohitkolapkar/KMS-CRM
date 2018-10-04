@@ -14,4 +14,3 @@ if(!empty($_POST["state_id"])) {
    }
 }
 ?>
-

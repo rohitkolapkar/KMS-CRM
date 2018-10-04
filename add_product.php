@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -33,13 +33,13 @@ while($row=mysqli_fetch_array($run))
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Kalika Multiservices</title>
+  <title>Kalika Multi Services</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/iconfonts/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -47,6 +47,21 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<!--Ajax functions for fetching category data according to company_id-->
+<script>
+function getCategory(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_state.php",
+  data:'company_id='+val,
+  success: function(data){
+    $("#category-list").html(data);
+  }
+  });
+}
+</script>
 </head>
 
 <body>
@@ -196,7 +211,7 @@ while($row=mysqli_fetch_array($run))
             </div>
           </li>";
 		  }?>
-		  
+
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
@@ -254,7 +269,7 @@ while($row=mysqli_fetch_array($run))
 		  ";
 			}
 		  ?>
-		  
+
 		  <?php
 		  if($role=="admin")
 		  {
@@ -281,49 +296,50 @@ while($row=mysqli_fetch_array($run))
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-		
+
 			          <div class="row">
-           
-	
+
+
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h2 class="card-title">Add Product Model</h2>
-                  <form class="form-sample" action="add_product.php" method="post">
-                    
+                  <h2 class="card-title">Add Product/Model</h2>
+                  <form class="form-sample" method="post" action="add_product.php">
+
                     <div class="row">
-                      
-                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Category Name</label>
+                      <!--select company-->
+                      <div class="col-md-6">
+                        <div class="form-group row country">
+                          <label class="col-sm-3 col-form-label">Company</label>
                           <div class="col-sm-9">
-						  
-                             <?php
-							//Include the database configuration file
-							include 'database/db_conection.php';
-
-							//Fetch all the company data
-							$query = $dbcon->query("SELECT category_name FROM category_details");
-
-							//Count total number of rows
-							$rowCount = $query->num_rows;
-							?>
-                            <select class="form-control" id="company"  name="categoryname">
-                            <!--  <option  value="">Select Model Name</option> -->
-								<?php
-									if($rowCount > 0){
-									while($row = $query->fetch_assoc()){ 
-									echo '<option value="'.$row['category_name'].'">'.$row['category_name'].'</option>';
-									}
-									}else{
-									echo '<option value="">Category not available</option>';
-									}
-								?>
-							
+                            <select class="form-control" name="companyname" id="company" onChange="getCategory(this.value);">
+                              <option selected="selected" >Select Company</option>
+                              <?php
+                              $qry= "select * from company_details";
+                              $run=mysqli_query($dbcon,$qry);
+                              while($row=mysqli_fetch_array($run))
+                              {
+                              ?>
+                              <option value="<?php echo $row['company_id']; ?>"><?php echo $row['company_name']; ?></option><?php
+                              }
+                              ?>
                             </select>
                           </div>
                         </div>
                       </div>
+
+                <!--select Category-->
+                      <div class="col-md-6">
+                       <div class="form-group row">
+                         <label class="col-sm-3 col-form-label">Category Name</label>
+                         <div class="col-sm-9">
+
+                           <select class="form-control" id="category-list"  name="categoryid">
+                           <!--  <option  value="">Select Model Name</option> -->
+                           </select>
+                         </div>
+                       </div>
+                     </div>
 					  <div class="col-md-6">
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Product Model</label>
@@ -339,12 +355,12 @@ while($row=mysqli_fetch_array($run))
                 </div>
               </div>
             </div>
-			
+
 			<div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Product Model Details</h4>
-                  
+
                   <div class="table-responsive">
                     <table class="table table-bordered">
                       <thead>
@@ -353,21 +369,30 @@ while($row=mysqli_fetch_array($run))
                             Serial No.
                           </th>
                           <th>
-                            Product Name
+                            Product
                           </th>
                           <th>
-                            Category ID
+                            Category
                           </th>
                           <th>
-                            
+
                           </th>
-                         
+
                         </tr>
                       </thead>
                       <tbody>
 					  <?php
-							$query="select * from model_details";
-									
+							$query=
+              "SELECT
+              		model_details.model_id,model_details.model_name, category_details.category_name
+              	   FROM
+              		model_details
+              	   INNER JOIN
+              		category_details
+              	   ON
+              		model_details.category_id=category_details.category_id"
+              		;
+
 							$run=mysqli_query($dbcon,$query);
 							$count=1;
 							while($row=mysqli_fetch_array($run))
@@ -375,7 +400,7 @@ while($row=mysqli_fetch_array($run))
 							$mid=$row[0];
 							$mname=$row[1];
 							$catid=$row[2];
-							
+
 					  ?>
                         <tr>
                           <td>
@@ -401,9 +426,9 @@ while($row=mysqli_fetch_array($run))
                 </div>
               </div>
             </div>
-			
+
           </div>
-		
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
@@ -444,7 +469,7 @@ while($row=mysqli_fetch_array($run))
 	window.location.href='delete_product.php?delt=<?php echo $mid; ?>';
 	}
 	else{
-		
+
 	}
 	}
   </script>
@@ -452,28 +477,32 @@ while($row=mysqli_fetch_array($run))
 
 </html>
 <?php
-include 'database/db_conection.php';
 //Adding Product Details, Code
 if(isset($_POST['submit']))
 {
-$categoryname=$_POST['categoryname'];
+$companyname=$_POST['companyname'];
+$categoryid=$_POST['categoryid'];
 $modelname=$_POST['model_name'];
 
-if($categoryname==''){
+if($companyname==''){
 echo "<script>alert('Please Select Company Name !!')</script>";
 exit();
 }
+if($categoryid==''){
+echo "<script>alert('Please Select Category Name !!')</script>";
+exit();
+}
 if($modelname==''){
-echo "<script>alert('Please Enter Product Category !!')</script>";
+echo "<script>alert('Please Enter Product Name !!')</script>";
 exit();
 }
 
-$query1="select * from category_details where category_name='$categoryname'";
+/*$query1="select * from category_details where category_name='$categoryname'";
 $run1=mysqli_query($dbcon,$query1);
 $row1=mysqli_fetch_array($run1);
-$pid=$row1[0];
+$pid=$row1[0];*/
 
-$query2="insert into model_details(model_name,category_id) values('$modelname','$pid')";
+$query2="insert into model_details(model_name,category_id) values('$modelname','$categoryid')";
 if(mysqli_query($dbcon,$query2)){
 		echo "<script>window.open('add_product.php?Inserted Successfully','_self')</script>";
 	}
