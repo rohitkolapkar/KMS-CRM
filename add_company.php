@@ -27,7 +27,31 @@ while($row=mysqli_fetch_array($run))
 	$role=$row[0];
 	$name=$row[1];
 }
+?>
 
+<?php
+//Insert Code for company details
+include("database/db_conection.php");
+if(isset($_POST['submit']))
+{
+$companyname=$_POST['compname'];
+$companycontact=$_POST['compcont'];
+
+if($companyname==''){
+echo "<script>alert('Please Enter Company Name !!')</script>";
+exit();
+}
+if($companycontact==''){
+echo "<script>alert('Please Enter Contact Number !!')</script>";
+exit();
+}
+$query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
+if(mysqli_query($dbcon,$query)){
+		echo "<script>window.open('add_company.php?Inserted Successfully','_self')</script>";
+	}
+
+}
+//Insert code end's
 ?>
 <head>
   <!-- Required meta tags -->
@@ -343,14 +367,14 @@ while($row=mysqli_fetch_array($run))
                       </thead>
                       <tbody>
 					  <?php
-							$query="select * from company_details";
-							$run=mysqli_query($dbcon,$query);
+							$query3="select * from company_details";
+							$run3=mysqli_query($dbcon,$query3);
 $count=1;
-while($row=mysqli_fetch_array($run))
+while($row3=mysqli_fetch_array($run3))
 {
-	$cid=$row[0];
-	$cname=$row[1];
-	$ccontact=$row[2];
+	$cid=$row3[0];
+	$cname=$row3[1];
+	$ccontact=$row3[2];
 
 
 ?>
@@ -367,7 +391,7 @@ while($row=mysqli_fetch_array($run))
                           <td>
                             <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_company.php?edt=<?php echo $cid; ?>'">
                           <i class="mdi mdi-cloud-download"></i>Edit</button>
-						   <button type="button" class="btn btn-danger btn-fw" onclick="myFunction()">
+						   <button type="button" class="btn btn-danger btn-fw" onclick="window.location.href='delete_company.php?delt=<?php echo $cid; ?>'">
                           <i class="mdi mdi-alert-outline"></i>Delete</button>
                           </td>
                         </tr>
@@ -413,7 +437,11 @@ while($row=mysqli_fetch_array($run))
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
+<<<<<<< HEAD
 
+=======
+  <!--
+>>>>>>> f2e6cd7e3df3bbcbe67b45321fc734441ce77f9b
   <script>
   function myFunction() {
     if(confirm('Are you sure you want to delete the company ?'))
@@ -425,12 +453,17 @@ while($row=mysqli_fetch_array($run))
 	}
 	}
   </script>
+<<<<<<< HEAD
 
+=======
+  -->
+>>>>>>> f2e6cd7e3df3bbcbe67b45321fc734441ce77f9b
 </body>
 
 </html>
 
 
+<<<<<<< HEAD
 <?php
 include("database/db_conection.php");
 if(isset($_POST['submit']))
@@ -455,3 +488,5 @@ if(mysqli_query($dbcon,$query)){
 
 }
 ?>
+=======
+>>>>>>> f2e6cd7e3df3bbcbe67b45321fc734441ce77f9b
