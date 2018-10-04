@@ -141,6 +141,37 @@ $country_qry ="select `country_name` from country where country_id=
      $emp_city=$row[0];
   }
 //echo $emp_city.",".$emp_state.",".$emp_country;
+  if(isset($_POST['save_password']))
+  {
+    $old_pass = $_POST['old_password'];
+    $new_pass = $_POST['new_password'];
+    $cnf_pass = $_POST['confirm_password'];
+    $qry1 = "SELECT  `password` FROM  `user` WHERE employee_id = '$session_id'";
+    $run=mysqli_query($dbcon,$qry1);
+    while($row=mysqli_fetch_array($run))
+    {
+     $fetched_pass=$row[0];
+    }
+    if($new_pass == $cnf_pass)
+    {
+      if($fetched_pass == md5($old_pass))
+      {
+        $new_pass = md5($new_pass);
+        $sec_qry= "UPDATE `user` SET `password`='$new_pass' WHERE `employee_id` = '$session_id'";
+        if(mysqli_query($dbcon,$sec_qry)){
+          echo "<script>alert('Password has been updated!')</script>";
+        }
+      }
+      else
+      {
+        echo "<script>alert('Old Password not matched!')</script>";
+      }
+    }
+    else
+    {
+      echo "<script>alert('Entered Password not matched!')</script>";
+    }
+  }
 
 ?>
 <head>
@@ -153,7 +184,7 @@ $country_qry ="select `country_name` from country where country_id=
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <!-- endinject -->
   
   <!-- plugin css for this page -->
@@ -212,7 +243,26 @@ function selectCountry(val) {
 $("#search-box").val(val);
 $("#suggesstion-box").hide();
 }
+
+function checkPass(){
+         var pass  = document.getElementById("new_password").value;
+         var cpass  = document.getElementById("confirm_password").value;
+        if(pass != cpass){
+            document.getElementById("save_password").disabled = true;
+            //$('.missmatch').html("✖");
+            document.getElementById('message').style.color = 'red';
+            document.getElementById('message').innerHTML = '✖';
+        }else{
+            //$('.missmatch').html("✔");
+            document.getElementById('message').style.color = 'green';
+            document.getElementById('message').innerHTML = '✔';
+            document.getElementById("save_password").disabled = false;
+        }
+}
+
+
 </script>
+
 </head>
 
 <body>
@@ -450,23 +500,24 @@ $("#suggesstion-box").hide();
                     <div class="card-body">
                       <h4 class="card-title">Change Password</h4>
                       
-                      <form class="forms-sample">
+                      <form class="forms-sample" method="POST" action="my_account.php">
                         <div class="form-group row">
                           <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Old</label>
                           <div class="col-sm-9">
-                            <input type="password" class="form-control" name="old_password" id="old_password" placeholder="Enter Old Password">
+                            <input type="password" class="form-control" name="old_password" id="old_password" placeholder="Old Password" required>
                           </div>
                         </div>
                         <div class="form-group row">
                           <label for="exampleInputPassword2" class="col-sm-3 col-form-label">New</label>
                           <div class="col-sm-9">
-                            <input type="password" class="form-control" name="new_password" id="new_password" placeholder="Enter New Password">
+                            <input type="password" class="form-control" name="new_password" id="new_password" placeholder="New Password" required onkeypress="checkPass();">
                           </div>
                         </div>
 						<div class="form-group row">
                           <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Retype</label>
                           <div class="col-sm-9">
-                            <input type="password" class="form-control" name="retype_password" id="new_password" placeholder="Retype Password">
+                            <input type="password" class="form-control" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required onkeypress="checkPass();">
+                            <span id='message'></span>
                           </div>
                         </div>
                         <button type="submit" class="btn btn-success btn-rounded btn-md "name="save_password">Save</button>
@@ -496,6 +547,7 @@ $("#suggesstion-box").hide();
                           <label for="exampleInputPassword2" class="col-sm-3 col-form-label">Answer</label>
                           <div class="col-sm-9">
                             <input type="password" class="form-control" id="exampleInputPassword2" name="sec_ans" placeholder="Password">
+
                           </div>
                         </div>
                         <button type="submit" class="btn btn-success btn-rounded btn-md "name="save_security">Save</button>

@@ -8,26 +8,60 @@ session_start();
 if(!$_SESSION['username'])
     header("Location: index.php");//redirect to login page to secure the welcome page without login access.
 else
-	$session_id = $_SESSION['username'];
+  $session_id = $_SESSION['username'];
 
-$qry= "SELECT
-		user.user_role, employee.employee_name
-	   FROM
-		user
-	   INNER JOIN
-		employee
-	   ON
-		user.employee_id=employee.employee_id
-		WHERE
-		user.employee_id='$session_id'";
-
+$qry= "SELECT 
+    user.user_role, employee.employee_name
+     FROM 
+    user
+     INNER JOIN 
+    employee 
+     ON
+    user.employee_id=employee.employee_id
+    WHERE 
+    user.employee_id='$session_id'";
+ 
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
-	$role=$row[0];
-	$name=$row[1];
+  $role=$row[0];
+  $name=$row[1];
 }
 
+
+if(isset($_POST['submit_employee'])){
+  $emp_name=$_POST['name'];
+  $emp_mob=$_POST['mobile'];
+  $emp_email=$_POST['email'];
+  $emp_add=$_POST['address'];
+  $emp_country=$_POST['country'];
+  $emp_state=$_POST['state'];
+  $emp_city=$_POST['city'];
+  $emp_dob=$_POST['dob'];
+  $emp_gender=$_POST['gender'];
+
+$query= @"INSERT INTO `employee`(`employee_name`, 
+                                  `mobile_no`, `email_id`, 
+                                  `address`, `city_id`, `dob`, 
+                                  `gender`) 
+                                  VALUES ('$emp_name','$emp_mob','$emp_email','$emp_add','$emp_city','$emp_dob','$emp_gender')";
+if(mysqli_query($dbcon,$query))
+{
+  echo "<script>alert('Employee details has been saved!')</script>";
+  $emp_qry = "SELECT * FROM `employee` ORDER BY employee_id DESC LIMIT 1";
+  $run=mysqli_query($dbcon,$emp_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+    $emp_id=$row[0];
+  }
+  echo "<script>window.open('create_user.php?emp_id=$emp_id','_self')</script>";
+}
+else
+{
+  echo "<script>alert('Employee details not saved!')</script>";
+}
+
+}
 ?>
 <head>
   <!-- Required meta tags -->
@@ -39,7 +73,7 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-
+  
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -47,48 +81,35 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script>
+function getCity(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_city.php",
+  data:'state_id='+val,
+  success: function(data){
+    $("#city-list").html(data);
+  }
+  });
+}
 
-  <!-- ajax for state country city -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function(){
-    $('#country').on('change',function(){
-        var countryID = $(this).val();
-        if(countryID){
-            $.ajax({
-                type:'POST',
-                url:'ajaxData.php',
-                data:'country_id='+countryID,
-                success:function(html){
-                    $('#state').html(html);
-                    $('#city').html('<option value="">Select state first</option>');
-                }
-            });
-        }else{
-            $('#state').html('<option value="">Select country first</option>');
-            $('#city').html('<option value="">Select state first</option>');
-        }
-    });
+function getState(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_state.php",
+  data:'country_id='+val,
+  success: function(data){
+    $("#state-list").html(data);
+  }
+  });
+}
+function selectCountry(val) {
+$("#search-box").val(val);
+$("#suggesstion-box").hide();
+}
 
-    $('#state').on('change',function(){
-        var stateID = $(this).val();
-        if(stateID){
-            $.ajax({
-                type:'POST',
-                url:'ajaxData.php',
-                data:'state_id='+stateID,
-                success:function(html){
-                    $('#city').html(html);
-                }
-            });
-        }else{
-            $('#city').html('<option value="">Select state first</option>');
-        }
-    });
-});
 </script>
-<!-- end ajax for state country city -->
-
 </head>
 
 <body>
@@ -104,6 +125,7 @@ $(document).ready(function(){
         </a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
+
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown d-none d-xl-inline-block">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
@@ -112,11 +134,22 @@ $(document).ready(function(){
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a class="dropdown-item p-0">
-
+                <!--<div class="d-flex border-bottom">
+                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
+                    <i class="mdi mdi-bookmark-plus-outline mr-0 text-gray"></i>
+                  </div>
+                  <div class="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
+                    <i class="mdi mdi-account-outline mr-0 text-gray"></i>
+                  </div>
+                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
+                    <i class="mdi mdi-alarm-check mr-0 text-gray"></i>
+                  </div>
+                </div>
+              </a>-->
               <a class="dropdown-item mt-2" href="my_account.php">
                 Manage Account
               </a>
-			  <a class="dropdown-item" href="logout.php">
+        <a class="dropdown-item" href="logout.php">
                 Sign Out
               </a>
             </div>
@@ -130,7 +163,7 @@ $(document).ready(function(){
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
- 	  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="main.php">
@@ -139,9 +172,9 @@ $(document).ready(function(){
             </a>
           </li>
           <?php
-		  if($role=="dep"|| $role=="admin")
-		  {
-			  echo @"<li class='nav-item'>
+      if($role=="dep"|| $role=="admin")
+      {
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#customer' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon mdi mdi-content-copy'></i>
               <span class='menu-title'>Customer Management</span>
@@ -158,12 +191,12 @@ $(document).ready(function(){
               </ul>
             </div>
           </li>";
-		  }?>
-		  <?php
-		  if($role=="dep"||$role=="admin")
-		  {
-			echo @"
-			<li class='nav-item'>
+      }?>
+      <?php
+      if($role=="dep"||$role=="admin")
+      {
+      echo @"
+      <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#complaint' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon mdi mdi-content-copy'></i>
               <span class='menu-title'>Complaint Management</span>
@@ -180,21 +213,21 @@ $(document).ready(function(){
               </ul>
             </div>
           </li>";
-		  }
-		  else
-		  {
-			 echo @"<li class='nav-item'>
-					<a class='nav-link' href='search_assignment.php'>
-					<i class='menu-icon mdi mdi-table'></i>
-					<span class='menu-title'>Check Assignments</span>
-					</a>
-					</li>";
-		  }
-		  ?>
-		  <?php
-		  if($role=="admin")
-		  {
-			  echo @"<li class='nav-item'>
+      }
+      else
+      {
+       echo @"<li class='nav-item'>
+          <a class='nav-link' href='search_assignment.php'>
+          <i class='menu-icon mdi mdi-table'></i>
+          <span class='menu-title'>Check Assignments</span>
+          </a>
+          </li>";
+      }
+      ?>
+      <?php
+      if($role=="admin")
+      {
+        echo @"<li class='nav-item active'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon mdi mdi-content-copy'></i>
               <span class='menu-title'>Employee Management</span>
@@ -202,7 +235,7 @@ $(document).ready(function(){
             </a>
             <div class='collapse' id='employee'>
               <ul class='nav flex-column sub-menu'>
-                <li class='nav-item'>
+                <li class='nav-item active'>
                   <a class='nav-link' href='add_employee.php'>Add Employee</a>
                 </li>
                 <li class='nav-item'>
@@ -211,12 +244,12 @@ $(document).ready(function(){
               </ul>
             </div>
           </li>";
-		  }?>
-
-		  <?php
-			if($role=="admin" ||$role=="dep")
-			{
-				echo @"<li class='nav-item'>
+      }?>
+      
+      <?php
+      if($role=="admin" ||$role=="dep")
+      {
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#company' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon mdi mdi-content-copy'></i>
               <span class='menu-title'>Company Management</span>
@@ -233,7 +266,7 @@ $(document).ready(function(){
               </ul>
             </div>
           </li>
-		  <li class='nav-item'>
+      <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#category' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon mdi mdi-content-copy'></i>
               <span class='menu-title'>Category Management</span>
@@ -250,7 +283,7 @@ $(document).ready(function(){
               </ul>
             </div>
           </li>
-		  <li class='nav-item'>
+      <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#product' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon mdi mdi-content-copy'></i>
               <span class='menu-title'>Product Management</span>
@@ -267,14 +300,14 @@ $(document).ready(function(){
               </ul>
             </div>
           </li>
-		  ";
-			}
-		  ?>
-
-		  <?php
-		  if($role=="admin")
-		  {
-			  echo @"<li class='nav-item'>
+      ";
+      }
+      ?>
+      
+      <?php
+      if($role=="admin")
+      {
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#report' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon mdi mdi-content-copy'></i>
               <span class='menu-title'>Report</span>
@@ -283,7 +316,7 @@ $(document).ready(function(){
             <div class='collapse' id='report'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='add_employee.php'>R1</a>
+                  <a class='nav-link' href='add_product.php'>R1</a>
                 </li>
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>R2</a>
@@ -291,136 +324,136 @@ $(document).ready(function(){
               </ul>
             </div>
           </li>";
-		  }?>
+      }?>
         </ul>
       </nav>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
+    
+             <div class="col-12 grid-margin" >
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">My Details</h4>
+                  <form class="form-sample" method="POST" action="add_employee.php" >
 
-          <div class="col-12 grid-margin">
-                    <div class="card">
-                      <div class="card-body">
-                        <h4 class="card-title">Employee Details</h4>
-                        <form class="form-sample">
-                         <div class="row">
-                </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Name</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="name" required/>
-                                </div>
-                              </div>
-                            </div>
-                  <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Mobile Name</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="mobile" required/>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Email</label>
-                                <div class="col-sm-9">
-                                  <input type="email" class="form-control" name="email" required/>
-                                </div>
-                              </div>
-                            </div>
-                  <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Address</label>
-                                <div class="col-sm-9">
-                                  <input type="text" class="form-control" name="address"/>
-                                </div>
-                              </div>
-                            </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Name</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="name" value="" required />
                           </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Country</label>
-                                <div class="col-sm-9">
-                                  <select class="form-control" name="country">
-                                    <option>India</option>
-                                    <option>America</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">State</label>
-                                <div class="col-sm-9">
-                                  <select class="form-control" name="state">
-                                    <option>Maharashtra</option>
-                                    <option>Kerala</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">City</label>
-                                <div class="col-sm-9">
-                                  <select class="form-control" name="city">
-                                    <option>Auranagabad</option>
-                                    <option>Mumbai</option>
-                                  </select>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Date of Birth</label>
-                                <div class="col-sm-9">
-                                  <input class="form-control" type="date" placeholder="dd/mm/yyyy" />
-                                </div>
-                              </div>
-                            </div>
+                        </div>
+                      </div>
+            <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Mobile Name</label>
+                          <div class="col-sm-9">
+                            <input type="number" class="form-control" name="mobile" value="" required/>
                           </div>
-                          <div class="row">
-                            <div class="col-md-6">
-                              <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Gender</label>
-                                <div class="col-sm-4">
-                                  <div class="form-radio">
-                                    <label class="form-check-label">
-                                      <input type="radio" class="form-check-input" name="gender" id="membershipRadios1" value="male" checked> Male
-                                    </label>
-                                  </div>
-                                </div>
-                                <div class="col-sm-5">
-                                  <div class="form-radio">
-                                    <label class="form-check-label">
-                                      <input type="radio" class="form-check-input" name="gender" id="membershipRadios2" value="female"> Female
-                                    </label>
-                                  </div>
-                                </div>
-                              </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Email</label>
+                          <div class="col-sm-9">
+                            <input type="email" class="form-control" name="email" value="" required/>
                           </div>
-
+                        </div>
+                      </div> 
+            <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Address</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" value="" name="address"/>
                           </div>
-
-
-                <div class="row">
-                <div class="col-md-6">
-                </div>
-                <div class="col-md-6" align="right">
-                              <button type="button" class="btn btn-success btn-rounded btn-md"name="save">Save</button>
-                              <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a>
-                </div>
-                        </form>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row country">
+                          <label class="col-sm-3 col-form-label">Country</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="country" id="country-list" onChange="getState(this.value);">
+                              <option selected="selected" >Select Country</option>
+                              <?php
+                              $qry= "select * from country";
+                              $run=mysqli_query($dbcon,$qry);
+                              while($row=mysqli_fetch_array($run))
+                              {
+                              ?>
+                              <option value="<?php echo $row['country_id']; ?>"><?php echo $row['country_name']; ?></option><?php
+                              }
+                              ?>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+            <div class="col-md-6">
+                        <div class="form-group row state">
+                          <label class="col-sm-3 col-form-label">State</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="state" id="state-list" onChange="getCity(this.value);">
+                              <option selected="selected">Select State</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+            <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Select City</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="city" id="city-list">
+                              <option selected="selected">Select City</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date of Birth</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="dob" value="" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">                  
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Gender</label>
+                          <div class="col-sm-4">
+                            <div class="form-radio">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="gender" id="membershipRadios1" value="male" required="required"> Male
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-sm-5">
+                            <div class="form-radio">
+                              <label class="form-check-label">
+                                <input type="radio" class="form-check-input" name="gender" id="membershipRadios2" value="female" required="required"> Female
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+          
+          <div class="row">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6" align="right">
+                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="submit_employee">Save</button>
+                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
+          </div>
+                  </form>
+                </div>
               </div>
-
-
+            </div>
+    
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
