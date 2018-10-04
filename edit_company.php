@@ -49,7 +49,7 @@ if(isset($_POST['update1'])){
 	$ccont2=$_POST['cont'];	
 	$query2="update company_details set company_name='$cname2',company_contact='$ccont2' where company_id='$edit1'";
 	if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('add_company.php?Updated Successfully !!','_self')</script>";
+		echo "<script>window.open('add_company.php','_self')</script>";
 	}
 }
 

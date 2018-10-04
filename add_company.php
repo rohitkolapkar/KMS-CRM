@@ -343,14 +343,14 @@ while($row=mysqli_fetch_array($run))
                       </thead>
                       <tbody>
 					  <?php
-							$query="select * from company_details";
-							$run=mysqli_query($dbcon,$query);
+							$query3="select * from company_details";
+							$run3=mysqli_query($dbcon,$query3);
 $count=1;
-while($row=mysqli_fetch_array($run))
+while($row3=mysqli_fetch_array($run3))
 {
-	$cid=$row[0];
-	$cname=$row[1];
-	$ccontact=$row[2];
+	$cid=$row3[0];
+	$cname=$row3[1];
+	$ccontact=$row3[2];
 
 
 ?>
@@ -367,7 +367,7 @@ while($row=mysqli_fetch_array($run))
                           <td>
                             <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_company.php?edt=<?php echo $cid; ?>'">
                           <i class="mdi mdi-cloud-download"></i>Edit</button>
-						   <button type="button" class="btn btn-danger btn-fw" onclick="myFunction()">
+						   <button type="button" class="btn btn-danger btn-fw" onclick="window.location.href='delete_company.php?delt=<?php echo $cid; ?>'">
                           <i class="mdi mdi-alert-outline"></i>Delete</button>
                           </td>
                         </tr>
@@ -413,7 +413,7 @@ while($row=mysqli_fetch_array($run))
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-  
+  <!--
   <script>
   function myFunction() {
     if(confirm('Are you sure you want to delete the company ?'))
@@ -425,7 +425,7 @@ while($row=mysqli_fetch_array($run))
 	}
 	}
   </script>
-  
+  -->
 </body>
 
 </html>
