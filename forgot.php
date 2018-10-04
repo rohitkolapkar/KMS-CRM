@@ -5,10 +5,41 @@ session_start();//session starts here
 
 include("database/db_conection.php");
 
-if(isset($_POST['update']))
+
+if(isset($_POST['update_change']))
 {
-	
-}
+  $emp_id = $_POST['username'];
+  $sec_key = $_POST['question'];
+  $sec_ans = $_POST['answer'];
+  $password = md5($_POST['password']);  
+  $emp_qry = "SELECT `security_key`,`security_ans` FROM `user` where `employee_id`='$emp_id'";
+  $run=mysqli_query($dbcon,$emp_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+    $fetch_key=$row[0];
+    $fetch_ans=$row[1];
+  }
+  //echo "<script>window.open('forgot.php?key=$fetch_key&&ans=$fetch_ans','_self')</script>";
+  if($sec_key==$fetch_key && $sec_ans==$fetch_ans)
+  {
+
+    $query2="UPDATE `user` SET
+          `password`='$password'
+          WHERE `employee_id` = '$emp_id'";
+    if(mysqli_query($dbcon,$query2)){
+      echo "<script>alert('Password Has Been Updated!')</script>";
+      echo "<script>window.open('index.php','_self')</script>";
+    }
+    else
+    {
+      echo "<script>alert('Password not changed!')</script>";
+    }
+  }
+else
+  {
+   echo "<script>alert('Details not matched!')</script>"; 
+  }
+}  
 ?>
 <html lang="en">
 
@@ -37,14 +68,14 @@ if(isset($_POST['update']))
         <div class="row w-100">
           <div class="col-lg-4 mx-auto">
             <div class="auto-form-wrapper">
-              <form action="forgot.php" method="post">
+              <form method="POST" action="forgot.php">
                 <div class="form-group">
                    <span><h3 style="text-align: center;">KALIKA MULTISERVICES</h3></span>
 				   <span><h5 style="text-align: center">Forgot Password</h5></span>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Username *</label>
-                  <input type="text" class="form-control" name="uname" placeholder="Enter Username" required>
+                  <input type="text" class="form-control" name="username" placeholder="Enter Username" required>
                 </div>
 				<div class="form-group">
                     <label for="exampleFormControlSelect2">Security Question *</label>
@@ -61,10 +92,10 @@ if(isset($_POST['update']))
                 </div>
                 <div class="form-group">
                   <label class="label">New Password *</label>
-                  <input type="password" class="form-control" name="pass" placeholder="Enter New Password" required>
+                  <input type="password" class="form-control" name="password" placeholder="Enter New Password" required>
                 </div><br>
                 <div class="form-group">
-				  <button type="submit" class="btn btn-success mr-2" name="update" value="update">Save</button>
+				  <button type="submit" class="btn btn-success mr-2" name="update_change">Save</button>
 				  <!--<input class="btn btn-success mr-2" type="submit"name="update" value="Save"/>-->
                   <a href="index.php" class="btn btn-light">Cancel</a>
                 </div>
