@@ -334,7 +334,7 @@ if(isset($_POST['update1'])){
                           </div>
                         </div>
                       </div>
-					  <input type="submit" value="Update" name="update1">
+					  <button type="submit" value="update" class="btn btn-success btn-rounded btn-md" name="update1">Update</button>
                     </div>
 
 
