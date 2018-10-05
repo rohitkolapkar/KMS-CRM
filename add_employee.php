@@ -27,7 +27,10 @@ while($row=mysqli_fetch_array($run))
   $role=$row[0];
   $name=$row[1];
 }
-
+if ($role!="admin"|| $role!="dep")
+{
+  echo "<script>window.open('main.php','_self')</script>";
+}
 
 if(isset($_POST['submit_employee'])){
   $emp_name=$_POST['name'];
@@ -415,7 +418,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Date of Birth</label>
                           <div class="col-sm-9">
-                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="dob" value="" />
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="dob" value="" required />
                           </div>
                         </div>
                       </div>
