@@ -59,7 +59,6 @@ $company_qry ="select `company_name` from company_details where company_id=
 //Update code start
 if(isset($_POST['submit']))
 {
-<<<<<<< HEAD
 $vcompname=$_POST['companyname']; 		//company name varialbe
 $vcategory_name=$_POST['categoryid']; 	//category name variable
 $vmodel_name=$_POST['model_name'];		//model_name variable
@@ -67,19 +66,6 @@ $edit1=$_GET['edit_form']; 				//taking this value from <form> tag for updation
 
 if($vcategory_name==''){
 echo "<script>alert('Please Select Company Name !!')</script>";
-=======
-$catid=$_POST['categoryid'];
-$model=$_POST['model_name'];
-
-$select_Modalid_Query="select model_id from model_details where category_id='$catid'";
-$select_Modalid_Query_run=mysqli_query($dbcon,$select_Modalid_Query);
-while($select_Modalid_Query_row=mysqli_fetch_array($select_Modalid_Query_run))
-{  $modid=$select_Modalid_Query_row[0];
-}
-echo $modid;
-if($catid==''){
-echo "<script>alert('Please Select Category Name !!')</script>";
->>>>>>> 884d723096d9bbb1cc9508b9ba73e4d133af80f0
 exit();
 }
 if($vmodel_name==''){
@@ -87,7 +73,6 @@ echo "<script>alert('Please Enter Product Category !!')</script>";
 exit();
 }
 
-<<<<<<< HEAD
 $query1="select * from category_details where category_name='$vcategory_name'";
 $run1=mysqli_query($dbcon,$query1);
 $row1=mysqli_fetch_array($run1);
@@ -95,14 +80,9 @@ $vcatid=$row1[0];
 
 $query2="update model_details set model_name='$vmodel_name',category_id='$vcatid' where model_id='$edit1'";
 if(mysqli_query($dbcon,$query2)){
-=======
-$updateQuery="update model_details set model_name='$model',category_id='$catid' where model_id='1'";
-if(mysqli_query($dbcon,$updateQuery)){
->>>>>>> 884d723096d9bbb1cc9508b9ba73e4d133af80f0
 		echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
 	}
 }//update code ends
-
 
 ?>
 
@@ -434,11 +414,7 @@ function getCategory(val) {
                       </div>
                     </div>
 
-<<<<<<< HEAD
 					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Update</button>
-=======
-					<input type="submit" value="Submit" name="submit">
->>>>>>> 884d723096d9bbb1cc9508b9ba73e4d133af80f0
                   </form>
                 </div>
               </div>
