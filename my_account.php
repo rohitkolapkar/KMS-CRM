@@ -109,6 +109,7 @@ if(isset($_POST['save_security']))
   $sec_qry= "UPDATE `user` SET `security_key`='$sec_key',`security_ans`='$sec_ans' WHERE `employee_id` = '$session_id'";
   if(mysqli_query($dbcon,$sec_qry)){
     echo "<script>alert('Security details has been updated!')</script>";
+    echo "<script>window.open('my_account.php','_self')</script>";
   }
 }
 
@@ -121,7 +122,7 @@ if($security_key=="" || $security_ans=="")
 }
 
 
-$country_qry ="select `country_name` from country where country_id=
+  $country_qry ="select `country_name` from country where country_id=
               (select country_id from states where state_id=(select state_id from cities where city_id='$emp_city_id'))";
   $run=mysqli_query($dbcon,$country_qry);
   while($row=mysqli_fetch_array($run))
@@ -134,11 +135,12 @@ $country_qry ="select `country_name` from country where country_id=
   {
      $emp_state=$row[0];
   }
-  $city_qry ="select `city_name` from cities where city_id='$emp_city_id'";
+  $city_qry ="select `city_id`,`city_name` from cities where city_id='$emp_city_id'";
   $run=mysqli_query($dbcon,$city_qry);
   while($row=mysqli_fetch_array($run))
   {
-     $emp_city=$row[0];
+     $emp_city_id = $row[0];
+     $emp_city=$row[1];
   }
 //echo $emp_city.",".$emp_state.",".$emp_country;
   if(isset($_POST['save_password']))
@@ -640,7 +642,7 @@ function checkPass(){
                           <label class="col-sm-3 col-form-label">Select City</label>
                           <div class="col-sm-9">
                             <select class="form-control" name="city" id="city-list">
-                              <option selected="selected"><?php echo $emp_city; ?></option>
+                              <option selected="selected" value="<?php echo $emp_city_id;?>"><?php echo $emp_city; ?></option>
                             </select>
                           </div>
                         </div>
@@ -649,7 +651,7 @@ function checkPass(){
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Date of Birth</label>
                           <div class="col-sm-9">
-                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="dob" value="<?php echo $emp_dob; ?>" />
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="dob" value="<?php echo $emp_dob; ?>" required/>
                           </div>
                         </div>
                       </div>

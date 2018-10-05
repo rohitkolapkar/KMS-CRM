@@ -65,6 +65,17 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  <script type="text/javascript">
+    function deleteEmp(emp_id) {
+    if(confirm('Are you sure you want to delete?\n'+'Employee ID : '+emp_id+"\nClick ok to delete"))
+    {
+      window.location.href='delete_employee.php?emp_id='+emp_id;
+    }
+    else{
+
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -300,7 +311,7 @@ while($row=mysqli_fetch_array($run))
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th>
+                          <th style="padding-left: 5px; padding-right: 0px;">
                             Sr.No.
                           </th>
                           <th>
@@ -343,9 +354,8 @@ while($row=mysqli_fetch_array($run))
                         $color_count=0;
                         ?>
                         <tr class="<?php echo $tbl_color[$color_count]; $color_count++;?>">
-                          <td style="padding-top: 0px; padding-bottom: 0px;">
+                          <td style="padding-top: 0px; padding-bottom: 0px; ">
                             <?php echo $count;?>
-                            
                           </td>
                           <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_id;?>
@@ -366,10 +376,10 @@ while($row=mysqli_fetch_array($run))
                             <?php echo $emp_add?>
                           </td>
                           <td style="padding-top: 0px; padding-bottom: 0px; padding-left: 5px;padding-right: 5px;">
-                            <a href="edit_emp.php" class="btn btn-icons btn-rounded btn-warning">
+                            <a href="edit_employee.php?emp_id=<?php echo $emp_id;?>" class="btn btn-icons btn-rounded btn-warning">
                               <i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
-                            <a href="delete_emp.php" class="btn btn-icons btn-rounded btn-danger">
-                            <i class="fa fa-trash-o"></i></a>
+                            <button type="button" name="delete_emp" value="delete_emp" class="btn btn-icons btn-rounded btn-danger" onclick="deleteEmp('<?php echo $emp_id;?>')">
+                            <i class="fa fa-trash-o"></i></button>
                           </td>
                         </tr>
                         <?php 

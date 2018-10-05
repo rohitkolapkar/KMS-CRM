@@ -27,7 +27,10 @@ while($row=mysqli_fetch_array($run))
 	$role=$row[0];
 	$name=$row[1];
 }
-
+if($role!="admin")
+{
+  header("Location : main.php");
+}
 ?>
 <head>
   <!-- Required meta tags -->
@@ -47,6 +50,18 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+
+   <script type="text/javascript">
+    function deleteUser(emp_id) {
+    if(confirm('Are you sure you want to delete?\n'+'User ID : '+emp_id+"\nClick ok to delete"))
+    {
+      window.location.href='delete_user.php?emp_id='+emp_id;
+    }
+    else{
+
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -153,7 +168,7 @@ while($row=mysqli_fetch_array($run))
 		  <?php
 		  if($role=="admin")
 		  {
-			  echo @"<li class='nav-item'>
+			  echo @"<li class='nav-item active'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
@@ -167,7 +182,7 @@ while($row=mysqli_fetch_array($run))
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
-                <li class='nav-item'>
+                <li class='nav-item active'>
                   <a class='nav-link' href='manage_user.php'>
                   <span class='menu-title'>Manage Users</span>
                   </a>
@@ -280,8 +295,86 @@ while($row=mysqli_fetch_array($run))
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-		
-			
+		  
+			       <div class="col-lg-12 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">User Details</h4>
+                  <?php
+                    $user_qry = @"SELECT `employee`.`employee_id`,`employee`.`employee_name`, 
+                    `user`.`user_role` FROM
+                    `user`
+                    join 
+                    `employee`
+                    on
+                    `employee`.`employee_id`=`user`.`employee_id`";
+                    $user_run = mysqli_query($dbcon,$user_qry); 
+                    $count=1;
+                  ?>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th style="padding-left: 5px; padding-right: 0px;">
+                            Sr.No.
+                          </th>
+                          <th>
+                            ID
+                          </th>
+                          <th>
+                            Name
+                          </th>
+                          <th>
+                            Role
+                          </th>
+                          <th>
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $tbl_color = array("table-danger", "table-success", "table-primary","table-primary","table-warning");
+                          $color_count = 0;
+                          while($row=mysqli_fetch_array($user_run))
+                          {
+                            //$count++;
+                      $emp_id=$row[0];
+                      $emp_name=$row[1];
+                      $emp_role=$row[2];
+                      if($color_count>4)
+                        $color_count=0;
+                        ?>
+                        <tr class="<?php echo $tbl_color[$color_count]; $color_count++;?>">
+                          <td style="padding-top: 0px; padding-bottom: 0px; ">
+                            <?php echo $count;?>
+                          </td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
+                            <?php echo $emp_id;?>
+                          </td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
+                            <?php echo $emp_name;?>
+                          </td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
+                            <?php echo $emp_role;?>
+                          </td>
+                          <td style="padding-top: 0px; padding-bottom: 0px; padding-left: 20px;padding-right: 5px;">
+                            <a href="edit_user.php?emp_id=<?php echo $emp_id;?>" class="btn btn-icons btn-rounded btn-warning">
+                              <i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
+                            <button type="button" name="delete_user" value="delete_user" class="btn btn-icons btn-rounded btn-danger" onclick="deleteUser('<?php echo $emp_id;?>')">
+                            <i class="fa fa-trash-o"></i></button>
+                          </td>
+                        </tr>
+                        <?php 
+                          $count++;
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
 		
         </div>
         <!-- content-wrapper ends -->
