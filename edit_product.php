@@ -49,19 +49,24 @@ $company_qry ="select `company_name` from company_details where company_id=
     {
        $catName=$category_qry_row[0];
     }
-    $model_qry ="select model_name from model_details where model_id='$edit'";
+    $model_qry ="select model_id, model_name from model_details where model_id='$edit'";
       $model_qry_run=mysqli_query($dbcon,$model_qry);
       while($model_qry_row=mysqli_fetch_array($model_qry_run))
-      {
-         $modName=$model_qry_row[0];
+      {  $modid=$model_qry_row[0];
+         $modName=$model_qry_row[1];
       }
 //Update code start
 if(isset($_POST['submit']))
 {
 $catid=$_POST['categoryid'];
 $model=$_POST['model_name'];
-echo $catid;
 
+$select_Modalid_Query="select model_id from model_details where category_id='$catid'";
+$select_Modalid_Query_run=mysqli_query($dbcon,$select_Modalid_Query);
+while($select_Modalid_Query_row=mysqli_fetch_array($select_Modalid_Query_run))
+{  $modid=$select_Modalid_Query_row[0];
+}
+echo $modid;
 if($catid==''){
 echo "<script>alert('Please Select Category Name !!')</script>";
 exit();
@@ -71,9 +76,9 @@ echo "<script>alert('Please Enter Product Model !!')</script>";
 exit();
 }
 
-$updateQuery="update model_details set model_name='$model',category_id='$catid' where model_id='$edit'";
+$updateQuery="update model_details set model_name='$model',category_id='$catid' where model_id='1'";
 if(mysqli_query($dbcon,$updateQuery)){
-		//echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
+		echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
 	}
 }
 
@@ -407,7 +412,7 @@ function getCategory(val) {
                       </div>
                     </div>
 
-					<input type="submit" value="UPDATE" name="submit">
+					<input type="submit" value="Submit" name="submit">
                   </form>
                 </div>
               </div>
