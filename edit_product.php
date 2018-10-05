@@ -36,18 +36,20 @@ while($row=mysqli_fetch_array($run))
 error_reporting(E_ERROR | E_PARSE);
 include("database/db_conection.php");
 $edit=$_GET['edt'];
-$company_qry ="select `company_name` from company_details where company_id=
+$company_qry ="select company_id,`company_name` from company_details where company_id=
               (select company_id from category_details where category_id=(select category_id from model_details where model_id='$edit'))";
   $company_qry_run=mysqli_query($dbcon,$company_qry);
   while($company_qry_row=mysqli_fetch_array($company_qry_run))
   {
-     $compName=$company_qry_row[0];
+     $compID=$company_qry_row[0];
+     $compName=$company_qry_row[1];
   }
-  $category_qry ="select category_name from category_details where category_id=(select category_id from model_details where model_id='$edit')";
+  $category_qry ="select category_id,category_name from category_details where category_id=(select category_id from model_details where model_id='$edit')";
     $category_qry_run=mysqli_query($dbcon,$category_qry);
     while($category_qry_row=mysqli_fetch_array($category_qry_run))
     {
-       $catName=$category_qry_row[0];
+       $catID=$category_qry_row[0];
+       $catName=$category_qry_row[1];
     }
     $model_qry ="select model_id, model_name from model_details where model_id='$edit'";
       $model_qry_run=mysqli_query($dbcon,$model_qry);
@@ -55,30 +57,21 @@ $company_qry ="select `company_name` from company_details where company_id=
       {  $modid=$model_qry_row[0];
          $modName=$model_qry_row[1];
       }
-	  
+
 //Update code start
 if(isset($_POST['submit']))
 {
-$vcompname=$_POST['companyname']; 		//company name varialbe
-$vcategory_name=$_POST['categoryid']; 	//category name variable
+$vcategory_id=$_POST['categoryid']; 	//category name variable
 $vmodel_name=$_POST['model_name'];		//model_name variable
 $edit1=$_GET['edit_form']; 				//taking this value from <form> tag for updation
 
-if($vcategory_name==''){
-echo "<script>alert('Please Select Company Name !!')</script>";
-exit();
-}
+
 if($vmodel_name==''){
 echo "<script>alert('Please Enter Product Category !!')</script>";
 exit();
 }
 
-$query1="select * from category_details where category_name='$vcategory_name'";
-$run1=mysqli_query($dbcon,$query1);
-$row1=mysqli_fetch_array($run1);
-$vcatid=$row1[0];
-
-$query2="update model_details set model_name='$vmodel_name',category_id='$vcatid' where model_id='$edit1'";
+$query2="update model_details set model_name='$vmodel_name'where model_id='$edit1'";
 if(mysqli_query($dbcon,$query2)){
 		echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
 	}
@@ -108,18 +101,7 @@ if(mysqli_query($dbcon,$query2)){
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
 <!--Ajax functions for fetching category data according to company_id-->
-<script>
-function getCategory(val) {
-  $.ajax({
-  type: "POST",
-  url: "get_state.php",
-  data:'company_id='+val,
-  success: function(data){
-    $("#category-list").html(data);
-  }
-  });
-}
-</script>
+
 
 
 </head>
@@ -372,17 +354,9 @@ function getCategory(val) {
                       <div class="form-group row country">
                         <label class="col-sm-3 col-form-label">Company</label>
                         <div class="col-sm-9">
-                          <select class="form-control" name="companyname" id="company" onChange="getCategory(this.value);">
+                          <select class="form-control" name="companyname" id="company" disabled>
                             <option selected="selected" style="background-color:white;" disabled><?php echo $compName; ?></option>
-                            <?php
-                            $qry= "select * from company_details";
-                            $run=mysqli_query($dbcon,$qry);
-                            while($row=mysqli_fetch_array($run))
-                            {
-                            ?>
-                            <option value="<?php echo $row['company_id']; ?>"><?php echo $row['company_name']; ?></option><?php
-                            }
-                            ?>
+
                           </select>
                         </div>
                       </div>
@@ -395,8 +369,17 @@ function getCategory(val) {
                      <label class="col-sm-3 col-form-label">Category Name</label>
                      <div class="col-sm-9">
 
-                       <select class="form-control" id="category-list"  name="categoryid">
-                       <option selected="selected" ><?php echo $catName; ?></option>
+                       <select class="form-control" id="category-list"  name="categoryid" disabled>
+                       <option selected="selected" disabled><?php echo $catName; ?></option>
+                       <?php
+                       $qry= "select * from category_details WHERE company_id='$compID'";
+                       $run=mysqli_query($dbcon,$qry);
+                       while($row=mysqli_fetch_array($run))
+                       {
+                       ?>
+                       <option value="<?php echo $row['category_id']; ?>"><?php echo $row['category_name']; ?></option><?php
+                       }
+                       ?>
                        </select>
                      </div>
                    </div>
