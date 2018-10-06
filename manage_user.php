@@ -334,7 +334,7 @@ if($role!="admin")
                       </thead>
                       <tbody>
                         <?php
-                          $tbl_color = array("table-danger", "table-success", "table-primary","table-primary","table-warning");
+                          $tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
                           $color_count = 0;
                           while($row=mysqli_fetch_array($user_run))
                           {

@@ -358,7 +358,7 @@ while($row=mysqli_fetch_array($run))
                           </td>
                         </tr>
                         <?php 
-                          $count++;
+                         
                           }
                         ?>
                       </tbody>
