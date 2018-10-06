@@ -288,7 +288,7 @@ while($row=mysqli_fetch_array($run))
               <div class="card">
                 <div class="card-body">
                   <h2 class="card-title">Product Category Details</h2>
-                  <form class="form-sample" action="add_category.php" method="post">
+                  <form class="form-sample" action="view_categories.php" method="post">
 
                     <div class="row">
 
@@ -331,6 +331,23 @@ while($row=mysqli_fetch_array($run))
               </div>
             </div>
 
+			<?php
+include 'database/db_conection.php';
+//Adding Category Details, Code
+if(isset($_POST['submit']))
+{
+$companyname=$_POST['companyname'];
+
+if($companyname==''){
+echo "<script>alert('Please Select Company Name !!')</script>";
+exit();
+}
+
+
+
+}
+?>
+			
           </div>
 
         </div>
@@ -382,18 +399,3 @@ while($row=mysqli_fetch_array($run))
 </body>
 
 </html>
-<?php
-include 'database/db_conection.php';
-//Adding Category Details, Code
-if(isset($_POST['submit']))
-{
-$companyname=$_POST['companyname'];
-
-if($companyname==''){
-echo "<script>alert('Please Select Company Name !!')</script>";
-exit();
-}
-
-
-}
-?>
