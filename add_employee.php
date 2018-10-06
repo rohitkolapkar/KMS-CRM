@@ -27,9 +27,9 @@ while($row=mysqli_fetch_array($run))
   $role=$row[0];
   $name=$row[1];
 }
-if ($role!="admin"|| $role!="dep")
+if($role!="admin" || $role=="dep")
 {
-  echo "<script>window.open('main.php','_self')</script>";
+  header("Location : main.php");
 }
 
 if(isset($_POST['submit_employee'])){
@@ -133,22 +133,11 @@ $("#suggesstion-box").hide();
           <li class="nav-item dropdown d-none d-xl-inline-block">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <span class="profile-text">Hello, <?php echo $name;?>!</span>
-              <img class="img-xs rounded-circle" src="images/faces/face1.jpg" alt="Profile image">
+              <img class="img-xs rounded-circle" src="images/faces-clipart/pic-1.png" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a class="dropdown-item p-0">
-                <!--<div class="d-flex border-bottom">
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                    <i class="mdi mdi-bookmark-plus-outline mr-0 text-gray"></i>
-                  </div>
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
-                    <i class="mdi mdi-account-outline mr-0 text-gray"></i>
-                  </div>
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                    <i class="mdi mdi-alarm-check mr-0 text-gray"></i>
-                  </div>
-                </div>
-              </a>-->
+
               <a class="dropdown-item mt-2" href="my_account.php">
                 Manage Account
               </a>
@@ -170,16 +159,16 @@ $("#suggesstion-box").hide();
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="main.php">
-              <i class="menu-icon mdi mdi-television"></i>
+              <i class="menu-icon fa fa-dashboard"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <?php
-      if($role=="dep"|| $role=="admin")
+        <?php
+      /*if($role=="dep"|| $role=="admin")
       {
         echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#customer' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa fa-user-circle-o'></i>
               <span class='menu-title'>Customer Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -194,14 +183,14 @@ $("#suggesstion-box").hide();
               </ul>
             </div>
           </li>";
-      }?>
+      }*/?>
       <?php
       if($role=="dep"||$role=="admin")
       {
       echo @"
       <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#complaint' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-pencil-square-o'></i>
               <span class='menu-title'>Complaint Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -232,17 +221,22 @@ $("#suggesstion-box").hide();
       {
         echo @"<li class='nav-item active'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
               <i class='menu-arrow'></i>
             </a>
             <div class='collapse' id='employee'>
               <ul class='nav flex-column sub-menu'>
-                <li class='nav-item active'>
+                <li class='nav-item'>
                   <a class='nav-link' href='add_employee.php'>Add Employee</a>
                 </li>
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
+                </li>
+                <li class='nav-item active'>
+                  <a class='nav-link' href='manage_user.php'>
+                  <span class='menu-title'>Manage Users</span>
+                  </a>
                 </li>
               </ul>
             </div>
@@ -254,7 +248,7 @@ $("#suggesstion-box").hide();
       {
         echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#company' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-fire'></i>
               <span class='menu-title'>Company Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -271,7 +265,7 @@ $("#suggesstion-box").hide();
           </li>
       <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#category' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-sitemap'></i>
               <span class='menu-title'>Category Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -288,7 +282,7 @@ $("#suggesstion-box").hide();
           </li>
       <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#product' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-cubes'></i>
               <span class='menu-title'>Product Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -312,22 +306,41 @@ $("#suggesstion-box").hide();
       {
         echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#report' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-bar-chart-o'></i>
               <span class='menu-title'>Report</span>
               <i class='menu-arrow'></i>
             </a>
             <div class='collapse' id='report'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='add_product.php'>R1</a>
+                  <a class='nav-link' href='add_employee.php'>R1</a>
                 </li>
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>R2</a>
                 </li>
               </ul>
             </div>
-          </li>";
+          </li>
+          <!--<li class='nav-item'>
+            <a class='nav-link' href='my_account.php'>
+              <i class='menu-icon fa fa-users'></i>
+              <span class='menu-title'>Manage Users</span>
+            </a>
+          </li>-->
+          ";
       }?>
+          <li class="nav-item">
+            <a class="nav-link" href="my_account.php">
+              <i class="menu-icon fa fa-gears"></i>
+              <span class="menu-title">Manage my account</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.php">
+              <i class="menu-icon fa fa-power-off"></i>
+              <span class="menu-title">Logout</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -463,7 +476,7 @@ $("#suggesstion-box").hide();
         <footer class="footer">
           <div class="container-fluid clearfix">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018
-              <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <a href="#">Kalika Multiservices</a>. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with
               <i class="mdi mdi-heart text-danger"></i>
             </span>
