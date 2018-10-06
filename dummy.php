@@ -153,7 +153,7 @@ while($row=mysqli_fetch_array($run))
       <?php
       if($role=="admin")
       {
-        echo @"<li class='nav-item active'>
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
@@ -167,7 +167,7 @@ while($row=mysqli_fetch_array($run))
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
-                <li class='nav-item active'>
+                <li class='nav-item'>
                   <a class='nav-link' href='manage_user.php'>
                   <span class='menu-title'>Manage Users</span>
                   </a>

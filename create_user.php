@@ -4,6 +4,9 @@ error_reporting(E_ALL ^ E_NOTICE);
 session_start();//session starts here
 $session_id = $_SESSION['username'];
 
+
+include("database/db_conection.php");
+
 $qry= "SELECT 
     user.user_role, employee.employee_name
      FROM 
@@ -26,7 +29,6 @@ if($role!="admin")
   header("Location : main.php");
 }
 
-include("database/db_conection.php");
 $emp_id = $_GET['emp_id'];
 $gen_pass = substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 5);
 
