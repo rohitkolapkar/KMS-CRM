@@ -385,7 +385,7 @@ echo $comp_id;*/
                       </div>
                     </div>
 
-					<input type="submit" value="Submit" name="submit">
+					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Update</button>
                   </form>
                 </div>
               </div>

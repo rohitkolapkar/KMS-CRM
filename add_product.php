@@ -374,7 +374,7 @@ function getCategory(val) {
                             Category
                           </th>
                           <th>
-
+							Company
                           </th>
 
                         </tr>
@@ -382,23 +382,16 @@ function getCategory(val) {
                       <tbody>
 					  <?php
 							$query=
-              "SELECT
-              		model_details.model_id,model_details.model_name, category_details.category_name
-              	   FROM
-              		model_details
-              	   INNER JOIN
-              		category_details
-              	   ON
-              		model_details.category_id=category_details.category_id"
-              		;
+							"SELECT model_details.model_id,model_details.model_name,category_details.category_name, company_details.company_name FROM model_details LEFT JOIN category_details ON category_details.category_id=model_details.category_id LEFT JOIN company_details ON category_details.company_id=company_details.company_id";
 
 							$run=mysqli_query($dbcon,$query);
 							$count=1;
 							while($row=mysqli_fetch_array($run))
 							{
-							$mid=$row[0];
-							$mname=$row[1];
-							$catid=$row[2];
+							$mid=$row[0];    //model id variable
+							$mname=$row[1]; //category name variable
+							$catid=$row[2]; //compname variable
+							$vcompname=$row[3];
 
 					  ?>
                         <tr>
@@ -406,15 +399,18 @@ function getCategory(val) {
                             <?php echo $count; $count++; ?>
                           </td>
                           <td>
-                            <?php echo $mname; ?>
+                            <?php echo $mname;?>
                           </td>
                           <td>
                              <?php echo $catid; ?>
                           </td>
+						  <td>
+                             <?php echo $vcompname;?>
+                          </td>
                           <td>
                             <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_product.php?edt=<?php echo $mid; ?>'">
                           <i class="mdi mdi-cloud-download"></i>Edit</button>
-						   <button type="button" class="btn btn-danger btn-fw" onclick="window.location.href='delete_product.php?delt=<?php echo $cid; ?>'">
+						   <button type="button" class="btn btn-danger btn-fw" onclick="window.location.href='delete_product.php?delt=<?php echo $mid; ?>'">
                           <i class="mdi mdi-alert-outline"></i>Delete</button>
                           </td>
                         </tr>
