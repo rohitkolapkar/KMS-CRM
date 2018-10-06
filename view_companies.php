@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 <?php
 include("database/db_conection.php");
 
@@ -8,52 +7,45 @@ session_start();
 if(!$_SESSION['username'])
     header("Location: index.php");//redirect to login page to secure the welcome page without login access.
 else
-	$session_id = $_SESSION['username'];
+  $session_id = $_SESSION['username'];
 
-$qry= "SELECT
-		user.user_role, employee.employee_name
-	   FROM
-		user
-	   INNER JOIN
-		employee
-	   ON
-		user.employee_id=employee.employee_id
-		WHERE
-		user.employee_id='$session_id'";
-
+$qry= "SELECT 
+    user.user_role, employee.employee_name
+     FROM 
+    user
+     INNER JOIN 
+    employee 
+     ON
+    user.employee_id=employee.employee_id
+    WHERE 
+    user.employee_id='$session_id'";
+ 
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
-	$role=$row[0];
-	$name=$row[1];
+  $role=$row[0];
+  $name=$row[1];
 }
-
-?>
-
-<?php
-error_reporting(E_ERROR | E_PARSE);
-include("database/db_conection.php");
-$edit=$_GET['compid'];
-$query="select * from company_details where company_id='$edit'";
-$run=mysqli_query($dbcon,$query);
+if($role!="admin")
+{
+  echo "<script>window.open('main.php','_self')</script>";
+}
+/*
+$emp_qry= "SELECT * FROM `employee`"; 
+$run=mysqli_query($dbcon,$emp_qry);
 while($row=mysqli_fetch_array($run))
 {
-	$cid1=$row[0];
-	$cname1=$row[1];
-	$ccont1=$row[2];
+  $emp_id=$row[0];
+  $emp_name=$row[1];
+  $emp_mob=$row[2];
+  $emp_email=$row[3];
+  $emp_dob=$row[6];
+  $emp_add=$row[4];
 }
-
-if(isset($_POST['update1'])){
-	$edit1=$_GET['edit_form'];
-	$cname2=$_POST['compname'];
-	$ccont2=$_POST['cont'];
-	$query2="update company_details set company_name='$cname2',company_contact='$ccont2' where company_id='$edit1'";
-	if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('view_companies.php','_self')</script>";
-	}
-}
+*/
 
 ?>
+<html lang="en">
 
 <head>
   <!-- Required meta tags -->
@@ -65,7 +57,7 @@ if(isset($_POST['update1'])){
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-
+  
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -73,6 +65,17 @@ if(isset($_POST['update1'])){
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  <script type="text/javascript">
+    function deleteCmp(compid) {
+    if(confirm('Are you sure you want to delete?\n'+'Employee ID : '+compid+"\nClick ok to delete"))
+    {
+      window.location.href='delete_company.php?compid='+compid;
+    }
+    else{
+
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -88,21 +91,7 @@ if(isset($_POST['update1'])){
         </a>
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center">
-        <!--<ul class="navbar-nav navbar-nav-left header-links d-none d-md-flex">
-          <li class="nav-item">
-            <a href="#demo" class="nav-link">Schedule
-              <span class="badge badge-primary ml-1">New</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a href="#" class="nav-link">
-              <i class="mdi mdi-elevation-rise"></i>Reports</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="mdi mdi-bookmark-plus-outline"></i>Score</a>
-          </li>
-        </ul>-->
+
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item dropdown d-none d-xl-inline-block">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
@@ -111,18 +100,7 @@ if(isset($_POST['update1'])){
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a class="dropdown-item p-0">
-                <!--<div class="d-flex border-bottom">
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                    <i class="mdi mdi-bookmark-plus-outline mr-0 text-gray"></i>
-                  </div>
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
-                    <i class="mdi mdi-account-outline mr-0 text-gray"></i>
-                  </div>
-                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
-                    <i class="mdi mdi-alarm-check mr-0 text-gray"></i>
-                  </div>
-                </div>
-              </a>-->
+
               <a class="dropdown-item mt-2" href="my_account.php">
                 Manage Account
               </a>
@@ -144,7 +122,7 @@ if(isset($_POST['update1'])){
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="main.php">
-              <i class="menu-icon mdi mdi-television"></i>
+              <i class="menu-icon fa fa-dashboard"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
@@ -153,7 +131,7 @@ if(isset($_POST['update1'])){
 		  {
 			  echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#customer' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa fa-user-circle-o'></i>
               <span class='menu-title'>Customer Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -175,7 +153,7 @@ if(isset($_POST['update1'])){
 			echo @"
 			<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#complaint' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-pencil-square-o'></i>
               <span class='menu-title'>Complaint Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -206,7 +184,7 @@ if(isset($_POST['update1'])){
 		  {
 			  echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -222,13 +200,13 @@ if(isset($_POST['update1'])){
             </div>
           </li>";
 		  }?>
-
+		  
 		  <?php
 			if($role=="admin" ||$role=="dep")
 			{
 				echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#company' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-fire'></i>
               <span class='menu-title'>Company Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -245,7 +223,7 @@ if(isset($_POST['update1'])){
           </li>
 		  <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#category' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-sitemap'></i>
               <span class='menu-title'>Category Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -262,7 +240,7 @@ if(isset($_POST['update1'])){
           </li>
 		  <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#product' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-cubes'></i>
               <span class='menu-title'>Product Management</span>
               <i class='menu-arrow'></i>
             </a>
@@ -280,13 +258,13 @@ if(isset($_POST['update1'])){
 		  ";
 			}
 		  ?>
-
+		  
 		  <?php
 		  if($role=="admin")
 		  {
 			  echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#report' aria-expanded='false' aria-controls='ui-basic'>
-              <i class='menu-icon mdi mdi-content-copy'></i>
+              <i class='menu-icon fa fa-bar-chart-o'></i>
               <span class='menu-title'>Report</span>
               <i class='menu-arrow'></i>
             </a>
@@ -302,52 +280,94 @@ if(isset($_POST['update1'])){
             </div>
           </li>";
 		  }?>
+          <li class="nav-item">
+            <a class="nav-link" href="my_account.php">
+              <i class="menu-icon fa fa-gears"></i>
+              <span class="menu-title">Manage my account</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.php">
+              <i class="menu-icon fa fa-power-off"></i>
+              <span class="menu-title">Logout</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-
-		<div class="row">
-
-
-            <div class="col-12 grid-margin">
+		
+			     <div class="col-lg-12 stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Update Company Details</h4>
-                  <form class="form-sample" action="edit_company.php?edit_form=<?php echo $cid1; ?>" method="post">
+                  <h4 class="card-title">Company Details</h4>
+                  <?php
+                    $emp_qry= "SELECT * FROM `company_details`"; 
+                    $run=mysqli_query($dbcon,$emp_qry);
+                    $count=1;
+                  ?>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th style="padding-left: 5px; padding-right: 0px;">
+                            Sr.No.
+                          </th>
+                          <th>
+                            Company Name
+                          </th>
+                          <th>
+                            Company Contact
+                          </th>
+						<th>
+                            Action
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
+                          $color_count = 0;
+						  $count = 1;
+                          while($row=mysqli_fetch_array($run))
+                          {
+                           
+                      $compid=$row[0];
+                      $compname=$row[1];
+					  $compcontact=$row[2];
 
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Name</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="compname" value="<?php echo $cname1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Contact</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="cont" value="<?php echo $ccont1; ?>" />
-                          </div>
-                        </div>
-                      </div>
-					  <button type="submit" value="update" class="btn btn-success btn-rounded btn-md" name="update1">Update</button>
-                    </div>
-
-
-
-
-                  </form>
+                      if($color_count>4)
+                        $color_count=0;
+                        ?>
+                        <tr class="<?php echo $tbl_color[$color_count]; $color_count++;?>">
+                           <td style="padding-top: 0px; padding-bottom: 0px; ">
+                            <?php echo $count; $count++;?>
+                          </td>
+						  <td style="padding-top: 0px; padding-bottom: 0px; ">
+                            <?php echo $compname;?>
+                          </td>
+                          <td style="padding-top: 0px; padding-bottom: 0px;">
+                            <?php echo $compcontact;?>
+                          </td>
+                          <td style="padding-top: 0px; padding-bottom: 0px; padding-left: 5px;padding-right: 5px;">
+                            <a href="edit_company.php?compid=<?php echo $compid;?>" class="btn btn-icons btn-rounded btn-warning">
+                              <i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
+                            <button type="button" name="delete_cmp" value="delete_cmp" class="btn btn-icons btn-rounded btn-danger" onclick="deleteCmp('<?php echo $compid;?>')">
+                            <i class="fa fa-trash-o"></i></button>
+                          </td>
+                        </tr>
+                        <?php 
+                          $count++;
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-
-		  </div>
-
-
+		  
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->

@@ -47,6 +47,7 @@ exit();
 }
 $query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
 if(mysqli_query($dbcon,$query)){
+		echo "<script>alert('Company Has Been Inserted Successfully !!')</script>";
 		echo "<script>window.open('add_company.php?Inserted Successfully','_self')</script>";
 	}
 
@@ -331,8 +332,7 @@ if(mysqli_query($dbcon,$query)){
                         </div>
                       </div>
                     </div>
-                    
-                   
+     
 					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
 
                   </form>
@@ -340,68 +340,6 @@ if(mysqli_query($dbcon,$query)){
               </div>
             </div>
 
-
-			 <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Company Details</h4>
-
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>
-                            Serial No.
-                          </th>
-                          <th>
-                            Company Name
-                          </th>
-                          <th>
-                            Contact Number
-                          </th>
-                          <th>
-
-                          </th>
-
-                        </tr>
-                      </thead>
-                      <tbody>
-					  <?php
-							$query3="select * from company_details";
-							$run3=mysqli_query($dbcon,$query3);
-$count=1;
-while($row3=mysqli_fetch_array($run3))
-{
-	$cid=$row3[0];
-	$cname=$row3[1];
-	$ccontact=$row3[2];
-
-
-?>
-                        <tr>
-                          <td>
-                            <?php echo $count; $count++; ?>
-                          </td>
-                          <td>
-                            <?php echo $cname; ?>
-                          </td>
-                          <td>
-                             <?php echo $ccontact; ?>
-                          </td>
-                          <td>
-                            <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_company.php?edt=<?php echo $cid; ?>'">
-                          <i class="mdi mdi-cloud-download"></i>Edit</button>
-						   <button type="button" class="btn btn-danger btn-fw" onclick="window.location.href='delete_company.php?delt=<?php echo $cid; ?>'">
-                          <i class="mdi mdi-alert-outline"></i>Delete</button>
-                          </td>
-                        </tr>
-                        <?php } ?>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
 		  </div>
 
         </div>
