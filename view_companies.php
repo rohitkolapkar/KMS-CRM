@@ -196,6 +196,11 @@ while($row=mysqli_fetch_array($run))
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
+                <li class='nav-item active'>
+                  <a class='nav-link' href='manage_user.php'>
+                  <span class='menu-title'>Manage Users</span>
+                  </a>
+                </li>
               </ul>
             </div>
           </li>";
