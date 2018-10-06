@@ -96,7 +96,7 @@ while($row=mysqli_fetch_array($run))
           <li class="nav-item dropdown d-none d-xl-inline-block">
             <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
               <span class="profile-text">Hello, <?php echo $name;?>!</span>
-              <img class="img-xs rounded-circle" src="images/faces/face1.jpg" alt="Profile image">
+              <img class="img-xs rounded-circle" src="images/faces-clipart/pic-1.png" alt="Profile image">
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
               <a class="dropdown-item p-0">
@@ -104,7 +104,7 @@ while($row=mysqli_fetch_array($run))
               <a class="dropdown-item mt-2" href="my_account.php">
                 Manage Account
               </a>
-			  <a class="dropdown-item" href="logout.php">
+        <a class="dropdown-item" href="logout.php">
                 Sign Out
               </a>
             </div>
@@ -118,7 +118,7 @@ while($row=mysqli_fetch_array($run))
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
- 	  <nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="main.php">
@@ -126,10 +126,10 @@ while($row=mysqli_fetch_array($run))
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <?php
-		  if($role=="dep"|| $role=="admin")
-		  {
-			  echo @"<li class='nav-item'>
+        <?php
+      /*if($role=="dep"|| $role=="admin")
+      {
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#customer' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa fa-user-circle-o'></i>
               <span class='menu-title'>Customer Management</span>
@@ -146,12 +146,12 @@ while($row=mysqli_fetch_array($run))
               </ul>
             </div>
           </li>";
-		  }?>
-		  <?php
-		  if($role=="dep"||$role=="admin")
-		  {
-			echo @"
-			<li class='nav-item'>
+      }*/?>
+      <?php
+      if($role=="dep"||$role=="admin")
+      {
+      echo @"
+      <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#complaint' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-pencil-square-o'></i>
               <span class='menu-title'>Complaint Management</span>
@@ -168,21 +168,21 @@ while($row=mysqli_fetch_array($run))
               </ul>
             </div>
           </li>";
-		  }
-		  else
-		  {
-			 echo @"<li class='nav-item'>
-					<a class='nav-link' href='search_assignment.php'>
-					<i class='menu-icon mdi mdi-table'></i>
-					<span class='menu-title'>Check Assignments</span>
-					</a>
-					</li>";
-		  }
-		  ?>
-		  <?php
-		  if($role=="admin")
-		  {
-			  echo @"<li class='nav-item'>
+      }
+      else
+      {
+       echo @"<li class='nav-item'>
+          <a class='nav-link' href='search_assignment.php'>
+          <i class='menu-icon mdi mdi-table'></i>
+          <span class='menu-title'>Check Assignments</span>
+          </a>
+          </li>";
+      }
+      ?>
+      <?php
+      if($role=="admin")
+      {
+        echo @"<li class='nav-item active'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
@@ -196,15 +196,20 @@ while($row=mysqli_fetch_array($run))
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
+                <li class='nav-item active'>
+                  <a class='nav-link' href='manage_user.php'>
+                  <span class='menu-title'>Manage Users</span>
+                  </a>
+                </li>
               </ul>
             </div>
           </li>";
-		  }?>
-		  
-		  <?php
-			if($role=="admin" ||$role=="dep")
-			{
-				echo @"<li class='nav-item'>
+      }?>
+      
+      <?php
+      if($role=="admin" ||$role=="dep")
+      {
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#company' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-fire'></i>
               <span class='menu-title'>Company Management</span>
@@ -221,7 +226,7 @@ while($row=mysqli_fetch_array($run))
               </ul>
             </div>
           </li>
-		  <li class='nav-item'>
+      <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#category' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-sitemap'></i>
               <span class='menu-title'>Category Management</span>
@@ -238,7 +243,7 @@ while($row=mysqli_fetch_array($run))
               </ul>
             </div>
           </li>
-		  <li class='nav-item'>
+      <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#product' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-cubes'></i>
               <span class='menu-title'>Product Management</span>
@@ -255,14 +260,14 @@ while($row=mysqli_fetch_array($run))
               </ul>
             </div>
           </li>
-		  ";
-			}
-		  ?>
-		  
-		  <?php
-		  if($role=="admin")
-		  {
-			  echo @"<li class='nav-item'>
+      ";
+      }
+      ?>
+      
+      <?php
+      if($role=="admin")
+      {
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#report' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-bar-chart-o'></i>
               <span class='menu-title'>Report</span>
@@ -278,8 +283,15 @@ while($row=mysqli_fetch_array($run))
                 </li>
               </ul>
             </div>
-          </li>";
-		  }?>
+          </li>
+          <!--<li class='nav-item'>
+            <a class='nav-link' href='my_account.php'>
+              <i class='menu-icon fa fa-users'></i>
+              <span class='menu-title'>Manage Users</span>
+            </a>
+          </li>-->
+          ";
+      }?>
           <li class="nav-item">
             <a class="nav-link" href="my_account.php">
               <i class="menu-icon fa fa-gears"></i>
@@ -311,9 +323,9 @@ while($row=mysqli_fetch_array($run))
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th style="padding-left: 5px; padding-right: 0px;">
+                          <!--<th style="padding-left: 5px; padding-right: 0px;">
                             Sr.No.
-                          </th>
+                          </th>-->
                           <th>
                             ID
                           </th>
@@ -339,7 +351,7 @@ while($row=mysqli_fetch_array($run))
                       </thead>
                       <tbody>
                         <?php
-                          $tbl_color = array("table-danger", "table-success", "table-primary","table-primary","table-warning");
+                          $tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
                           $color_count = 0;
                           while($row=mysqli_fetch_array($run))
                           {
@@ -354,9 +366,9 @@ while($row=mysqli_fetch_array($run))
                         $color_count=0;
                         ?>
                         <tr class="<?php echo $tbl_color[$color_count]; $color_count++;?>">
-                          <td style="padding-top: 0px; padding-bottom: 0px; ">
+                          <!--<td style="padding-top: 0px; padding-bottom: 0px; ">
                             <?php echo $count;?>
-                          </td>
+                          </td>-->
                           <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $emp_id;?>
                           </td>
@@ -399,7 +411,7 @@ while($row=mysqli_fetch_array($run))
         <footer class="footer">
           <div class="container-fluid clearfix">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018
-              <a href="http://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>. All rights reserved.</span>
+              <a href="#">Kalika Multiservices</a>. All rights reserved.</span>
             <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with
               <i class="mdi mdi-heart text-danger"></i>
             </span>
