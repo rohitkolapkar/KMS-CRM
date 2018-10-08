@@ -153,7 +153,7 @@ while($row=mysqli_fetch_array($run))
       <?php
       if($role=="admin")
       {
-        echo @"<li class='nav-item active'>
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
@@ -167,7 +167,7 @@ while($row=mysqli_fetch_array($run))
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
-                <li class='nav-item active'>
+                <li class='nav-item'>
                   <a class='nav-link' href='manage_user.php'>
                   <span class='menu-title'>Manage Users</span>
                   </a>
@@ -343,6 +343,94 @@ echo "<script>alert('Please Select Company Name !!')</script>";
 exit();
 }
 
+echo @"
+			<div class='col-lg-12 grid-margin stretch-card'>
+              <div class='card'>
+                <div class='card-body'>
+                  <h4 class='card-title'>Category Details</h4>
+
+                  <div class='table-responsive'>
+                    <table class='table table-bordered'>
+                      <thead>
+                        <tr>
+                          <th>
+                            Serial No.
+                          </th>
+                          <th>
+                            Category Name
+                          </th>
+                          <th>
+                            Company Name
+                          </th>
+                          <th>
+
+                          </th>
+
+                        </tr>
+                      </thead>
+                      <tbody>";
+					 
+
+              $query1="SELECT
+              		category_details.category_id,category_details.category_name, company_details.company_name
+              	   FROM
+              		category_details
+              	   INNER JOIN
+              		company_details
+              	   ON
+              		category_details.company_id=company_details.company_id where company_name='$companyname'"
+              		;
+
+
+							$run1=mysqli_query($dbcon,$query1);
+							$count=1;
+							while($row1=mysqli_fetch_array($run1))
+							{
+							$cid=$row1[0];
+							$cname=$row1[1];
+							$compid=$row1[2];
+
+					 
+                       echo " <tr>
+							  <td> ";
+							  
+                            echo $count; 
+							$count++;
+							
+                       echo "   </td>
+								<td> ";
+                            echo $cname;
+                      echo "    </td>
+                          <td> ";
+                            echo $compid;
+                      echo "     </td>
+                         <td>";
+					 
+					 
+                      echo @"      <button type='button' class='btn btn-dark btn-fw' onclick='myEditFunction()'> 
+                          <i class='mdi mdi-cloud-download'></i>Edit</button> ";
+						echo "   <button type='button' class='btn btn-danger btn-fw' onclick='myDeleteFunction()'>
+                          <i class='mdi mdi-alert-outline'></i>Delete</button> ";
+                     
+					echo "	</td>
+                        </tr> ";
+						
+						// script for edit 
+						echo " <script type='text/javascript'>
+							function myEditFunction() {
+							window.location.href='edit_category.php?delt=$cid';
+							}
+							</script>";
+							
+							
+                         } 
+                     echo " </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> ";
+
 
 
 }
@@ -383,19 +471,8 @@ exit();
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-<!--
-    <script>
-  function myFunction() {
-    if(confirm('Are you sure you want to delete the category ?'))
-	{
-	window.location.href='delete_category.php?delt=<?php echo $cid; ?>';
-	}
-	else{
 
-	}
-	}
-  </script>
--->
+   
 </body>
 
 </html>
