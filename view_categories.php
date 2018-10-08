@@ -39,6 +39,11 @@ while($row=mysqli_fetch_array($run))
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  
 
   <!-- endinject -->
   <!-- plugin css for this page -->
@@ -337,6 +342,10 @@ include 'database/db_conection.php';
 if(isset($_POST['submit']))
 {
 $companyname=$_POST['companyname'];
+$query5="select * from company_details where company_name='$companyname'";
+$run5=mysqli_query($dbcon,$query5);
+$row5=mysqli_fetch_array($run5);
+$vcomp_id=$row5[0];
 
 if($companyname==''){
 echo "<script>alert('Please Select Company Name !!')</script>";
@@ -378,7 +387,7 @@ echo @"
               	   INNER JOIN
               		company_details
               	   ON
-              		category_details.company_id=company_details.company_id where company_name='$companyname'"
+              		category_details.company_id=company_details.company_id where category_details.company_id='$vcomp_id'"
               		;
 
 
@@ -407,22 +416,13 @@ echo @"
                          <td>";
 					 
 					 
-                      echo @"      <button type='button' class='btn btn-dark btn-fw' onclick='myEditFunction()'> 
-                          <i class='mdi mdi-cloud-download'></i>Edit</button> ";
-						echo "   <button type='button' class='btn btn-danger btn-fw' onclick='myDeleteFunction()'>
-                          <i class='mdi mdi-alert-outline'></i>Delete</button> ";
+                      echo @"     <a href='edit_category.php?edt=$cid' class='w3-button w3-black'>Edit <i class='mdi mdi-cloud-download'></i></a> ";
+						echo @"   <a href='delete_category.php?delt=$cid' class='w3-button w3-red'>Delete <i class='mdi mdi-alert-outline'></i></a> ";
                      
 					echo "	</td>
                         </tr> ";
 						
-						// script for edit 
-						echo " <script type='text/javascript'>
-							function myEditFunction() {
-							window.location.href='edit_category.php?delt=$cid';
-							}
-							</script>";
-							
-							
+					
                          } 
                      echo " </tbody>
                     </table>
@@ -471,8 +471,6 @@ echo @"
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-
-   
 </body>
 
 </html>

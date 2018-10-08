@@ -68,7 +68,8 @@ $compid=$row1[0];
 //echo $cid;
 $query2="update category_details set category_name='$product_category',company_id='$compid' where category_id='$edit1'";
 if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('add_category.php?Updated Successfully','_self')</script>";
+		echo "<script>alert('Data Updated Successfully !!')</script>";
+		echo "<script>window.open('view_categories.php?Updated Successfully','_self')</script>";
 	}
 }
 

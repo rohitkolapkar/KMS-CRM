@@ -339,77 +339,6 @@ while($row=mysqli_fetch_array($run))
               </div>
             </div>
 
-			<div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Category Details</h4>
-
-                  <div class="table-responsive">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>
-                            Serial No.
-                          </th>
-                          <th>
-                            Category Name
-                          </th>
-                          <th>
-                            Company Name
-                          </th>
-                          <th>
-
-                          </th>
-
-                        </tr>
-                      </thead>
-                      <tbody>
-					  <?php
-
-              $query="SELECT
-              		category_details.category_id,category_details.category_name, company_details.company_name
-              	   FROM
-              		category_details
-              	   INNER JOIN
-              		company_details
-              	   ON
-              		category_details.company_id=company_details.company_id"
-              		;
-
-
-							$run=mysqli_query($dbcon,$query);
-							$count=1;
-							while($row=mysqli_fetch_array($run))
-							{
-							$cid=$row[0];
-							$cname=$row[1];
-							$compid=$row[2];
-
-					  ?>
-                        <tr>
-                          <td>
-                            <?php echo $count; $count++; ?>
-                          </td>
-                          <td>
-                            <?php echo $cname; ?>
-                          </td>
-                          <td>
-                             <?php echo $compid; ?>
-                          </td>
-                          <td>
-                            <button type="button" class="btn btn-dark btn-fw" onclick="window.location.href='edit_category.php?edt=<?php echo $cid; ?>'">
-                          <i class="mdi mdi-cloud-download"></i>Edit</button>
-						   <button type="button" class="btn btn-danger btn-fw" onclick="window.location.href='delete_category.php?delt=<?php echo $cid; ?>'">
-                          <i class="mdi mdi-alert-outline"></i>Delete</button>
-                          </td>
-                        </tr>
-                        <?php } ?>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
 
           </div>
 
@@ -486,6 +415,7 @@ $cid=$row1[0];
 
 $query2="insert into category_details(category_name,company_id) values('$product_category','$cid')";
 if(mysqli_query($dbcon,$query2)){
+		echo "<script>alert('Category Inserted Successfully !!')</script>";
 		echo "<script>window.open('add_category.php?Inserted Successfully','_self')</script>";
 	}
 }
