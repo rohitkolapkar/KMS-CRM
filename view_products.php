@@ -341,7 +341,7 @@ function getCategory(val) {
                      </div>
                     </div>
 
-					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
+					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Search</button>
                   </form>
                 </div>
               </div>
