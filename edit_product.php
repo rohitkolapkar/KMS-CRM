@@ -43,11 +43,11 @@ $company_qry ="select `company_name` from company_details where company_id=
   {
      $compName=$company_qry_row[0];
   }
-  $category_qry ="select category_name from category_details where category_id=(select category_id from model_details where model_id='$edit')";
+  $category_qry ="select category_id,category_name from category_details where category_id=(select category_id from model_details where model_id='$edit')";
     $category_qry_run=mysqli_query($dbcon,$category_qry);
     while($category_qry_row=mysqli_fetch_array($category_qry_run))
-    {
-       $catName=$category_qry_row[0];
+    {	$catID=$category_qry_row[0];
+       $catName=$category_qry_row[1];
     }
     $model_qry ="select model_id, model_name from model_details where model_id='$edit'";
       $model_qry_run=mysqli_query($dbcon,$model_qry);
@@ -397,7 +397,7 @@ function getCategory(val) {
                      <div class="col-sm-9">
 
                        <select class="form-control" id="category-list"  name="categoryid">
-                       <option selected="selected" ><?php echo $catName; ?></option>
+                       <option selected="selected" value="<?php echo $catID;?>" ><?php echo $catName; ?></option>
                        </select>
                      </div>
                    </div>
