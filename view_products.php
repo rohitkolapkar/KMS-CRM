@@ -27,42 +27,13 @@ while($row=mysqli_fetch_array($run))
 	$role=$row[0];
 	$name=$row[1];
 }
-?>
 
-<?php
-//Insert Code for company details
-include("database/db_conection.php");
-if(isset($_POST['submit']))
-{
-$companyname=$_POST['compname'];
-$companycontact=$_POST['compcont'];
-
-if($companyname==''){
-echo "<script>alert('Please Enter Company Name !!')</script>";
-exit();
-}
-if($companycontact==''){
-echo "<script>alert('Please Enter Contact Number !!')</script>";
-exit();
-}
-$query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
-if(mysqli_query($dbcon,$query)){
-		echo "<script>alert('Company Has Been Inserted Successfully !!')</script>";
-		echo "<script>window.open('add_company.php?Inserted Successfully','_self')</script>";
-	}
-	else{
-		echo "<script>alert('Data Already Exists !!')</script>";
-	}
-	
-
-}
-//Insert code end's
 ?>
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Kalika Multiservices</title>
+  <title>Kalika Multi Services</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="vendors/iconfonts/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
@@ -76,13 +47,26 @@ if(mysqli_query($dbcon,$query)){
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<!--Ajax functions for fetching category data according to company_id-->
+<script>
+function getCategory(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_state.php",
+  data:'company_id='+val,
+  success: function(data){
+    $("#category-list").html(data);
+  }
+  });
+}
+</script>
 </head>
 
 <body>
   <div class="container-scroller">
-          
-
-        <!-- partial:partials/_navbar.html -->
+    <!-- partial:partials/_navbar.html -->
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
         <a class="navbar-brand brand-logo" href="#">
@@ -309,44 +293,160 @@ if(mysqli_query($dbcon,$query)){
         </ul>
       </nav>
       <!-- partial -->
-
       <div class="main-panel">
         <div class="content-wrapper">
 
-			<div class="row">
+			          <div class="row">
+
+
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Adding New Company</h4>
-                  <form class="form-sample" action='add_company.php' method='post'>
+                  <h2 class="card-title">Search Product/Model</h2>
+                  <form class="form-sample" method="post" action="view_products.php">
 
                     <div class="row">
+                      <!--select company-->
                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Name</label>
+                        <div class="form-group row country">
+                          <label class="col-sm-3 col-form-label">Company</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="compname" />
+                            <select class="form-control" name="companyname" id="company" onChange="getCategory(this.value);">
+                              <option selected="selected" >Select Company</option>
+                              <?php
+                              $qry= "select * from company_details";
+                              $run=mysqli_query($dbcon,$qry);
+                              while($row=mysqli_fetch_array($run))
+                              {
+                              ?>
+                              <option value="<?php echo $row['company_id']; ?>"><?php echo $row['company_name']; ?></option><?php
+                              }
+                              ?>
+                            </select>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Contact</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="compcont" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-     
-					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
 
+                <!--select Category-->
+                      <div class="col-md-6">
+                       <div class="form-group row">
+                         <label class="col-sm-3 col-form-label">Category Name</label>
+                         <div class="col-sm-9">
+
+                           <select class="form-control" id="category-list"  name="categoryid">
+                           <!--  <option  value="">Select Model Name</option> -->
+                           </select>
+                         </div>
+                       </div>
+                     </div>
+                    </div>
+
+					<button type="submit" value="Submit" class="btn btn-success btn-rounded btn-md" name="submit">Submit</button>
                   </form>
                 </div>
               </div>
             </div>
 
-		  </div>
+<?php
+include 'database/db_conection.php';
+//Adding Category Details, Code
+if(isset($_POST['submit']))
+{
+$companyname=$_POST['companyname'];
+$categoryid=$_POST['categoryid'];
+
+$query5="select * from category_details where category_name='$categoryid'";
+$run5=mysqli_query($dbcon,$query5);
+$row5=mysqli_fetch_array($run5);
+$vcat_id=$row5[0];
+
+if($companyname==''){
+echo "<script>alert('Please Select Company Name !!')</script>";
+exit();
+}
+if($categoryid==''){
+echo "<script>alert('Please Select Category Name !!')</script>";
+exit();
+}			
+			
+	echo "		
+			<div class='col-lg-12 grid-margin stretch-card'>
+              <div class='card'>
+                <div class='card-body'>
+                  <h4 class='card-title'>Product Model Details</h4>
+
+                  <div class='table-responsive'>
+                    <table class='table table-bordered'>
+                      <thead>
+                        <tr>
+                          <th>
+                            Serial No.
+                          </th>
+                          <th>
+                            Product
+                          </th>
+                          <th>
+                            Category
+                          </th>
+                          <th>
+							Company
+                          </th>
+						  <th>
+							Action
+                          </th>
+
+                        </tr>
+                      </thead>
+                      <tbody> ";
+					 
+							$query=
+							"SELECT model_details.model_id,model_details.model_name,category_details.category_name, company_details.company_name FROM model_details LEFT JOIN category_details ON category_details.category_id=model_details.category_id LEFT JOIN company_details ON category_details.company_id=company_details.company_id";
+
+							$run=mysqli_query($dbcon,$query);
+							$tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
+							$color_count = 0;
+							$count=1;
+							while($row=mysqli_fetch_array($run))
+							{
+							$mid=$row[0];    //model id variable
+							$mname=$row[1]; //category name variable
+							$catid=$row[2]; //compname variable
+							$vcompname=$row[3];
+							
+							if($color_count>4)
+							$color_count=0;
+					 
+                      echo "  <tr class='"; echo $tbl_color[$color_count]; $color_count++; echo "'>
+                          <td style='padding-top: 0px; padding-bottom: 0px;'> ";
+                             echo $count; $count++; 
+                     echo "     </td>
+                          <td style='padding-top: 0px; padding-bottom: 0px;'> ";
+                             echo $mname;
+                     echo "     </td>
+                          <td style='padding-top: 0px; padding-bottom: 0px;'> ";
+                             echo $catid; 
+                      echo "    </td>
+						  <td style='padding-top: 0px; padding-bottom: 0px;'> ";
+                             echo $vcompname;
+                     echo "     </td>
+                          <td style='padding-top: 0px; padding-bottom: 0px;'> ";
+                           echo @"     <a href='edit_product.php?edt=$mid' class='btn btn-icons btn-rounded btn-warning'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp; ";
+						echo @"   <a href='delete_product.php?delt=$mid' class='btn btn-icons btn-rounded btn-danger'><i class='fa fa-trash-o'></i></a> ";
+                     echo "     </td>
+                        </tr> ";
+                         } 
+						 
+                    echo "  </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+			";
+}			
+?>			
+
+          </div>
 
         </div>
         <!-- content-wrapper ends -->
@@ -384,9 +484,9 @@ if(mysqli_query($dbcon,$query)){
   <!--
   <script>
   function myFunction() {
-    if(confirm('Are you sure you want to delete the company ?'))
+    if(confirm('Are you sure you want to delete the category ?'))
 	{
-	window.location.href='delete_company.php?delt=<?php echo $cid; ?>';
+	window.location.href='delete_product.php?delt=';
 	}
 	else{
 
@@ -394,6 +494,10 @@ if(mysqli_query($dbcon,$query)){
 	}
   </script>
   -->
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
 </body>
-
 </html>
+

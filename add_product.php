@@ -505,6 +505,7 @@ $pid=$row1[0];*/
 
 $query2="insert into model_details(model_name,category_id) values('$modelname','$categoryid')";
 if(mysqli_query($dbcon,$query2)){
+		echo "<script>alert('Data Inserted Successfully !!')</script>";
 		echo "<script>window.open('add_product.php?Inserted Successfully','_self')</script>";
 	}
 }

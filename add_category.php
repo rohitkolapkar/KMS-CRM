@@ -418,5 +418,9 @@ if(mysqli_query($dbcon,$query2)){
 		echo "<script>alert('Category Inserted Successfully !!')</script>";
 		echo "<script>window.open('add_category.php?Inserted Successfully','_self')</script>";
 	}
+	else{
+		echo "<script>alert('Data Already Exists !!')</script>";
+	}
+	
 }
 ?>

@@ -292,7 +292,7 @@ while($row=mysqli_fetch_array($run))
             <div class="col-12 grid-margin">
               <div class="card">
                 <div class="card-body">
-                  <h2 class="card-title">Product Category Details</h2>
+                  <h2 class="card-title">Search Product Category Details</h2>
                   <form class="form-sample" action="view_categories.php" method="post">
 
                     <div class="row">
@@ -372,7 +372,7 @@ echo @"
                             Company Name
                           </th>
                           <th>
-
+							Action
                           </th>
 
                         </tr>
@@ -392,32 +392,37 @@ echo @"
 
 
 							$run1=mysqli_query($dbcon,$query1);
+							 $tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
+							$color_count = 0;
 							$count=1;
 							while($row1=mysqli_fetch_array($run1))
 							{
 							$cid=$row1[0];
 							$cname=$row1[1];
 							$compid=$row1[2];
-
+							
+							
+							if($color_count>4)
+							$color_count=0;
 					 
-                       echo " <tr>
-							  <td> ";
+                       echo " <tr class='"; echo $tbl_color[$color_count]; $color_count++; echo "'>";
+						echo "	  <td style='padding-top: 0px; padding-bottom: 0px;'> ";
 							  
                             echo $count; 
 							$count++;
 							
                        echo "   </td>
-								<td> ";
+								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
                             echo $cname;
                       echo "    </td>
-                          <td> ";
+                          <td style='padding-top: 0px; padding-bottom: 0px; '> ";
                             echo $compid;
                       echo "     </td>
-                         <td>";
+                         <td style='padding-top: 0px; padding-bottom: 0px; '>";
 					 
 					 
-                      echo @"     <a href='edit_category.php?edt=$cid' class='w3-button w3-black'>Edit <i class='mdi mdi-cloud-download'></i></a> ";
-						echo @"   <a href='delete_category.php?delt=$cid' class='w3-button w3-red'>Delete <i class='mdi mdi-alert-outline'></i></a> ";
+                      echo @"     <a href='edit_category.php?edt=$cid' class='btn btn-icons btn-rounded btn-warning'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp; ";
+						echo @"   <a href='delete_category.php?delt=$cid' class='btn btn-icons btn-rounded btn-danger'><i class='fa fa-trash-o'></i></a> ";
                      
 					echo "	</td>
                         </tr> ";

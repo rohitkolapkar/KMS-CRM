@@ -303,7 +303,7 @@ while($row=mysqli_fetch_array($run))
       <div class="main-panel">
         <div class="content-wrapper">
 		
-			     <div class="col-lg-12 stretch-card">
+			     <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Company Details</h4>

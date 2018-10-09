@@ -78,7 +78,7 @@ $run1=mysqli_query($dbcon,$query1);
 $row1=mysqli_fetch_array($run1);
 $vcatid=$row1[0];
 
-$query2="update model_details set model_name='$vmodel_name',category_id='$vcategory_name' where model_id='$edit1'";
+$query2="update model_details set model_name='$vmodel_name',category_id='$vcatid' where model_id='$edit1'";
 if(mysqli_query($dbcon,$query2)){
 		echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
 	}
