@@ -352,7 +352,7 @@ include 'database/db_conection.php';
 //Adding Category Details, Code
 if(isset($_POST['submit']))
 {
-$companyname=$_POST['companyname'];
+		$companyname=$_POST['companyname'];
 $categoryid=$_POST['categoryid'];
 
 $query5="select * from category_details where category_id='$categoryid'";
@@ -445,6 +445,8 @@ exit();
               </div>
             </div>
 			";
+	
+	
 }			
 ?>			
 

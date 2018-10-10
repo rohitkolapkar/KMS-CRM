@@ -80,7 +80,8 @@ $vcatid=$row1[0];
 
 $query2="update model_details set model_name='$vmodel_name',category_id='$vcategory_name' where model_id='$edit1'";
 if(mysqli_query($dbcon,$query2)){
-		echo "<script>window.open('add_product.php?Updated Successfully','_self')</script>";
+		echo "<script>alert('Data Updated Successfully !!')</script>";
+		echo "<script>window.open('view_products.php','_self')</script>";
 	}
 }//update code ends
 
