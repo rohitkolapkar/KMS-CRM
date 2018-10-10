@@ -391,7 +391,9 @@ while($row=mysqli_fetch_array($run))
                             <a href="edit_employee.php?emp_id=<?php echo $emp_id;?>" class="btn btn-icons btn-rounded btn-warning">
                               <i class="fa fa-pencil"></i></a>&nbsp;&nbsp;
                             <button type="button" name="delete_emp" value="delete_emp" class="btn btn-icons btn-rounded btn-danger" onclick="deleteEmp('<?php echo $emp_id;?>')">
-                            <i class="fa fa-trash-o"></i></button>
+                            <i class="fa fa-trash-o"></i></button>&nbsp;&nbsp;
+							<a href="create_user.php?emp_id=<?php echo $emp_id;?>" class="btn btn-icons btn-rounded btn-warning">
+							<i class="fa fa-plus"></i></a>
                           </td>
                         </tr>
                         <?php 
