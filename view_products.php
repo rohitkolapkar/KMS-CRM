@@ -355,7 +355,7 @@ if(isset($_POST['submit']))
 $companyname=$_POST['companyname'];
 $categoryid=$_POST['categoryid'];
 
-$query5="select * from category_details where category_name='$categoryid'";
+$query5="select * from category_details where category_id='$categoryid'";
 $run5=mysqli_query($dbcon,$query5);
 $row5=mysqli_fetch_array($run5);
 $vcat_id=$row5[0];
@@ -400,8 +400,10 @@ exit();
                       <tbody> ";
 					 
 							$query=
-							"SELECT model_details.model_id,model_details.model_name,category_details.category_name, company_details.company_name FROM model_details LEFT JOIN category_details ON category_details.category_id=model_details.category_id LEFT JOIN company_details ON category_details.company_id=company_details.company_id";
-
+							"SELECT model_details.model_id,model_details.model_name,category_details.category_name, company_details.company_name 
+							FROM model_details LEFT JOIN category_details ON category_details.category_id=model_details.category_id 
+							LEFT JOIN company_details ON category_details.company_id=company_details.company_id where category_details.category_id='$vcat_id'";
+							
 							$run=mysqli_query($dbcon,$query);
 							$tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
 							$color_count = 0;
