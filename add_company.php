@@ -129,7 +129,7 @@ if(mysqli_query($dbcon,$query)){
             </a>
           </li>
         <?php
-      /*if($role=="dep"|| $role=="admin")
+      if($role=="dep"|| $role=="admin")
       {
         echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#customer' aria-expanded='false' aria-controls='ui-basic'>
@@ -140,15 +140,15 @@ if(mysqli_query($dbcon,$query)){
             <div class='collapse' id='customer'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='register_complaint.php'>Add Customer</a>
+                  <a class='nav-link' href='add_customer.php'>Add Customer</a>
                 </li>
                 <li class='nav-item'>
-                  <a class='nav-link' href='search_complaint.php'>View Customer</a>
+                  <a class='nav-link' href='view_customers.php'>View Customer</a>
                 </li>
               </ul>
             </div>
           </li>";
-      }*/?>
+      }?>
       <?php
       if($role=="dep"||$role=="admin")
       {

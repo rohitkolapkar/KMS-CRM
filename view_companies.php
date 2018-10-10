@@ -138,10 +138,10 @@ while($row=mysqli_fetch_array($run))
             <div class='collapse' id='customer'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='register_complaint.php'>Add Customer</a>
+                  <a class='nav-link' href='add_customer.php'>Add Customer</a>
                 </li>
                 <li class='nav-item'>
-                  <a class='nav-link' href='search_complaint.php'>View Customer</a>
+                  <a class='nav-link' href='view_customers.php'>View Customer</a>
                 </li>
               </ul>
             </div>
