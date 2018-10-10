@@ -153,7 +153,7 @@ if(mysqli_query($dbcon,$query2)){
             </a>
           </li>
           <?php
-      /*if($role=="dep"|| $role=="admin")
+      if($role=="dep"|| $role=="admin")
       {
         echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#customer' aria-expanded='false' aria-controls='ui-basic'>
@@ -172,7 +172,7 @@ if(mysqli_query($dbcon,$query2)){
               </ul>
             </div>
           </li>";
-      }*/?>
+      }?>
       <?php
       if($role=="dep"||$role=="admin")
       {
@@ -186,10 +186,10 @@ if(mysqli_query($dbcon,$query2)){
             <div class='collapse' id='complaint'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='register_complaint.php'>Register Complaint</a>
+                  <a class='nav-link' href='add_customer.php'>Register Complaint</a>
                 </li>
                 <li class='nav-item'>
-                  <a class='nav-link' href='search_complaint.php'>Search Complaint</a>
+                  <a class='nav-link' href='view_customers.php'>Search Complaint</a>
                 </li>
               </ul>
             </div>

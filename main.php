@@ -27,6 +27,15 @@ while($row=mysqli_fetch_array($run))
 	$role=$row[0];
 	$name=$row[1];
 }
+
+$emp_count_qry= "SELECT COUNT(employee_id) FROM employee";
+ 
+$run_count=mysqli_query($dbcon,$emp_count_qry);
+while($row=mysqli_fetch_array($run_count))
+{
+	$emp_count=$row[0];
+}
+
 /*
 $qry1 = "SELECT security_key,security_ans FROM user where user_id='$session_id'";
 $run=mysqli_query($dbcon,$qry1);
@@ -113,7 +122,7 @@ if($security_key=="" || $security_ans=="")
             </a>
           </li>
           <?php
-      /*if($role=="dep"|| $role=="admin")
+      if($role=="dep"|| $role=="admin")
       {
         echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#customer' aria-expanded='false' aria-controls='ui-basic'>
@@ -124,15 +133,15 @@ if($security_key=="" || $security_ans=="")
             <div class='collapse' id='customer'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='register_complaint.php'>Add Customer</a>
+                  <a class='nav-link' href='add_customer.php'>Add Customer</a>
                 </li>
                 <li class='nav-item'>
-                  <a class='nav-link' href='search_complaint.php'>View Customer</a>
+                  <a class='nav-link' href='view_customers.php'>View Customer</a>
                 </li>
               </ul>
             </div>
           </li>";
-      }*/?>
+      }?>
       <?php
       if($role=="dep"||$role=="admin")
       {
@@ -376,7 +385,7 @@ if($security_key=="" || $security_ans=="")
                     <div class="float-right">
                       <p class="mb-0 text-right">Employees</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?PHP ?></h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?PHP echo $emp_count?></h3>
                       </div>
                     </div>
                   </div>
