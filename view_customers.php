@@ -69,7 +69,7 @@ while($row=mysqli_fetch_array($run))
     function deleteCust(cust_id) {
     if(confirm('Are you sure you want to delete?\n'+'Customer ID : '+cust_id+"\nClick ok to delete"))
     {
-      window.location.href='delete_customer.php?emp_id='+cust_id;
+      window.location.href='delete_customer.php?cust_id='+cust_id;
     }
     else{
 
@@ -334,9 +334,7 @@ while($row=mysqli_fetch_array($run))
                           <th>
                             Address
                           </th>
-                          <th>
-                            City
-                          </th>
+                          
                           <th>
                             Mobile
                           </th>
@@ -379,9 +377,7 @@ while($row=mysqli_fetch_array($run))
                           <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $cust_add;?>
                           </td>
-                          <td style="padding-top: 0px; padding-bottom: 0px;">
-                            <?php echo $cust_city;?>
-                          </td>
+                         
                           <td style="padding-top: 0px; padding-bottom: 0px;">
                             <?php echo $cust_mob;?>
                           </td>

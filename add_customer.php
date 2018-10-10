@@ -32,6 +32,7 @@ if($role!="admin" || $role=="dep")
   header("Location : main.php");
 }
 
+
 if(isset($_POST['submit_customer'])){
   $cust_name=$_POST['name'];
   $cust_mob=$_POST['mobile'];
@@ -40,7 +41,7 @@ if(isset($_POST['submit_customer'])){
   $cust_country=$_POST['country'];
   $cust_state=$_POST['state'];
   $cust_city=$_POST['city'];
-  $cust_dob=$_POST['dob'];
+  
   
 
 $query= @"INSERT INTO `customer_details` (`customer_name`,`customer_address`,`city_id`,
@@ -365,7 +366,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mobile No*</label>
                           <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" value="" required/>
+                            <input type="number" class="form-control" name="mobile" value="" required />
                           </div>
                         </div>
                       </div>
@@ -379,7 +380,7 @@ $("#suggesstion-box").hide();
                       </div> 
             <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address*</label>
+                          <label class="col-sm-3 col-form-label">Address</label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" value="" name="address"/>
                           </div>

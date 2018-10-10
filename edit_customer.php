@@ -27,55 +27,77 @@ while($row=mysqli_fetch_array($run))
 	$role=$row[0];
 	$name=$row[1];
 }
+if($role!="admin" || $role=="dep")
+{
+  header("Location : main.php");
+}
+  $cust_id = $_GET['cust_id'];
 
-?>
-<?php
- 
-/*
- * DataTables example server-side processing script.
- *
- * Please note that this script is intentionally extremely simply to show how
- * server-side processing can be implemented, and probably shouldn't be used as
- * the basis for a large complex system. It is suitable for simple use cases as
- * for learning.
- *
- * See http://datatables.net/usage/server-side for full details on the server-
- * side processing requirements of DataTables.
- *
- * @license MIT - http://datatables.net/license_mit
- */
- 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Easy set variables
- */
- 
-// DB table to use
-$table = 'company_details';
- 
-// Table's primary key
-$primaryKey = 'company_id';
- 
-// Array of database columns which should be read and sent back to DataTables.
-// The `db` parameter represents the column name in the database, while the `dt`
-// parameter represents the DataTables column identifier. In this case simple
-// indexes
-$columns = array(
-    array( 'db' => 'company_name', 'dt' => 0 ),
-    array( 'db' => 'company_contact',  'dt' => 1 )
-);
- 
-// SQL server connection information
-$sql_details = array(
-    'user' => 'localhost',
-    'pass' => 'root',
-    'db'   => 'root',
-    'host' => 'kalika'
-);
-require( 'ssp.class.php' );
- 
-echo json_encode(
-    SSP::simple( $_GET, $sql_details, $table, $primaryKey, $columns )
-);
+$cust_qry = "SELECT * FROM customer_details where customer_id='$cust_id'";
+$run=mysqli_query($dbcon,$cust_qry);
+while($row=mysqli_fetch_array($run))
+{
+  //$cust_id=$row[0];
+  $cust_name=$row[1];
+  $cust_add=$row[2];
+  $cust_city_id=$row[3];
+  $cust_mob=$row[4];
+  $cust_email=$row[5];
+}
+
+  $country_qry ="select `country_name` from country where country_id=
+              (select country_id from states where state_id=(select state_id from cities where city_id='$cust_city_id'))";
+  $run=mysqli_query($dbcon,$country_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+     $cust_country=$row[0];
+  }
+  $state_qry ="select `state_name` from states where state_id=(select state_id from cities where city_id='$cust_city_id')";
+  $run=mysqli_query($dbcon,$state_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+     $cust_state=$row[0];
+  }
+  $city_qry ="select `city_id`,`city_name` from cities where city_id='$cust_city_id'";
+  $run=mysqli_query($dbcon,$city_qry);
+  while($row=mysqli_fetch_array($run))
+  {
+     $cust_city_id= $row[0];
+     $cust_city=$row[1];
+  }
+
+
+
+
+if(isset($_POST['update_customer'])){
+  $cust_ID=$_POST['custid'];
+  $cust_name=$_POST['name'];
+  $cust_mob=$_POST['mobile'];
+  $cust_email=$_POST['email'];
+  $cust_add=$_POST['address'];
+  $cust_city=$_POST['city'];
+  
+  
+
+$query2="UPDATE `customer_details` SET
+          `customer_name`='$cust_name',
+          `customer_mobile`='$cust_mob',
+          `customer_email`='$cust_email',
+          `customer_address`='$cust_add',
+          `city_id`='$cust_city'
+          WHERE `customer_id` ='$cust_ID'";
+          //echo "<script>alert('')</script>";
+  if(mysqli_query($dbcon,$query2)){
+    echo "<script>alert('Record Has Been Updated!')</script>";
+    echo "<script>window.open('view_customers.php','_self')</script>";
+  }
+else
+{
+  echo "<script>alert('Not updated')</script>";
+}
+
+}
+
 ?>
 <head>
   <!-- Required meta tags -->
@@ -87,7 +109,6 @@ echo json_encode(
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
   
   <!-- endinject -->
   <!-- plugin css for this page -->
@@ -96,18 +117,34 @@ echo json_encode(
   <link rel="stylesheet" href="css/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
-  <script src="https://code.jquery.com/jquery-3.3.1.js"</script>
-<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" </script>
-  
-  <script>
-  
-  $(document).ready(function() {
-    $('#example').DataTable( {
-        "processing": true,
-        "serverSide": true,
-        "ajax": "server_side/scripts/server_processing.php"
-    } );
-} );
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script>
+function getCity(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_city.php",
+  data:'state_id='+val,
+  success: function(data){
+    $("#city-list").html(data);
+  }
+  });
+}
+
+function getState(val) {
+  $.ajax({
+  type: "POST",
+  url: "get_state.php",
+  data:'country_id='+val,
+  success: function(data){
+    $("#state-list").html(data);
+  }
+  });
+}
+function selectCountry(val) {
+$("#search-box").val(val);
+$("#suggesstion-box").hide();
+}
+
 </script>
 </head>
 
@@ -343,22 +380,117 @@ echo json_encode(
       <div class="main-panel">
         <div class="content-wrapper">
 			
-			<table id="example" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Company name</th>
-                <th>Company contact</th>
-                
-            </tr>
-        </thead>
-        <tfoot>
-            <tr>
-                <th>Company name</th>
-                <th>Company contact</th>
-                
-            </tr>
-        </tfoot>
-    </table>
+             <div class="col-12 grid-margin" >
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Customer Details</h4>
+                  <form class="form-sample" method="POST" action="edit_customer.php" >
+                   <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Customer Id</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="custid" value="<?php echo $cust_id; ?>" readonly />
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Name*</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" name="name" value="<?php echo $cust_name; ?>" required />
+                          </div>
+                        </div>
+                      </div>
+						<div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Mobile No*</label>
+                          <div class="col-sm-9">
+                            <input type="number" class="form-control" name="mobile" value="<?php echo $cust_mob; ?>" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Email</label>
+                          <div class="col-sm-9">
+                            <input type="email" class="form-control" name="email" value="<?php echo $cust_email; ?>" />
+                          </div>
+                        </div>
+                      </div> 
+            <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Address</label>
+                          <div class="col-sm-9">
+                            <input type="text" class="form-control" value="<?php echo $cust_add; ?>" name="address"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row country">
+                          <label class="col-sm-3 col-form-label">Country*</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="country" id="country-list" onChange="getState(this.value);">
+                              <option selected="selected" ><?php echo $cust_country; ?></option>
+                              <?php
+                              $qry= "select * from country";
+                              $run=mysqli_query($dbcon,$qry);
+                              while($row=mysqli_fetch_array($run))
+                              {
+                              ?>
+                              <option value="<?php echo $row['country_id']; ?>"><?php echo $row['country_name']; ?></option><?php
+                              }
+                              ?>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+            <div class="col-md-6">
+                        <div class="form-group row state">
+                          <label class="col-sm-3 col-form-label">State*</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="state" id="state-list" onChange="getCity(this.value);">
+                              <option selected="selected"><?php echo $cust_state; ?></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+            <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">City*</label>
+                          <div class="col-sm-9">
+                            <select class="form-control" name="city" id="city-list">
+                              <option selected="selected" value="<?php echo $cust_city_id;?>"><?php echo $cust_city; ?></option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                        <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">
+						   </label>
+                          <div class="col-sm-9">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+          
+          <div class="row">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6" align="right">
+                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="update_customer">Update</button>
+                        <a href="view_customers.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
+          </div>
+                  </form>
+                </div>
+              </div>
+            </div>
 			
 		
         </div>

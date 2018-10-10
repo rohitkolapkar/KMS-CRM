@@ -399,7 +399,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mobile Name</label>
                           <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" value="<?php echo $emp_mob; ?>" required/>
+                            <input type="number" class="form-control" name="mobile" value="<?php echo $emp_mob; ?>" required />
                           </div>
                         </div>
                       </div>
@@ -407,7 +407,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Email</label>
                           <div class="col-sm-9">
-                            <input type="email" class="form-control" name="email" value="<?php echo $emp_email; ?>" required/>
+                            <input type="email" class="form-control" name="email" value="<?php echo $emp_email; ?>" required />
                           </div>
                         </div>
                       </div>
@@ -415,7 +415,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Address</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" value="<?php echo $emp_add; ?>" name="address"/>
+                            <input type="text" class="form-control" value="<?php echo $emp_add; ?>" name="address" />
                           </div>
                         </div>
                       </div>

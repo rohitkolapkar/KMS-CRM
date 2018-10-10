@@ -376,12 +376,12 @@ if($security_key=="" || $security_ans=="")
                     <div class="float-right">
                       <p class="mb-0 text-right">Employees</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">246</h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?PHP ?></h3>
                       </div>
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i> Product-wise sales
+                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i> Number of Employees
                   </p>
                 </div>
               </div>
