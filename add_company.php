@@ -37,14 +37,6 @@ if(isset($_POST['submit']))
 $companyname=$_POST['compname'];
 $companycontact=$_POST['compcont'];
 
-if($companyname==''){
-echo "<script>alert('Please Enter Company Name !!')</script>";
-exit();
-}
-if($companycontact==''){
-echo "<script>alert('Please Enter Contact Number !!')</script>";
-exit();
-}
 $query="insert into company_details(company_name,company_contact) values('$companyname','$companycontact')";
 if(mysqli_query($dbcon,$query)){
 		echo "<script>alert('Company Has Been Inserted Successfully !!')</script>";
@@ -184,7 +176,7 @@ if(mysqli_query($dbcon,$query)){
       <?php
       if($role=="admin")
       {
-        echo @"<li class='nav-item active'>
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
@@ -198,7 +190,7 @@ if(mysqli_query($dbcon,$query)){
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
-                <li class='nav-item active'>
+                <li class='nav-item'>
                   <a class='nav-link' href='manage_user.php'>
                   <span class='menu-title'>Manage Users</span>
                   </a>
@@ -323,9 +315,9 @@ if(mysqli_query($dbcon,$query)){
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Name</label>
+                          <label class="col-sm-3 col-form-label">Company Name *</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="compname" />
+                            <input type="text" class="form-control" name="compname" required />
                           </div>
                         </div>
                       </div>

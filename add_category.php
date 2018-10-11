@@ -153,7 +153,7 @@ while($row=mysqli_fetch_array($run))
       <?php
       if($role=="admin")
       {
-        echo @"<li class='nav-item active'>
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
@@ -167,7 +167,7 @@ while($row=mysqli_fetch_array($run))
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
-                <li class='nav-item active'>
+                <li class='nav-item'>
                   <a class='nav-link' href='manage_user.php'>
                   <span class='menu-title'>Manage Users</span>
                   </a>
@@ -294,7 +294,7 @@ while($row=mysqli_fetch_array($run))
 
                        <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Name</label>
+                          <label class="col-sm-3 col-form-label">Company Name *</label>
                           <div class="col-sm-9">
 
                              <?php
@@ -307,7 +307,8 @@ while($row=mysqli_fetch_array($run))
 							//Count total number of rows
 							$rowCount = $query->num_rows;
 							?>
-                            <select class="form-control" id="company"  name="companyname">
+                            <select class="form-control" id="company"  name="companyname" required >
+							 <option selected="selected" disabled >Select Company</option>
                             <!--  <option  value="">Select Company Name</option> -->
 								<?php
 									if($rowCount > 0){
@@ -325,9 +326,9 @@ while($row=mysqli_fetch_array($run))
                       </div>
 					  <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Product Category</label>
+                          <label class="col-sm-3 col-form-label">Category Name *</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="product_category"/>
+                            <input type="text" class="form-control" name="product_category" required />
                           </div>
                         </div>
                       </div>

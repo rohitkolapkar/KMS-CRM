@@ -168,7 +168,7 @@ function getCategory(val) {
       <?php
       if($role=="admin")
       {
-        echo @"<li class='nav-item active'>
+        echo @"<li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#employee' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-id-badge'></i>
               <span class='menu-title'>Employee Management</span>
@@ -182,7 +182,7 @@ function getCategory(val) {
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>View Employees</a>
                 </li>
-                <li class='nav-item active'>
+                <li class='nav-item'>
                   <a class='nav-link' href='manage_user.php'>
                   <span class='menu-title'>Manage Users</span>
                   </a>
@@ -309,10 +309,10 @@ function getCategory(val) {
                       <!--select company-->
                       <div class="col-md-6">
                         <div class="form-group row country">
-                          <label class="col-sm-3 col-form-label">Company</label>
+                          <label class="col-sm-3 col-form-label">Company Name *</label>
                           <div class="col-sm-9">
-                            <select class="form-control" name="companyname" id="company" onChange="getCategory(this.value);">
-                              <option selected="selected" >Select Company</option>
+                            <select class="form-control" name="companyname" id="company" onChange="getCategory(this.value);" required>
+                              <option selected="selected">Select Company</option>
                               <?php
                               $qry= "select * from company_details";
                               $run=mysqli_query($dbcon,$qry);
@@ -330,10 +330,10 @@ function getCategory(val) {
                 <!--select Category-->
                       <div class="col-md-6">
                        <div class="form-group row">
-                         <label class="col-sm-3 col-form-label">Category Name</label>
+                         <label class="col-sm-3 col-form-label">Category Name *</label>
                          <div class="col-sm-9">
 
-                           <select class="form-control" id="category-list"  name="categoryid">
+                           <select class="form-control" id="category-list"  name="categoryid" required >
                            <!--  <option  value="">Select Model Name</option> -->
                            </select>
                          </div>
@@ -359,16 +359,7 @@ $query5="select * from category_details where category_id='$categoryid'";
 $run5=mysqli_query($dbcon,$query5);
 $row5=mysqli_fetch_array($run5);
 $vcat_id=$row5[0];
-
-if($companyname==''){
-echo "<script>alert('Please Select Company Name !!')</script>";
-exit();
-}
-if($categoryid==''){
-echo "<script>alert('Please Select Category Name !!')</script>";
-exit();
-}			
-			
+		
 	echo "		
 			<div class='col-lg-12 grid-margin stretch-card'>
               <div class='card'>

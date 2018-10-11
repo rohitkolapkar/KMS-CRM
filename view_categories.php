@@ -299,7 +299,7 @@ while($row=mysqli_fetch_array($run))
 
                        <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Company Name</label>
+                          <label class="col-sm-3 col-form-label">Company Name *</label>
                           <div class="col-sm-9">
 
                              <?php
@@ -312,7 +312,7 @@ while($row=mysqli_fetch_array($run))
 							//Count total number of rows
 							$rowCount = $query->num_rows;
 							?>
-                            <select class="form-control" id="company"  name="companyname">
+                            <select class="form-control" id="company"  name="companyname" required >
                              <option  value="" disabled selected>Select Company Name</option>
 								<?php
 									if($rowCount > 0){
@@ -347,10 +347,6 @@ $run5=mysqli_query($dbcon,$query5);
 $row5=mysqli_fetch_array($run5);
 $vcomp_id=$row5[0];
 
-if($companyname==''){
-echo "<script>alert('Please Select Company Name !!')</script>";
-exit();
-}
 
 echo @"
 			<div class='col-lg-12 grid-margin stretch-card'>

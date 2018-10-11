@@ -45,23 +45,26 @@ while($row=mysqli_fetch_array($run))
 	$cname1=$row[1];
 	//$ccont1=$row[2];
 }
-$company_qry ="select * from company_details where company_id=
+$company_qry ="select `company_name` from company_details where company_id=
               (select company_id from category_details where category_id='$edit')";
   $company_qry_run=mysqli_query($dbcon,$company_qry);
   while($company_qry_row=mysqli_fetch_array($company_qry_run))
   {
-	 $company_ID_new=$company_qry_row[0];
-     $compName=$company_qry_row[1];
+     $compName=$company_qry_row[0];
   }
 // ends
   
 //Update code start
 if(isset($_POST['submit']))
 {
-$company_ID=$_POST['companyname'];
+$companyname=$_POST['companyname'];
 $product_category=$_POST['product_category'];
 $edit1=$_GET['edit_form'];
 
+if($companyname==''){
+echo "<script>alert('Please Select Company Name !!')</script>";
+exit();
+}
 if($product_category==''){
 echo "<script>alert('Please Enter Product Category !!')</script>";
 exit();
@@ -72,7 +75,7 @@ $run1=mysqli_query($dbcon,$query1);
 $row1=mysqli_fetch_array($run1);
 $compid=$row1[0];
 
-$query2="update category_details set category_name='$product_category',company_id='$company_ID' where category_id='$edit1'";
+$query2="update category_details set category_name='$product_category',company_id='$compid' where category_id='$edit1'";
 if(mysqli_query($dbcon,$query2)){
 		echo "<script>alert('Data Updated Successfully !!')</script>";
 		echo "<script>window.open('view_categories.php?Updated Successfully','_self')</script>";
@@ -359,7 +362,7 @@ if(mysqli_query($dbcon,$query2)){
 							$rowCount = $query->num_rows;
 							?>
                             <select class="form-control" id="company"  name="companyname">
-                            <option selected="selected" style="background-color:white;" value="<?php echo $company_ID_new; ?>" disabled><?php echo $compName; ?></option>
+                            <option selected="selected" style="background-color:white;" disabled><?php echo $compName; ?></option>
 								<?php
 									if($rowCount > 0){
 									while($row = $query->fetch_assoc()){
