@@ -356,7 +356,7 @@ $("#suggesstion-box").hide();
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Name</label>
+                          <label class="col-sm-3 col-form-label">Full Name *</label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" name="name" value="" required />
                           </div>
@@ -364,25 +364,25 @@ $("#suggesstion-box").hide();
                       </div>
             <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile Name</label>
+                          <label class="col-sm-3 col-form-label">Mobile No. *</label>
                           <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" value="" required/>
+                            <input type="number" class="form-control" name="mobile" value="" required />
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Email</label>
+                          <label class="col-sm-3 col-form-label">Email *</label>
                           <div class="col-sm-9">
-                            <input type="email" class="form-control" name="email" value="" required/>
+                            <input type="email" class="form-control" name="email" value="" required />
                           </div>
                         </div>
                       </div> 
             <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address</label>
+                          <label class="col-sm-3 col-form-label">Address *</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" value="" name="address"/>
+                            <input type="text" class="form-control" value="" name="address" required />
                           </div>
                         </div>
                       </div>
@@ -390,9 +390,9 @@ $("#suggesstion-box").hide();
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row country">
-                          <label class="col-sm-3 col-form-label">Country</label>
+                          <label class="col-sm-3 col-form-label">Country *</label>
                           <div class="col-sm-9">
-                            <select class="form-control" name="country" id="country-list" onChange="getState(this.value);">
+                            <select class="form-control" name="country" id="country-list" onChange="getState(this.value);" required >
                               <option selected="selected" >Select Country</option>
                               <?php
                               $qry= "select * from country";
@@ -409,9 +409,9 @@ $("#suggesstion-box").hide();
                       </div>
             <div class="col-md-6">
                         <div class="form-group row state">
-                          <label class="col-sm-3 col-form-label">State</label>
+                          <label class="col-sm-3 col-form-label">State *</label>
                           <div class="col-sm-9">
-                            <select class="form-control" name="state" id="state-list" onChange="getCity(this.value);">
+                            <select class="form-control" name="state" id="state-list" onChange="getCity(this.value);" required >
                               <option selected="selected">Select State</option>
                             </select>
                           </div>
@@ -419,9 +419,9 @@ $("#suggesstion-box").hide();
                       </div>
             <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Select City</label>
+                          <label class="col-sm-3 col-form-label">Select City *</label>
                           <div class="col-sm-9">
-                            <select class="form-control" name="city" id="city-list">
+                            <select class="form-control" name="city" id="city-list" required >
                               <option selected="selected">Select City</option>
                             </select>
                           </div>
@@ -429,7 +429,7 @@ $("#suggesstion-box").hide();
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date of Birth</label>
+                          <label class="col-sm-3 col-form-label">Date of Birth *</label>
                           <div class="col-sm-9">
                             <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="dob" value="" required />
                           </div>
@@ -439,7 +439,7 @@ $("#suggesstion-box").hide();
                     <div class="row">                  
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Gender</label>
+                          <label class="col-sm-3 col-form-label">Gender *</label>
                           <div class="col-sm-4">
                             <div class="form-radio">
                               <label class="form-check-label">
