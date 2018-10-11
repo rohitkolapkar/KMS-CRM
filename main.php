@@ -271,7 +271,7 @@ if($security_key=="" || $security_ans=="")
             <div class='collapse' id='report'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='add_employee.php'>R1</a>
+                  <a class='nav-link' href='report_customer.php'>Customer</a>
                 </li>
                 <li class='nav-item'>
                   <a class='nav-link' href='view_employees.php'>R2</a>
