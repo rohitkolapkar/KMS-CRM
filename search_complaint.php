@@ -289,7 +289,7 @@ while($row=mysqli_fetch_array($run))
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Search Complaint</h4>
-                  <form class="form-sample" method="POST" action="add_employee.php" >
+                  <form class="form-sample" method="POST" action="search_complaint.php" >
 
                     <div class="row">
                       <div class="col-md-6">
@@ -304,7 +304,7 @@ while($row=mysqli_fetch_array($run))
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mobile No.</label>
                           <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" value="" required />
+                            <input type="number" class="form-control" name="mobile" value="" />
                           </div>
                         </div>
                       </div>
@@ -333,7 +333,7 @@ while($row=mysqli_fetch_array($run))
           <div class="col-md-6">
           </div>
           <div class="col-md-6" align="right">
-                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="submit_employee">Search Complaint</button>
+                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="submit_complaint">Search Complaint</button>
                         <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
           </div>
                   </form>
@@ -344,37 +344,46 @@ while($row=mysqli_fetch_array($run))
 			<?php
 include 'database/db_conection.php';
 //Adding Category Details, Code
-if(isset($_POST['submit']))
+if(isset($_POST['submit_complaint']))
 {
 $customer_name=$_POST['name'];
 $complaint_date=$_POST['complaint_date'];
 $customer_email=$_POST['email'];
 $customer_mobile=$_POST['mobile'];
 
-$query5="select * from company_details where company_name='$companyname'";
-$run5=mysqli_query($dbcon,$query5);
-$row5=mysqli_fetch_array($run5);
-$vcomp_id=$row5[0];
-
-
 echo @"
 			<div class='col-lg-12 grid-margin stretch-card'>
               <div class='card'>
                 <div class='card-body'>
-                  <h4 class='card-title'>Category Details</h4>
+                  <h4 class='card-title'>Complaint History</h4>
 
                   <div class='table-responsive'>
                     <table class='table table-bordered'>
                       <thead>
                         <tr>
                           <th>
-                            Serial No.
+                            Sr.No.
+                          </th>
+						  <th>
+                            Date
                           </th>
                           <th>
-                            Category Name
+                            Name
                           </th>
                           <th>
-                            Company Name
+                            Mobile
+                          </th>
+						  <th>
+                            Company
+                          </th>
+						  <th>
+                            Category
+                          </th>
+						  <th>
+                            Model
+                          </th>
+						  <th>
+                            Status
                           </th>
                           <th>
 							Action
@@ -385,26 +394,50 @@ echo @"
                       <tbody>";
 					 
 
-              $query1="SELECT
-              		category_details.category_id,category_details.category_name, company_details.company_name
-              	   FROM
-              		category_details
-              	   INNER JOIN
-              		company_details
-              	   ON
-              		category_details.company_id=company_details.company_id where category_details.company_id='$vcomp_id'"
-              		;
-
-
+              $query1="select 
+							complaint_details.complaint_id,
+							complaint_details.complaint_date,
+							complaint_details.complaint_status,
+							customer_details.customer_name,
+							customer_details.customer_mobile,
+							company_details.company_name,
+							category_details.category_name,
+							model_details.model_name
+							from 
+							complaint_details 
+							left join
+							customer_details
+							on
+							complaint_details.customer_id=customer_details.customer_id
+							left join
+							company_details
+							on
+							complaint_details.company_id=company_details.company_id
+							LEFT join
+							category_details
+							on
+							complaint_details.category_id=category_details.category_id
+							LEFT join
+							model_details
+							on
+							complaint_details.model_id=model_details.model_id 
+							where customer_details.customer_mobile='$customer_mobile' OR customer_details.customer_name='$customer_name' OR customer_details.customer_email='$customer_email' OR complaint_details.complaint_date='$complaint_date'
+							";
+												
 							$run1=mysqli_query($dbcon,$query1);
 							 $tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
 							$color_count = 0;
 							$count=1;
 							while($row1=mysqli_fetch_array($run1))
 							{
-							$cid=$row1[0];
-							$cname=$row1[1];
-							$compid=$row1[2];
+							$complaint_id=$row1[0];
+							$complaint_date=$row1[1];
+							$complaint_status=$row1[2];
+							$customer_name=$row1[3];
+							$customer_mobile=$row1[4];
+							$company_name=$row1[5];
+							$category_name=$row1[6];
+							$model_name=$row1[7];
 							
 							
 							if($color_count>4)
@@ -417,23 +450,50 @@ echo @"
 							$count++;
 							
                        echo "   </td>
+					   
+					  
 								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
-                            echo $cname;
+                            echo $complaint_date;
                       echo "    </td>
-                          <td style='padding-top: 0px; padding-bottom: 0px; '> ";
-                            echo $compid;
-                      echo "     </td>
+					  
+					  
+								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $customer_name;
+                      echo "    </td>
+					  
+					
+								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $customer_mobile;
+                      echo "    </td>
+					  
+					  			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $company_name;
+                      echo "    </td>
+					  
+					  			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $category_name;
+                      echo "    </td>
+					  
+					    			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $model_name;
+                      echo "    </td>
+					  
+					    			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $complaint_status;
+                      echo "    </td>
+					  
                          <td style='padding-top: 0px; padding-bottom: 0px; '>";
 					 
 					 
-                      echo @"     <a href='edit_category.php?edt=$cid' class='btn btn-icons btn-rounded btn-warning'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp; ";
-						echo @"   <a href='delete_category.php?delt=$cid' class='btn btn-icons btn-rounded btn-danger'><i class='fa fa-trash-o'></i></a> ";
+                      echo @"     <a href='update_complaint.php?complaint_id=$complaint_id' class='btn btn-icons btn-rounded btn-warning'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp; ";
+						echo @"   <a href='delete_category.php?complaint_id=$complaint_id' class='btn btn-icons btn-rounded btn-danger'><i class='fa fa-trash-o'></i></a> ";
                      
 					echo "	</td>
                         </tr> ";
 						
 					
                          } 
+
                      echo " </tbody>
                     </table>
                   </div>
