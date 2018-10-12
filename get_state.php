@@ -12,7 +12,7 @@ if(!empty($_POST["country_id"])) {
  	<option value="<?php echo $row['state_id']; ?>"><?php echo $row['state_name']; ?></option>
 <?php
    }
-}
+} 
 
 if(!empty($_POST["company_id"])) {
 	$qry ="SELECT * FROM category_details WHERE company_id = '" . $_POST["company_id"] . "'";
@@ -28,5 +28,47 @@ if(!empty($_POST["company_id"])) {
    }
 }
 
+
+
+
+
+if(!empty($_POST["customer_mobile1"])) {
+	$qry ="SELECT * FROM customer_details WHERE customer_mobile = '" . $_POST["customer_mobile1"] . "'";
+	$run=mysqli_query($dbcon,$qry);
+?>
+<?php
+	while($row=mysqli_fetch_array($run))
+	{
+?>
+	<input type="text" name="name" class="form-control" value="<?php echo $row['customer_name']; ?>" readonly/>
+<?php
+   }
+}
+
+if(!empty($_POST["customer_mobile2"])) {
+	$qry ="SELECT * FROM customer_details WHERE customer_mobile = '" . $_POST["customer_mobile2"] . "'";
+	$run=mysqli_query($dbcon,$qry);
+?>
+<?php
+	while($row=mysqli_fetch_array($run))
+	{
+?>
+	<input type="text" name="email" class="form-control" value="<?php echo $row['customer_email']; ?>" readonly/>
+<?php
+   }
+}
+
+if(!empty($_POST["customer_mobile3"])) {
+	$qry ="SELECT * FROM customer_details WHERE customer_mobile = '" . $_POST["customer_mobile3"] . "'";
+	$run=mysqli_query($dbcon,$qry);
+?>
+<?php
+	while($row=mysqli_fetch_array($run))
+	{
+?>
+	<input type="text" name="address" class="form-control" value="<?php echo $row['customer_address']; ?>" readonly/>
+<?php
+   }
+}
 
 ?>
