@@ -3,88 +3,31 @@
 <?php
 include("database/db_conection.php");
 
-$month = date('m');
-$day = date('d');
-$year = date('Y');
-$today = $year . '-' . $month . '-' . $day;
-
 error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 if(!$_SESSION['username'])
     header("Location: index.php");//redirect to login page to secure the welcome page without login access.
 else
-  $session_id = $_SESSION['username'];
+	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
-    user.user_role, employee.employee_name
-     FROM 
-    user
-     INNER JOIN 
-    employee 
-     ON
-    user.employee_id=employee.employee_id
-    WHERE 
-    user.employee_id='$session_id'";
- 
+$qry= "SELECT
+		user.user_role, employee.employee_name
+	   FROM
+		user
+	   INNER JOIN
+		employee
+	   ON
+		user.employee_id=employee.employee_id
+		WHERE
+		user.employee_id='$session_id'";
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
-  $role=$row[0];
-  $name=$row[1];
-}
-if($role!="admin" || $role=="dep")
-{
-  header("Location : main.php");
+	$role=$row[0];
+	$name=$row[1];
 }
 
-
-if(isset($_POST['register_complaint'])){
-  
-  $customer_mob=$_POST['mobile'];
-  
-  $query_find_id = "select customer_id from customer_details where customer_mobile='$customer_mob'";
-  $run=mysqli_query($dbcon,$query_find_id);
-  while($row=mysqli_fetch_array($run))
-  {
-    $cust_id = $row['customer_id'];
-  }
-
-  $company_id=$_POST['company'];
-  $category_id=$_POST['category'];
-  $model_id=$_POST['product'];
-  $employee_id=$_POST['employee'];
-  $cdate = $_POST['cdate']; 
-  $customer_name=$_POST['name'];
-  $customer_email=$_POST['email'];
-  $warrenty_status=$_POST['warranty'];
-  $serial_no = $_POST['serial'];
-  $problem = $_POST['problem'];
-
- $query= @"INSERT INTO `complaint_details`(
-    `customer_id`,
-    `company_id`,
-    `category_id`,
-    `model_id`,
-    `employee_id`,
-    `warranty_status`,
-    `model_serial_no`,
-    `problem_description`,
-    `complaint_date`
-    ) values (
-    '$cust_id','$company_id','$category_id','$model_id','$employee_id','$warrenty_status',
-    '$serial_no','$problem','$cdate'
-    )";
-if(mysqli_query($dbcon,$query))
-{
-  echo "<script>alert('Complaint has been registered!')</script>";
-  echo "<script>window.open('register_complaint.php','_self')</script>";
-}
-else
-{
-  echo "<script>alert('Complaint not registered!')</script>";
-}
-
-}
 ?>
 <head>
   <!-- Required meta tags -->
@@ -97,100 +40,18 @@ else
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="css/style.css">
-  <link href="css/jquery-editable-select.css" rel="stylesheet"/>
-  <link href="css/w3.css" rel="stylesheet"/>
   <!-- endinject -->
   <link rel="shortcut icon" href="images/favicon.png" />
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
-<script>
-function getProduct(val) {
-  $.ajax({
-  type: "POST",
-  url: "get_city.php",
-  data:'category_id='+val,
-  success: function(data){
-    $("#product-list").html(data);
-  }
-  });
-}
-
-function getCategory(val) {
-  //alert(val);
-  $.ajax({
-  type: "POST",
-  url: "get_state.php",
-  data:'company_id='+val,
-  success: function(data){
-    $("#category-list").html(data);
-  }
-  });
-}
-
-function selectCompany(val) {
-$("#search-box").val(val);
-$("#suggesstion-box").hide();
-}
-
-    /*function getCustDetails(val)
-    { 
-      <?php
-        $qry= "select * from customer_details ";
-        
-        $run=mysqli_query($dbcon,$qry);
-        while($row=mysqli_fetch_array($run))
-        {
-          $fetched_mobile = $row['customer_mobile'];
-          $fetched_email = $row['customer_email'];
-          $fetched_add = $row['customer_address'];
-        }
-      ?>
-       $("#mobile").val('<?php echo $fetched_mobile;?>');
-       $("#email").val('<?php echo $fetched_email;?>');
-       $("#address").val('<?php echo $fetched_add;?>');
-    }*/
-
-function getCustName(val) {
-  //alert(val);
-  $.ajax({
-  type: "POST",
-  url: "get_state.php",
-  data:'customer_mobile1='+val,
-  success: function(data){
-    $("#name").html(data);
-  }
-  });
-}
-
-function getCustEmail(val) {
-  //alert(val);
-  $.ajax({
-  type: "POST",
-  url: "get_state.php",
-  data:'customer_mobile2='+val,
-  success: function(data){
-    $("#email").html(data);
-  }
-  });
-}
-
-function getCustAdd(val) {
-  //alert(val);
-  $.ajax({
-  type: "POST",
-  url: "get_state.php",
-  data:'customer_mobile3='+val,
-  success: function(data){
-    $("#address").html(data);
-  }
-  });
-}
-
-</script>
 </head>
 
 <body>
@@ -265,8 +126,8 @@ function getCustAdd(val) {
       <?php
       if($role=="dep"||$role=="admin")
       {
-        echo @"
-        <li class='nav-item'>
+      echo @"
+      <li class='nav-item'>
             <a class='nav-link' data-toggle='collapse' href='#complaint' aria-expanded='false' aria-controls='ui-basic'>
               <i class='menu-icon fa fa-pencil-square-o'></i>
               <span class='menu-title'>Complaint Management</span>
@@ -424,198 +285,169 @@ function getCustAdd(val) {
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-    
-            <div class="col-12 grid-margin" >
+           <div class="col-12 grid-margin" >
               <div class="card">
                 <div class="card-body">
-                  <form class="form-sample" method="POST" action="register_complaint.php" >
-                    <div class="row">
-                      <div class="col-md-6">
-                        <h4 class="card-title">
-                              Cutomer Details &nbsp;&nbsp;
-                              <a href="add_customer.php" class="btn btn-primary btn-sm">
-                              <i class="fa fa-pencil"></i>Add Customer</a>
-                             <!-- <a href="edit_customer.php?cust_id=<?php echo $cust_id;?>" class="btn btn-primary btn-sm">
-                              <i class="fa fa-pencil"></i>Edit Customer</a>-->
+                  <h4 class="card-title">Search Complaint</h4>
+                  <form class="form-sample" method="POST" action="add_employee.php" >
 
-                              
-                        </h4>
-
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date*</label>
-                          <div class="col-sm-9">
-                            <input class="form-control" type="date" id="cdate"  name="cdate" value="<?php echo $today;?>" required />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile No*</label>
+                          <label class="col-sm-3 col-form-label">Full Name</label>
                           <div class="col-sm-9">
-                            <select class="form-control" name="mobile" id="mob-list" onChange="getCustName(this.value);getCustEmail(this.value);getCustAdd(this.value);" placeholder="Mobile Number" required>
-                              <?php
-                              $qry= "select * from customer_details";
-                              $run=mysqli_query($dbcon,$qry);
-                              while($row=mysqli_fetch_array($run))
-                              {
-                              ?>
-                              <option value="<?php echo $row['customer_id']; ?>"><?php echo $row['customer_mobile']; ?></option><?php
-
-                              }
-                              ?>
-                            </select>
-                              <script src="js/jquery.min.js"></script>
-                              <script src="js/jquery-editable-select.js"></script>
-                              <script>
-                                $('#mob-list').editableSelect()
-                              </script>
-                          </div>
-                        </div>
-                      </div>
-            <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Name*</label>
-                          <div class="col-sm-9">
-                            <div id="name">
-                              <input type="text" class="form-control" name="name"  placeholder="Name" value="" required />
-                            </div>
+                            <input type="text" class="form-control" name="name" value="" />
                           </div>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Email*</label>
-                          <div class="col-sm-9" >
-                           <div id="email">
-                              <input type="text" class="form-control" name="email" placeholder="xyz@email.com" value="" required />
-                            </div>
+                          <label class="col-sm-3 col-form-label">Mobile No.</label>
+                          <div class="col-sm-9">
+                            <input type="number" class="form-control" name="mobile" value="" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Email</label>
+                          <div class="col-sm-9">
+                            <input type="email" class="form-control" name="email" value=""/>
                           </div>
                         </div>
                       </div> 
-            <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Address*</label>
-                          <div class="col-sm-9">
-                            <div  id="address">
-                            <input type="text" class="form-control" value="" name="address" placeholder="Address" required />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                    <h4 class="card-title">Product Details</h4>
                     <div class="row">
                       <div class="col-md-6">
-                        <div class="form-group row country">
-                          <label class="col-sm-3 col-form-label">Company*</label>
-                          <div class="col-sm-9">
-                            <select class="form-control" name="company" id="company-list" onChange="getCategory(this.value);" required >
-                              <option selected="selected" disabled >Select Company</option>
-                              <?php
-                              $qry= "select * from company_details";
-                              $run=mysqli_query($dbcon,$qry);
-                              while($row=mysqli_fetch_array($run))
-                              {
-                              ?>
-                              <option value="<?php echo $row['company_id']; ?>"><?php echo $row['company_name']; ?></option><?php
-                              }
-                              ?>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-            <div class="col-md-6">
-                        <div class="form-group row state">
-                          <label class="col-sm-3 col-form-label">Category*</label>
-                          <div class="col-sm-9">
-                            <select class="form-control" name="category" id="category-list" onChange="getProduct(this.value);" required >
-                              <option selected="selected" disabled >Select Category</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Product*</label>
+                          <label class="col-sm-3 col-form-label">Date</label>
                           <div class="col-sm-9">
-                            <select class="form-control" name="product" id="product-list" required >
-                              <option selected="selected" disabled >Select Product</option>
-                            </select>
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="complaint_date" value=""/>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Warranty*</label>
-                          <div class="col-sm-9">
-                            <select class="form-control" name="warranty" id="product-list" required >
-                              <option selected="selected" value="OUT WARRANTY">Out Warranty</option>
-                              <option value="IN WARRANTY">In Warranty</option>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Serial No*</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="serial" value="" placeholder="Serial No" required />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Problem*</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" name="problem" value="" placeholder="Description" required />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-md-6">
-                        <div class="form-group row country">
-                          <label class="col-sm-3 col-form-label">Tecnician*</label>
-                          <div class="col-sm-9">
-                            <select class="form-control" name="employee" id="employee-list" required >
-                              <option selected="selected" disabled >Assign Technician</option>
-                              <?php
-                              $qry= "select employee.employee_id,employee.employee_name
-                                     from user
-                                    join 
-                                    employee
-                                    on user.employee_id = employee.employee_id
-                                    where user.user_role = 'technician'";
-                              $run=mysqli_query($dbcon,$qry);
-                              while($row=mysqli_fetch_array($run))
-                              {
-                              ?>
-                              <option value="<?php echo $row['employee_id']; ?>"><?php echo $row['employee_name']; ?></option><?php
-                              }
-                              ?>
-                            </select>
-                          </div>
-                        </div>
-                      </div>
-
                     </div>
+                
           
           <div class="row">
           <div class="col-md-6">
           </div>
           <div class="col-md-6" align="right">
-                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="register_complaint">Register</button>
+                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="submit_employee">Search Complaint</button>
                         <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
-                        
           </div>
                   </form>
                 </div>
               </div>
             </div>
-</div>
-    
+
+			<?php
+include 'database/db_conection.php';
+//Adding Category Details, Code
+if(isset($_POST['submit']))
+{
+$customer_name=$_POST['name'];
+$complaint_date=$_POST['complaint_date'];
+$customer_email=$_POST['email'];
+$customer_mobile=$_POST['mobile'];
+
+$query5="select * from company_details where company_name='$companyname'";
+$run5=mysqli_query($dbcon,$query5);
+$row5=mysqli_fetch_array($run5);
+$vcomp_id=$row5[0];
+
+
+echo @"
+			<div class='col-lg-12 grid-margin stretch-card'>
+              <div class='card'>
+                <div class='card-body'>
+                  <h4 class='card-title'>Category Details</h4>
+
+                  <div class='table-responsive'>
+                    <table class='table table-bordered'>
+                      <thead>
+                        <tr>
+                          <th>
+                            Serial No.
+                          </th>
+                          <th>
+                            Category Name
+                          </th>
+                          <th>
+                            Company Name
+                          </th>
+                          <th>
+							Action
+                          </th>
+
+                        </tr>
+                      </thead>
+                      <tbody>";
+					 
+
+              $query1="SELECT
+              		category_details.category_id,category_details.category_name, company_details.company_name
+              	   FROM
+              		category_details
+              	   INNER JOIN
+              		company_details
+              	   ON
+              		category_details.company_id=company_details.company_id where category_details.company_id='$vcomp_id'"
+              		;
+
+
+							$run1=mysqli_query($dbcon,$query1);
+							 $tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
+							$color_count = 0;
+							$count=1;
+							while($row1=mysqli_fetch_array($run1))
+							{
+							$cid=$row1[0];
+							$cname=$row1[1];
+							$compid=$row1[2];
+							
+							
+							if($color_count>4)
+							$color_count=0;
+					 
+                       echo " <tr class='"; echo $tbl_color[$color_count]; $color_count++; echo "'>";
+						echo "	  <td style='padding-top: 0px; padding-bottom: 0px;'> ";
+							  
+                            echo $count; 
+							$count++;
+							
+                       echo "   </td>
+								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $cname;
+                      echo "    </td>
+                          <td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $compid;
+                      echo "     </td>
+                         <td style='padding-top: 0px; padding-bottom: 0px; '>";
+					 
+					 
+                      echo @"     <a href='edit_category.php?edt=$cid' class='btn btn-icons btn-rounded btn-warning'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp; ";
+						echo @"   <a href='delete_category.php?delt=$cid' class='btn btn-icons btn-rounded btn-danger'><i class='fa fa-trash-o'></i></a> ";
+                     
+					echo "	</td>
+                        </tr> ";
+						
+					
+                         } 
+                     echo " </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> ";
+
+
+
+}
+?>
+			
+          </div>
+
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:../../partials/_footer.html -->
@@ -649,7 +481,6 @@ function getCustAdd(val) {
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-  
 </body>
 
 </html>
