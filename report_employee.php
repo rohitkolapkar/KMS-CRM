@@ -306,12 +306,25 @@ while($row=mysqli_fetch_array($run))
 			     <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Company Details</h4>
+                  <h4 class="card-title">Employee Details</h4>
 				  
-				  
+				   <form class="form-sample" action="report_employee_back.php" method="post">				
+						<input type="submit" value="Export Data" class="btn btn-success btn-rounded btn-md" name="export"><br>
+					</form>
 				  
                   <?php
-                    $emp_qry= "SELECT * FROM `employee`"; 
+                    $emp_qry= "SELECT
+									employee.employee_id,
+									employee.employee_name,
+									employee.mobile_no,
+									employee.email_id,
+									employee.address,
+									employee.dob,
+									employee.gender,
+									cities.city_name
+								FROM
+									employee
+								INNER JOIN cities ON employee.city_id = cities.city_id"; 
                     $run=mysqli_query($dbcon,$emp_qry);
                     $count=1;
                   ?>
@@ -323,10 +336,10 @@ while($row=mysqli_fetch_array($run))
                             Sr. No.
                           </th>
                           <th>
-                            Company ID
+                            Employee ID
                           </th>
                           <th>
-                            Company Name
+                            Employee Name
                           </th>
 						  <th>
                             Mobile No.
@@ -338,13 +351,13 @@ while($row=mysqli_fetch_array($run))
                             Address
                           </th>
 						  <th>
-                            City ID
-                          </th>
-						  <th>
                             Date of Birth
                           </th>
 						  <th>
                             Gender
+                          </th>
+						  <th>
+                            City
                           </th>
 						
                         </tr>
@@ -406,13 +419,7 @@ while($row=mysqli_fetch_array($run))
                         ?>
                       </tbody>
                     </table>
-                  </div>
-				  
-				  <br/>
-				  <form class="form-sample" action="reportback.php" method="post">				
-						<input type="submit" value="Export this Data" class="btn btn-success btn-rounded btn-md" name="export"><br>
-					</form>
-					
+                  </div>					
                 </div>
               </div>
             </div>
