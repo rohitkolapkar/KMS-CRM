@@ -28,13 +28,35 @@ while($row=mysqli_fetch_array($run))
 	$name=$row[1];
 }
 
+//employees count code
 $emp_count_qry= "SELECT COUNT(employee_id) FROM employee";
- 
 $run_count=mysqli_query($dbcon,$emp_count_qry);
 while($row=mysqli_fetch_array($run_count))
 {
 	$emp_count=$row[0];
 }
+
+//complaint count code
+$pending_complaint_qry= "SELECT COUNT(complaint_id) FROM complaint_details where complaint_status='PENDING'";
+$run_pending_count=mysqli_query($dbcon,$pending_complaint_qry);
+while($row2=mysqli_fetch_array($run_pending_count))
+{
+	$pending_complaint_count=$row2[0];
+}
+
+//complaint closed count code
+$closed_complaint_qry= "SELECT COUNT(complaint_id) FROM complaint_details where complaint_status='CLOSED'";
+$run_closed_count=mysqli_query($dbcon,$closed_complaint_qry);
+while($row2=mysqli_fetch_array($run_closed_count))
+{
+	$closed_complaint_count=$row2[0];
+}
+
+//date code
+$month = date('m');
+$day = date('d');
+$year = date('Y');
+$today = $day . '-' . $month . '-' . $year ;
 
 /*
 $qry1 = "SELECT security_key,security_ans FROM user where user_id='$session_id'";
@@ -323,14 +345,14 @@ if($security_key=="" || $security_ans=="")
                       <i class="mdi mdi-cube text-danger icon-lg"></i>
                     </div>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Total Revenue</p>
+                      <p class="mb-0 text-right">Date</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">$65,650</h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $today; ?></h3>
                       </div>
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> 65% lower growth
+                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> Today's Date
                   </p>
                 </div>
               </div>
@@ -343,14 +365,14 @@ if($security_key=="" || $security_ans=="")
                       <i class="mdi mdi-receipt text-warning icon-lg"></i>
                     </div>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Orders</p>
+                      <p class="mb-0 text-right">Complaints Closed</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">3455</h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $closed_complaint_count; ?></h3>
                       </div>
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i> Product-wise sales
+                    <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i> Total Complaints Closed
                   </p>
                 </div>
               </div>
@@ -363,14 +385,14 @@ if($security_key=="" || $security_ans=="")
                       <i class="mdi mdi-poll-box text-success icon-lg"></i>
                     </div>
                     <div class="float-right">
-                      <p class="mb-0 text-right">Sales</p>
+                      <p class="mb-0 text-right">Complaints</p>
                       <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0">5693</h3>
+                        <h3 class="font-weight-medium text-right mb-0"><?php echo $pending_complaint_count; ?></h3>
                       </div>
                     </div>
                   </div>
                   <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-calendar mr-1" aria-hidden="true"></i> Weekly Sales
+                    <i class="mdi mdi-calendar mr-1" aria-hidden="true"></i>Total Pending Complaints
                   </p>
                 </div>
               </div>
