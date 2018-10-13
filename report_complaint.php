@@ -10,17 +10,17 @@ if(!$_SESSION['username'])
 else
 	$session_id = $_SESSION['username'];
 
-$qry= "SELECT 
+$qry= "SELECT
 		user.user_role, employee.employee_name
-	   FROM 
+	   FROM
 		user
-	   INNER JOIN 
-		employee 
+	   INNER JOIN
+		employee
 	   ON
 		user.employee_id=employee.employee_id
-		WHERE 
+		WHERE
 		user.employee_id='$session_id'";
- 
+
 $run=mysqli_query($dbcon,$qry);
 while($row=mysqli_fetch_array($run))
 {
@@ -28,52 +28,6 @@ while($row=mysqli_fetch_array($run))
 	$name=$row[1];
 }
 
-//employees count code
-$emp_count_qry= "SELECT COUNT(employee_id) FROM employee";
-$run_count=mysqli_query($dbcon,$emp_count_qry);
-while($row=mysqli_fetch_array($run_count))
-{
-	$emp_count=$row[0];
-}
-
-//complaint count code
-$pending_complaint_qry= "SELECT COUNT(complaint_id) FROM complaint_details where complaint_status='PENDING'";
-$run_pending_count=mysqli_query($dbcon,$pending_complaint_qry);
-while($row2=mysqli_fetch_array($run_pending_count))
-{
-	$pending_complaint_count=$row2[0];
-}
-
-//complaint closed count code
-$closed_complaint_qry= "SELECT COUNT(complaint_id) FROM complaint_details where complaint_status='CLOSED'";
-$run_closed_count=mysqli_query($dbcon,$closed_complaint_qry);
-while($row2=mysqli_fetch_array($run_closed_count))
-{
-	$closed_complaint_count=$row2[0];
-}
-
-//date code
-$month = date('m');
-$day = date('d');
-$year = date('Y');
-$today = $day . '-' . $month . '-' . $year ;
-
-/*
-$qry1 = "SELECT security_key,security_ans FROM user where user_id='$session_id'";
-$run=mysqli_query($dbcon,$qry1);
-while($row=mysqli_fetch_array($run))
-{
-	$security_key=$row[0];
-	$security_ans=$row[1];
-}
-if($security_key=="" || $security_ans=="")
-{
-   echo @"<script>
-				window.open('my_account.php#security','_self');
-		 </script>";
-	//echo "<script>alert('Please update your security settings \n Manage Account>Security Question!')</script>";
-}
-*/
 ?>
 <head>
   <!-- Required meta tags -->
@@ -86,6 +40,11 @@ if($security_key=="" || $security_ans=="")
   <link rel="stylesheet" href="vendors/css/vendor.bundle.addons.css">
   <link rel="stylesheet" href="vendors/iconfonts/font-awesome/css/font-awesome.css">
   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  
+
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -136,14 +95,14 @@ if($security_key=="" || $security_ans=="")
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_sidebar.html -->
     <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav active">
+        <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="main.php">
               <i class="menu-icon fa fa-dashboard"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
-          <?php
+        <?php
       if($role=="dep"|| $role=="admin")
       {
         echo @"<li class='nav-item'>
@@ -293,10 +252,10 @@ if($security_key=="" || $security_ans=="")
             <div class='collapse' id='report'>
               <ul class='nav flex-column sub-menu'>
                 <li class='nav-item'>
-                  <a class='nav-link' href='report_employee.php'>Employee Report</a>
+                  <a class='nav-link' href='add_employee.php'>R1</a>
                 </li>
                 <li class='nav-item'>
-                  <a class='nav-link' href='report_complaint.php'>Complaint Report</a>
+                  <a class='nav-link' href='view_employees.php'>R2</a>
                 </li>
               </ul>
             </div>
@@ -326,241 +285,217 @@ if($security_key=="" || $security_ans=="")
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <!--<div class="row purchace-popup">
-            <div class="col-12">
-              <span class="d-block d-md-flex align-items-center">
-                <p>Like what you see? Check out our premium version for more.</p>
-                <a class="btn ml-auto download-button d-none d-md-block" href="https://github.com/BootstrapDash/StarAdmin-Free-Bootstrap-Admin-Template" target="_blank">Download Free Version</a>
-                <a class="btn purchase-button mt-4 mt-md-0" href="https://www.bootstrapdash.com/product/star-admin-pro/" target="_blank">Upgrade To Pro</a>
-                <i class="mdi mdi-close popup-dismiss d-none d-md-block"></i>
-              </span>
-            </div>
-          </div>-->
-          <div class="row">
-            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-              <div class="card card-statistics">
-                <div class="card-body">
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <i class="mdi mdi-cube text-danger icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                      <p class="mb-0 text-right">Date</p>
-                      <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $today; ?></h3>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> Today's Date
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-              <div class="card card-statistics">
-                <div class="card-body">
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <i class="mdi mdi-receipt text-warning icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                      <p class="mb-0 text-right">Complaints Closed</p>
-                      <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $closed_complaint_count; ?></h3>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-bookmark-outline mr-1" aria-hidden="true"></i> Total Complaints Closed
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-              <div class="card card-statistics">
-                <div class="card-body">
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <i class="mdi mdi-poll-box text-success icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                      <p class="mb-0 text-right">Complaints</p>
-                      <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?php echo $pending_complaint_count; ?></h3>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-calendar mr-1" aria-hidden="true"></i>Total Pending Complaints
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
-              <div class="card card-statistics">
-                <div class="card-body">
-                  <div class="clearfix">
-                    <div class="float-left">
-                      <i class="mdi mdi-account-location text-info icon-lg"></i>
-                    </div>
-                    <div class="float-right">
-                      <p class="mb-0 text-right">Employees</p>
-                      <div class="fluid-container">
-                        <h3 class="font-weight-medium text-right mb-0"><?PHP echo $emp_count?></h3>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-muted mt-3 mb-0">
-                    <i class="mdi mdi-reload mr-1" aria-hidden="true"></i> Number of Employees
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-7 grid-margin stretch-card">
-              <!--weather card-->
-              <div class="card card-weather">
-                <div class="card-body">
-                  <div class="weather-date-location">
-                    <h3>Monday</h3>
-                    <p class="text-gray">
-                      <span class="weather-date">25 October, 2016</span>
-                      <span class="weather-location">London, UK</span>
-                    </p>
-                  </div>
-                  <div class="weather-data d-flex">
-                    <div class="mr-auto">
-                      <h4 class="display-3">21
-                        <span class="symbol">&deg;</span>C</h4>
-                      <p>
-                        Mostly Cloudy
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div class="card-body p-0">
-                  <div class="d-flex weakly-weather">
-                    <div class="weakly-weather-item">
-                      <p class="mb-0">
-                        Sun
-                      </p>
-                      <i class="mdi mdi-weather-cloudy"></i>
-                      <p class="mb-0">
-                        30°
-                      </p>
-                    </div>
-                    <div class="weakly-weather-item">
-                      <p class="mb-1">
-                        Mon
-                      </p>
-                      <i class="mdi mdi-weather-hail"></i>
-                      <p class="mb-0">
-                        31°
-                      </p>
-                    </div>
-                    <div class="weakly-weather-item">
-                      <p class="mb-1">
-                        Tue
-                      </p>
-                      <i class="mdi mdi-weather-partlycloudy"></i>
-                      <p class="mb-0">
-                        28°
-                      </p>
-                    </div>
-                    <div class="weakly-weather-item">
-                      <p class="mb-1">
-                        Wed
-                      </p>
-                      <i class="mdi mdi-weather-pouring"></i>
-                      <p class="mb-0">
-                        30°
-                      </p>
-                    </div>
-                    <div class="weakly-weather-item">
-                      <p class="mb-1">
-                        Thu
-                      </p>
-                      <i class="mdi mdi-weather-pouring"></i>
-                      <p class="mb-0">
-                        29°
-                      </p>
-                    </div>
-                    <div class="weakly-weather-item">
-                      <p class="mb-1">
-                        Fri
-                      </p>
-                      <i class="mdi mdi-weather-snowy-rainy"></i>
-                      <p class="mb-0">
-                        31°
-                      </p>
-                    </div>
-                    <div class="weakly-weather-item">
-                      <p class="mb-1">
-                        Sat
-                      </p>
-                      <i class="mdi mdi-weather-snowy"></i>
-                      <p class="mb-0">
-                        32°
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <!--weather card ends-->
-            </div>
-            <div class="col-lg-5 grid-margin stretch-card">
+           <div class="col-12 grid-margin" >
               <div class="card">
                 <div class="card-body">
-                  <h2 class="card-title text-primary mb-5">Performance History</h2>
-                  <div class="wrapper d-flex justify-content-between">
-                    <div class="side-left">
-                      <p class="mb-2">The best performance</p>
-                      <p class="display-3 mb-4 font-weight-light">+45.2%</p>
+                  <h4 class="card-title">Complaint Report</h4>
+				  
+				    
+                  <form class="form-sample" method="POST" action="report_complaint_back.php" >
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">From Date</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="start_date" value=""/>
+                          </div>
+                        </div>
+                      </div>
+					  <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">To Date</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="end_date" value=""/>
+                          </div>
+                        </div>
+                      </div>
+					  
                     </div>
-                    <div class="side-right">
-                      <small class="text-muted">2017</small>
-                    </div>
-                  </div>
-                  <div class="wrapper d-flex justify-content-between">
-                    <div class="side-left">
-                      <p class="mb-2">Worst performance</p>
-                      <p class="display-3 mb-5 font-weight-light">-35.3%</p>
-                    </div>
-                    <div class="side-right">
-                      <small class="text-muted">2015</small>
-                    </div>
-                  </div>
-                  <div class="wrapper">
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-2">Sales</p>
-                      <p class="mb-2 text-primary">88%</p>
-                    </div>
-                    <div class="progress">
-                      <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" role="progressbar" style="width: 88%" aria-valuenow="88"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
-                  <div class="wrapper mt-4">
-                    <div class="d-flex justify-content-between">
-                      <p class="mb-2">Visits</p>
-                      <p class="mb-2 text-success">56%</p>
-                    </div>
-                    <div class="progress">
-                      <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: 56%" aria-valuenow="56"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                  </div>
+                
+          
+          <div class="row">
+          <div class="col-md-6">
+          </div>
+          <div class="col-md-6" align="right">
+                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="export">Export Data</button>
+                        <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
+          </div>
+                  </form>
                 </div>
               </div>
             </div>
+
+			<?php
+include 'database/db_conection.php';
+//Adding Category Details, Code
+if(isset($_POST['submit_complaint']))
+{
+$customer_name=$_POST['name'];
+$complaint_date=$_POST['complaint_date'];
+$customer_email=$_POST['email'];
+$customer_mobile=$_POST['mobile'];
+
+echo @"
+			<div class='col-lg-12 grid-margin stretch-card'>
+              <div class='card'>
+                <div class='card-body'>
+                  <h4 class='card-title'>Complaint History</h4>
+
+                  <div class='table-responsive'>
+                    <table class='table table-bordered'>
+                      <thead>
+                        <tr>
+                          <th>
+                            Sr.No.
+                          </th>
+						  <th>
+                            Date
+                          </th>
+                          <th>
+                            Name
+                          </th>
+                          <th>
+                            Mobile
+                          </th>
+						  <th>
+                            Company
+                          </th>
+						  <th>
+                            Category
+                          </th>
+						  <th>
+                            Model
+                          </th>
+						  <th>
+                            Status
+                          </th>
+                          <th>
+							Action
+                          </th>
+
+                        </tr>
+                      </thead>
+                      <tbody>";
+					 
+
+              $query1="select 
+							complaint_details.complaint_id,
+							complaint_details.complaint_date,
+							complaint_details.complaint_status,
+							customer_details.customer_name,
+							customer_details.customer_mobile,
+							company_details.company_name,
+							category_details.category_name,
+							model_details.model_name
+							from 
+							complaint_details 
+							left join
+							customer_details
+							on
+							complaint_details.customer_id=customer_details.customer_id
+							left join
+							company_details
+							on
+							complaint_details.company_id=company_details.company_id
+							LEFT join
+							category_details
+							on
+							complaint_details.category_id=category_details.category_id
+							LEFT join
+							model_details
+							on
+							complaint_details.model_id=model_details.model_id 
+							where customer_details.customer_mobile='$customer_mobile' OR customer_details.customer_name='$customer_name' OR customer_details.customer_email='$customer_email' OR complaint_details.complaint_date='$complaint_date'
+							";
+												
+							$run1=mysqli_query($dbcon,$query1);
+							 $tbl_color = array("table-danger", "table-success", "table-primary","table-info","table-warning");
+							$color_count = 0;
+							$count=1;
+							while($row1=mysqli_fetch_array($run1))
+							{
+							$complaint_id=$row1[0];
+							$complaint_date=$row1[1];
+							$complaint_status=$row1[2];
+							$customer_name=$row1[3];
+							$customer_mobile=$row1[4];
+							$company_name=$row1[5];
+							$category_name=$row1[6];
+							$model_name=$row1[7];
+							
+							
+							if($color_count>4)
+							$color_count=0;
+					 
+                       echo " <tr class='"; echo $tbl_color[$color_count]; $color_count++; echo "'>";
+						echo "	  <td style='padding-top: 0px; padding-bottom: 0px;'> ";
+							  
+                            echo $count; 
+							$count++;
+							
+                       echo "   </td>
+					   
+					  
+								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $complaint_date;
+                      echo "    </td>
+					  
+					  
+								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $customer_name;
+                      echo "    </td>
+					  
+					
+								<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $customer_mobile;
+                      echo "    </td>
+					  
+					  			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $company_name;
+                      echo "    </td>
+					  
+					  			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $category_name;
+                      echo "    </td>
+					  
+					    			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $model_name;
+                      echo "    </td>
+					  
+					    			<td style='padding-top: 0px; padding-bottom: 0px; '> ";
+                            echo $complaint_status;
+                      echo "    </td>
+					  
+                         <td style='padding-top: 0px; padding-bottom: 0px; '>";
+					 
+					 
+                      echo @"     <a href='update_complaint.php?complaint_id=$complaint_id' class='btn btn-icons btn-rounded btn-warning'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp; ";
+						
+                     
+					echo "	</td>
+                        </tr> ";
+						
+					
+                         } 
+
+                     echo " </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div> ";
+
+
+
+}
+?>
+			
           </div>
-         
 
         </div>
         <!-- content-wrapper ends -->
-        <!-- partial:partials/_footer.html -->
+        <!-- partial:../../partials/_footer.html -->
         <footer class="footer">
           <div class="container-fluid clearfix">
             <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018

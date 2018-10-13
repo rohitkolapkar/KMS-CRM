@@ -50,6 +50,7 @@ $query= @"INSERT INTO `customer_details` (`customer_name`,`customer_address`,`ci
 if(mysqli_query($dbcon,$query))
 {
   echo "<script>alert('Customer details has been saved!')</script>";
+  echo "<script>window.open('register_complaint.php','_self')</script>";
   /*$cust_qry = "SELECT * FROM `customer_details` ORDER BY customer_id DESC LIMIT 1";
   $run=mysqli_query($dbcon,$cust_qry);
   while($row=mysqli_fetch_array($run))
@@ -374,7 +375,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Email</label>
                           <div class="col-sm-9">
-                            <input type="email" class="form-control" name="email" value="" />
+                            <input type="email" class="form-control" name="email" value="" required />
                           </div>
                         </div>
                       </div> 
@@ -382,7 +383,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Address</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" value="" name="address"/>
+                            <input type="text" class="form-control" value="" name="address" required />
                           </div>
                         </div>
                       </div>
@@ -392,7 +393,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row country">
                           <label class="col-sm-3 col-form-label">Country *</label>
                           <div class="col-sm-9">
-                            <select class="form-control" name="country" id="country-list" onChange="getState(this.value);">
+                            <select class="form-control" name="country" id="country-list" onChange="getState(this.value);" required>
                               <option selected="selected" >Select Country</option>
                               <?php
                               $qry= "select * from country";

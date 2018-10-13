@@ -486,7 +486,7 @@ echo @"
 					 
 					 
                       echo @"     <a href='update_complaint.php?complaint_id=$complaint_id' class='btn btn-icons btn-rounded btn-warning'><i class='fa fa-pencil'></i></a>&nbsp;&nbsp; ";
-						echo @"   <a href='delete_category.php?complaint_id=$complaint_id' class='btn btn-icons btn-rounded btn-danger'><i class='fa fa-trash-o'></i></a> ";
+						
                      
 					echo "	</td>
                         </tr> ";

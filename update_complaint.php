@@ -46,6 +46,9 @@ $complaint_query="
 						complaint_details.warranty_status,
 						complaint_details.model_serial_no,
 						complaint_details.problem_description,
+						complaint_details.complaint_close_date,
+						complaint_details.technician_remarks,
+						complaint_details.service_charge,
 						customer_details.customer_name,
 						customer_details.customer_mobile,
 						customer_details.customer_email,
@@ -72,30 +75,33 @@ $complaint_query="
 			$complaint_run=mysqli_query($dbcon,$complaint_query);
 			while($complaint_row=mysqli_fetch_array($complaint_run))
 			{
-				$complaint_id=$complaint_row[0];
+				$complaint_id1=$complaint_row[0];
 				$complaint_date=$complaint_row[1];
 				$complaint_status=$complaint_row[2];
 				$warranty_status=$complaint_row[3];
 				$model_serial_no=$complaint_row[4];
 				$problem_description=$complaint_row[5];
-				$customer_name=$complaint_row[6];
-				$customer_mobile=$complaint_row[7];
-				$customer_email=$complaint_row[8];
-				$customer_address=$complaint_row[9];
-				$company_name=$complaint_row[10];
-				$company_id=$complaint_row[11];
-				$category_name=$complaint_row[12];
-				$category_id=$complaint_row[13];
-				$model_name=$complaint_row[14];
-				$model_id=$complaint_row[15];
-				$employee_name=$complaint_row[16];
-				$employee_id=$complaint_row[17];
+				$complaint_close_date1=$complaint_row[6];
+				$technician_remark1=$complaint_row[7];
+				$service_charge1=$complaint_row[8];
+				$customer_name=$complaint_row[9];
+				$customer_mobile=$complaint_row[10];
+				$customer_email=$complaint_row[11];
+				$customer_address=$complaint_row[12];
+				$company_name=$complaint_row[13];
+				$company_id=$complaint_row[14];
+				$category_name=$complaint_row[15];
+				$category_id=$complaint_row[16];
+				$model_name=$complaint_row[17];
+				$model_id=$complaint_row[18];
+				$employee_name=$complaint_row[19];
+				$employee_id=$complaint_row[20];
 			}
 
 //update code start
 if(isset($_POST['update_complaint'])){
 	
-  
+  $complaint_number=$_POST['complaint_ID1'];
   $company_id=$_POST['company'];
   $category_id=$_POST['category'];
   $model_id=$_POST['product'];
@@ -104,10 +110,10 @@ if(isset($_POST['update_complaint'])){
   $problem = $_POST['problem'];
   $cdate = $_POST['cdate']; 
   $employee_id=$_POST['employee'];
-  $technician_remark=$POST['technician_remark'];
-  $service_charge=$POST['service_charge'];
-  $closing_date=$POST['closing_date'];
-  $complaint_status=$POST['complaint_status'];
+  $technician_remark=$_POST['technician_remark'];
+  $service_charge=$_POST['service_charge'];
+  $closing_date=$_POST['closing_date'];
+  $complaint_status=$_POST['complaint_status'];
 
  $query="UPDATE complaint_details SET
     company_id='$company_id',
@@ -123,16 +129,16 @@ if(isset($_POST['update_complaint'])){
     technician_remarks='$technician_remark',
     service_charge='$service_charge'
 WHERE
-    complaint_id=1";
+    complaint_id='$complaint_number'";
 	
 if(mysqli_query($dbcon,$query))
 {
-  echo "<script>alert('Done')</script>";
-  //echo "<script>window.open('search_complaint.php','_self')</script>";
+  echo "<script>alert('Complaint has been updated')</script>";
+  echo "<script>window.open('search_complaint.php','_self')</script>";
 }
 else
 {
- echo "<script>alert('Update Failed')</script>";
+ echo "<script>alert('Complaint update failed')</script>";
 }
 
 }
@@ -449,6 +455,15 @@ $("#suggesstion-box").hide();
                       <div class="col-md-6">
                         <h4 class="card-title">
                               Cutomer Details &nbsp;&nbsp;   
+							  
+                        
+                          <label class="col-sm-3 col-form-label">Complaint ID*</label>
+                          
+                            <select class="card-title" name="complaint_ID1" readonly >
+								<option value="<?php echo $complaint_id; ?>"><?php echo $complaint_id; ?></option>
+                            </select>
+                          
+                    
                         </h4>
 
                       </div>
@@ -602,7 +617,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Tecnician Remark*</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="technician_remark" value="" placeholder="Tecnician Remark*" />
+                            <input type="text" class="form-control" name="technician_remark" value="<?php echo $technician_remark1; ?>" placeholder="Tecnician Remark*" />
                           </div>
                         </div>
                       </div>
@@ -614,7 +629,7 @@ $("#suggesstion-box").hide();
 				  <div class="form-group row">
 				  <label class="col-sm-3 col-form-label">Service Charge</label>
 				  <div class="col-sm-9">
-					<input type="number" class="form-control" name="service_charge" value="" placeholder="Rs." />
+					<input type="number" class="form-control" name="service_charge" value="<?php echo $service_charge1; ?>" placeholder="Rs." />
 				  </div>
 				  </div>
 				  </div>
@@ -624,7 +639,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Closing Date</label>
                           <div class="col-sm-9">
-                            <input class="form-control" type="date" id="closing_date"  name="closing_date" value="<?php echo $today; ?>" />
+                            <input class="form-control" type="date" id="closing_date"  name="closing_date" value="<?php echo $complaint_close_date1; ?>" />
                           </div>
                         </div>
                       
@@ -633,10 +648,10 @@ $("#suggesstion-box").hide();
 				  
 				  <div class="col-md-6">
 				        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Complaint Status* <?php echo $query; ?></label>
+                          <label class="col-sm-3 col-form-label">Complaint Status*</label>
                           <div class="col-sm-9">
                             <select class="form-control" name="complaint_status" id="complaint_status"  >
-                              <option selected="selected" value="<?php echo $warranty_status; ?>"><?php echo $complaint_status; ?></option>
+                              <option selected="selected" value="<?php echo $complaint_status; ?>"><?php echo $complaint_status; ?></option>
                               <option value="PENDING">PENDING</option>
 							  <option value="CLOSED">CLOSED</option>
 							  <option value="CANCELED">CANCELED</option>
