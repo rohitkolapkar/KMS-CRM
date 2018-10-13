@@ -288,44 +288,29 @@ while($row=mysqli_fetch_array($run))
            <div class="col-12 grid-margin" >
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Search Complaint</h4>
-                  <form class="form-sample" method="POST" action="search_complaint.php" >
+                  <h4 class="card-title">Complaint Report</h4>
+				  
+				    
+                  <form class="form-sample" method="POST" action="report_complaint_back.php" >
 
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Full Name</label>
+                          <label class="col-sm-3 col-form-label">From Date</label>
                           <div class="col-sm-9">
-                            <input type="text" class="form-control" name="name" value="" />
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="start_date" value=""/>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
+					  <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile No.</label>
+                          <label class="col-sm-3 col-form-label">To Date</label>
                           <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" value="" />
+                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="end_date" value=""/>
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Email</label>
-                          <div class="col-sm-9">
-                            <input type="email" class="form-control" name="email" value=""/>
-                          </div>
-                        </div>
-                      </div> 
-                    </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Date</label>
-                          <div class="col-sm-9">
-                            <input class="form-control" type="date" placeholder="dd/mm/yyyy"  name="complaint_date" value=""/>
-                          </div>
-                        </div>
-                      </div>
+					  
                     </div>
                 
           
@@ -333,7 +318,7 @@ while($row=mysqli_fetch_array($run))
           <div class="col-md-6">
           </div>
           <div class="col-md-6" align="right">
-                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="submit_complaint">Search Complaint</button>
+                        <button type="submit" class="btn btn-success btn-rounded btn-md "name="export">Export Data</button>
                         <a href="main.php" class="btn btn-warning btn-rounded btn-md">Cancel</a> 
           </div>
                   </form>

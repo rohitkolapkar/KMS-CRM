@@ -296,7 +296,7 @@ if($security_key=="" || $security_ans=="")
                   <a class='nav-link' href='report_employee.php'>Employee Report</a>
                 </li>
                 <li class='nav-item'>
-                  <a class='nav-link' href='view_employees.php'>R2</a>
+                  <a class='nav-link' href='report_complaint.php'>Complaint Report</a>
                 </li>
               </ul>
             </div>
