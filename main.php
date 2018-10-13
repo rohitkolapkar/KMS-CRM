@@ -418,9 +418,9 @@ if($security_key=="" || $security_ans=="")
               </div>
             </div>
           </div>
-          <div class="row">
+          <!--<div class="row">
             <div class="col-lg-7 grid-margin stretch-card">
-              <!--weather card-->
+             
               <div class="card card-weather">
                 <div class="card-body">
                   <div class="weather-date-location">
@@ -508,7 +508,7 @@ if($security_key=="" || $security_ans=="")
                   </div>
                 </div>
               </div>
-              <!--weather card ends-->
+              <!--weather card ends--
             </div>
             <div class="col-lg-5 grid-margin stretch-card">
               <div class="card">
@@ -555,7 +555,7 @@ if($security_key=="" || $security_ans=="")
                 </div>
               </div>
             </div>
-          </div>
+          </div>-->
          
 
         </div>
