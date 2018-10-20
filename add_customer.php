@@ -357,7 +357,7 @@ $("#suggesstion-box").hide();
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Full Name *</label>
+                          <label class="col-sm-3 col-form-label">Full Name*</label>
                           <div class="col-sm-9">
                             <input type="text" class="form-control" name="name" value="" required />
                           </div>
@@ -365,9 +365,9 @@ $("#suggesstion-box").hide();
                       </div>
             <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">Mobile No. *</label>
+                          <label class="col-sm-3 col-form-label">Mobile No.*</label>
                           <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" value="" required />
+                            <input type="number" minlength="10" maxlength="12" class="form-control" name="mobile" value="" required />
                           </div>
                         </div>
                       </div>
@@ -410,7 +410,7 @@ $("#suggesstion-box").hide();
                       </div>
             <div class="col-md-6">
                         <div class="form-group row state">
-                          <label class="col-sm-3 col-form-label">State *</label>
+                          <label class="col-sm-3 col-form-label">State*</label>
                           <div class="col-sm-9">
                             <select class="form-control" name="state" id="state-list" onChange="getCity(this.value);">
                               <option selected="selected">Select State</option>
@@ -420,7 +420,7 @@ $("#suggesstion-box").hide();
                       </div>
             <div class="col-md-6">
                         <div class="form-group row">
-                          <label class="col-sm-3 col-form-label">City *</label>
+                          <label class="col-sm-3 col-form-label">City*</label>
                           <div class="col-sm-9">
                             <select class="form-control" name="city" id="city-list">
                               <option selected="selected">Select City</option>

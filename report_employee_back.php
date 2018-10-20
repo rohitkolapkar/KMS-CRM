@@ -21,6 +21,10 @@ INNER JOIN cities ON employee.city_id = cities.city_id";
  {
   $output .= '
    <table class="table" border="1">  
+                    <tr>
+                    <th colspan="8" align="center">Kallika Multi Services Aurangabad</th>
+                    <tr><th colspan="8" align="center">Employee Details</th></tr>
+                    </tr>
                     <tr>  
                          <th>Employee ID</th>  
                          <th>Name</th>  

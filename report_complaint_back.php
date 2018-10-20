@@ -47,7 +47,9 @@ if(isset($_POST["export"]))
  if(mysqli_num_rows($result) > 0)
  {
   $output .= '
-   <table class="table" border="1">  
+   <table class="table" border="1">
+   					<tr><th colspan="17" align="center">Kallika Multi Services Aurangabad</th></tr>
+                    <tr><th colspan="17" align="center">Complaint Report '.$start_date.' to '.$end_date.'</th></tr>  
                     <tr>  
                          <th>Complaint ID</th>  
                          <th>Customer Name</th>  
@@ -59,7 +61,7 @@ if(isset($_POST["export"]))
 						 <th>Company Name</th> 
 						 <th>Category Name</th>
 						 <th>Model Name</th> 
-						 <th>Problem /th> 
+						 <th>Problem </th> 
 						 <th>Technician Remark</th>
 						 <th>Technician Name</th>
 						 <th>Warranty Status</th>
