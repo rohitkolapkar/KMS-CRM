@@ -366,7 +366,7 @@ $("#suggesstion-box").hide();
                         <div class="form-group row">
                           <label class="col-sm-3 col-form-label">Mobile No. *</label>
                           <div class="col-sm-9">
-                            <input type="number" class="form-control" name="mobile" value="" required />
+                            <input type="number" minlength=10 maxlength=12 class="form-control" name="mobile" value="" required />
                           </div>
                         </div>
                       </div>
