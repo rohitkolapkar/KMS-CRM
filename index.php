@@ -108,7 +108,7 @@ if(isset($_POST['login']))
                 <a href="#">Terms</a>
               </li>
             </ul>-->
-            <!--<p class="footer-text text-center">copyright © 2018 Bootstrapdash. All rights reserved.</p>-->
+            <!--<p class="footer-text text-center">Copyright © 2020 Bootstrapdash. All rights reserved.</p>-->
           </div>
         </div>
       </div>
